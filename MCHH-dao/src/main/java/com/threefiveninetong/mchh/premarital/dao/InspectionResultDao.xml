@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.premarital.dao.InspectionResultDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.premarital.po.InspectionResultPO" >
+	<result column="ID" property="id" />
+	<result column="MARRIAGE_TA_ID" property="marriageTaId" />
+	<result column="CHECK_RESULT" property="checkResult" />
+	<result column="EXC_TERM" property="excTerm" />
+	<result column="OTHER_EXC" property="otherExc" />
+	<result column="DISEASE_DIAGNOSIS" property="diseaseDiagnosis" />
+	<result column="MEDICAL_ADVICE" property="medicalAdvice" />
+	<result column="MARITAL_CONSULTATION" property="maritalConsultation" />
+	<result column="CONSULTATIVE_RESULTS" property="consultativeResults" />
+	<result column="ISSUED_BY_DATE" property="issuedByDate" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT
+    where
+			ID = #{ id}
+  </select>
+  
+  <select id="getInspectionByPremaritalId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT
+    where
+			MARRIAGE_TA_ID = #{ premaritalId}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT
+  </select>
+  
+  <!--  查询所有得病的人-->
+  <select id="findAllIll" resultMap="BaseResultMap" >
+    select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT where CHECK_RESULT='1'
+  </select>
+  <!--  查询所有进行过咨询的人-->
+ <select id="findAllAsk" resultMap="BaseResultMap" >
+        select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT where (MARITAL_CONSULTATION is not null and MARITAL_CONSULTATION !='' )
+  </select>
+  
+  <!--  查询所有的指定传染病的人-->
+ <select id="findAllInfectious " resultMap="BaseResultMap" >
+        select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT 
+  </select>
+  
+  
+  <delete id="delete" parameterType="String" >
+    delete from INSPECTION_RESULT
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.premarital.po.InspectionResultPO" >
+    insert into INSPECTION_RESULT (ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				#{ checkResult, javaType=String, jdbcType=VARCHAR},
+				#{ excTerm, javaType=String, jdbcType=VARCHAR},
+				#{ otherExc, javaType=String, jdbcType=VARCHAR},
+				#{ diseaseDiagnosis, javaType=String, jdbcType=VARCHAR},
+				#{ medicalAdvice, javaType=String, jdbcType=VARCHAR},
+				#{ maritalConsultation, javaType=String, jdbcType=VARCHAR},
+				#{ consultativeResults, javaType=String, jdbcType=VARCHAR},
+				#{ issuedByDate, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.premarital.po.InspectionResultPO" >
+    update INSPECTION_RESULT
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				CHECK_RESULT = #{ checkResult, javaType=String, jdbcType=VARCHAR},
+				EXC_TERM = #{ excTerm, javaType=String, jdbcType=VARCHAR},
+				OTHER_EXC = #{ otherExc, javaType=String, jdbcType=VARCHAR},
+				DISEASE_DIAGNOSIS = #{ diseaseDiagnosis, javaType=String, jdbcType=VARCHAR},
+				MEDICAL_ADVICE = #{ medicalAdvice, javaType=String, jdbcType=VARCHAR},
+				MARITAL_CONSULTATION = #{ maritalConsultation, javaType=String, jdbcType=VARCHAR},
+				CONSULTATIVE_RESULTS = #{ consultativeResults, javaType=String, jdbcType=VARCHAR},
+				ISSUED_BY_DATE = #{ issuedByDate, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+<update id="edit" parameterType="com.threefiveninetong.mchh.premarital.po.InspectionResultPO" >
+    update INSPECTION_RESULT
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				CHECK_RESULT = #{ checkResult, javaType=String, jdbcType=VARCHAR},
+				EXC_TERM = #{ excTerm, javaType=String, jdbcType=VARCHAR},
+				OTHER_EXC = #{ otherExc, javaType=String, jdbcType=VARCHAR},
+				DISEASE_DIAGNOSIS = #{ diseaseDiagnosis, javaType=String, jdbcType=VARCHAR},
+				MEDICAL_ADVICE = #{ medicalAdvice, javaType=String, jdbcType=VARCHAR},
+				MARITAL_CONSULTATION = #{ maritalConsultation, javaType=String, jdbcType=VARCHAR},
+				CONSULTATIVE_RESULTS = #{ consultativeResults, javaType=String, jdbcType=VARCHAR},
+				ISSUED_BY_DATE = #{ issuedByDate, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			MARRIAGE_TA_ID = #{ marriageTaId}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MARRIAGE_TA_ID,CHECK_RESULT,EXC_TERM,OTHER_EXC,DISEASE_DIAGNOSIS,MEDICAL_ADVICE,MARITAL_CONSULTATION,CONSULTATIVE_RESULTS,ISSUED_BY_DATE
+    from INSPECTION_RESULT
+  </select>
+
+
+<delete id="deletes">
+		delete from INSPECTION_RESULT
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

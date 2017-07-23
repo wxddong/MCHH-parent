@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sys.dao.OperateLogDao">
+
+	<resultMap id="OperateLog" type="com.threefiveninetong.mchh.sys.po.OperateLogPO">
+		<result column="ID" property="id" />
+		<result column="OPERATOR_ID" property="operatorId" />
+		<result column="OPERATE_TIME" property="operateTime" />
+		<result column="RES_ID" property="resId" />
+		<result column="OPERATE_RESULT" property="operateResult" />
+		<result column="OPERATE_DATA" property="operateData" />
+		<result column="LOG_MAC" property="logMac" />
+	</resultMap>
+
+	<sql id="BaseColumns0">
+		ol.ID,ol.OPERATOR_ID,ol.OPERATE_TIME,ol.RES_ID,ol.OPERATE_RESULT,ol.OPERATE_DATA,ol.LOG_MAC
+	</sql>
+	<sql id="BaseColumns">
+		ID,OPERATOR_ID,OPERATE_TIME,RES_ID,OPERATE_RESULT,OPERATE_DATA,LOG_MAC
+	</sql>
+
+	<select id="listOperateLogForPage" resultMap="OperateLog" parameterType="hashmap">
+		select
+		ol.ID,ol.OPERATOR_ID,ol.OPERATE_TIME,ol.RES_ID,ol.OPERATE_RESULT,ol.OPERATE_DATA,ol.LOG_MAC
+		,o.login_name loginName,r.name resName
+		from sys_operate_log ol
+		left join sys_operator o on o.id = ol.operator_id
+		left join sys_resources r on r.id = ol.res_id
+		<trim prefix="where" prefixOverrides="and |or ">
+	         <if test="loginName!=null and loginName!=''">
+	              and o.login_name = #{loginName}
+	         </if>
+	    </trim>
+		order by ol.operate_time desc
+	</select>
+	<insert id="add" parameterType="com.threefiveninetong.mchh.sys.po.OperatorPO">
+		 insert into sys_operate_log (ID,OPERATOR_ID,OPERATE_TIME,RES_ID,OPERATE_RESULT,OPERATE_DATA,LOG_MAC)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ operatorId, javaType=String, jdbcType=VARCHAR},
+				#{ operateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ resId, javaType=String, jdbcType=VARCHAR},
+				#{ operateResult, javaType=int, jdbcType=CHAR},
+				#{ operateData, javaType=String, jdbcType=VARCHAR},
+				#{ logMac, javaType=String, jdbcType=VARCHAR}
+	    )
+	</insert>
+
+</mapper>

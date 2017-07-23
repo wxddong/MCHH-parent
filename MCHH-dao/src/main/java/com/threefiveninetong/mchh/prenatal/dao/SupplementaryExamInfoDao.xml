@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.prenatal.dao.SupplementaryExamInfoDao" >
+	
+	<delete id="deleteByPrenatalId" parameterType="String" >
+	    delete from SUPPLEMENTARY_EXAM_INFO
+	    where 
+			EXAMINATION_ID = #{ examinationId}
+	</delete>
+	
+	<select id="getSupplemetnaryExamByPrenatalId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,EXAMINATION_ID,HEMOGLOBIN,LEUCOCYTE,PLATELET,BLOOD_OTHERS,PROTEINURIA,URINE_SUGAR,KETONE,URINE_BLOOD,URINE_OTHERS,BLOOD_TYPE,BLOOD_TYPE_RH,BLOOD_GLUCOSE,SGPT,SGOT,ALBUMIN,TOTAL_BILIRUBIN,DBIL,SCR,BUN,VAGINAL_FLUID,VAGINAL_FLUID_OTHERS,VAGINAL_CLEAN,HBSAG,HBSAB,HBCAB,HBEAB,HBEAG,SYPHILIS_SEROLOGY,HIVAB,B_SCAN,B_SCAN_REMARK,TANG_SYNDROME,TANG_SYNDROME_REMARK,FOUR_DIMENSIONAL,FOUR_DIMENSIONAL_REMARK,NT,NT_REMARK,NST,NST_REMARK,OTHERS
+	    from SUPPLEMENTARY_EXAM_INFO
+	    where EXAMINATION_ID = #{ prenatalId}
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.prenatal.po.SupplementaryExamInfoPO" >
+	<result column="ID" property="id" />
+	<result column="EXAMINATION_ID" property="examinationId" />
+	<result column="HEMOGLOBIN" property="hemoglobin" />
+	<result column="LEUCOCYTE" property="leucocyte" />
+	<result column="PLATELET" property="platelet" />
+	<result column="BLOOD_OTHERS" property="bloodOthers" />
+	<result column="PROTEINURIA" property="proteinuria" />
+	<result column="URINE_SUGAR" property="urineSugar" />
+	<result column="KETONE" property="ketone" />
+	<result column="URINE_BLOOD" property="urineBlood" />
+	<result column="URINE_OTHERS" property="urineOthers" />
+	<result column="BLOOD_TYPE" property="bloodType" />
+	<result column="BLOOD_TYPE_RH" property="bloodTypeRh" />
+	<result column="BLOOD_GLUCOSE" property="bloodGlucose" />
+	<result column="SGPT" property="sgpt" />
+	<result column="SGOT" property="sgot" />
+	<result column="ALBUMIN" property="albumin" />
+	<result column="TOTAL_BILIRUBIN" property="totalBilirubin" />
+	<result column="DBIL" property="dbil" />
+	<result column="SCR" property="scr" />
+	<result column="BUN" property="bun" />
+	<result column="VAGINAL_FLUID" property="vaginalFluid" />
+	<result column="VAGINAL_FLUID_OTHERS" property="vaginalFluidOthers" />
+	<result column="VAGINAL_CLEAN" property="vaginalClean" />
+	<result column="HBSAG" property="hbsag" />
+	<result column="HBSAB" property="hbsab" />
+	<result column="HBCAB" property="hbcab" />
+	<result column="HBEAB" property="hbeab" />
+	<result column="HBEAG" property="hbeag" />
+	<result column="SYPHILIS_SEROLOGY" property="syphilisSerology" />
+	<result column="HIVAB" property="hivab" />
+	<result column="B_SCAN" property="bscan" />
+	<result column="B_SCAN_REMARK" property="bscanRemark" />
+	<result column="TANG_SYNDROME" property="tangSyndrome" />
+	<result column="TANG_SYNDROME_REMARK" property="tangSyndromeRemark" />
+	<result column="FOUR_DIMENSIONAL" property="fourDimensional" />
+	<result column="FOUR_DIMENSIONAL_REMARK" property="fourDimensionalRemark" />
+	<result column="NT" property="nt" />
+	<result column="NT_REMARK" property="ntRemark" />
+	<result column="NST" property="nst" />
+	<result column="NST_REMARK" property="nstRemark" />
+	<result column="OTHERS" property="others" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,EXAMINATION_ID,HEMOGLOBIN,LEUCOCYTE,PLATELET,BLOOD_OTHERS,PROTEINURIA,URINE_SUGAR,KETONE,URINE_BLOOD,URINE_OTHERS,BLOOD_TYPE,BLOOD_TYPE_RH,BLOOD_GLUCOSE,SGPT,SGOT,ALBUMIN,TOTAL_BILIRUBIN,DBIL,SCR,BUN,VAGINAL_FLUID,VAGINAL_FLUID_OTHERS,VAGINAL_CLEAN,HBSAG,HBSAB,HBCAB,HBEAB,HBEAG,SYPHILIS_SEROLOGY,HIVAB,B_SCAN,B_SCAN_REMARK,TANG_SYNDROME,TANG_SYNDROME_REMARK,FOUR_DIMENSIONAL,FOUR_DIMENSIONAL_REMARK,NT,NT_REMARK,NST,NST_REMARK,OTHERS
+    from SUPPLEMENTARY_EXAM_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,EXAMINATION_ID,HEMOGLOBIN,LEUCOCYTE,PLATELET,BLOOD_OTHERS,PROTEINURIA,URINE_SUGAR,KETONE,URINE_BLOOD,URINE_OTHERS,BLOOD_TYPE,BLOOD_TYPE_RH,BLOOD_GLUCOSE,SGPT,SGOT,ALBUMIN,TOTAL_BILIRUBIN,DBIL,SCR,BUN,VAGINAL_FLUID,VAGINAL_FLUID_OTHERS,VAGINAL_CLEAN,HBSAG,HBSAB,HBCAB,HBEAB,HBEAG,SYPHILIS_SEROLOGY,HIVAB,B_SCAN,B_SCAN_REMARK,TANG_SYNDROME,TANG_SYNDROME_REMARK,FOUR_DIMENSIONAL,FOUR_DIMENSIONAL_REMARK,NT,NT_REMARK,NST,NST_REMARK,OTHERS
+    from SUPPLEMENTARY_EXAM_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from SUPPLEMENTARY_EXAM_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.prenatal.po.SupplementaryExamInfoPO" >
+    insert into SUPPLEMENTARY_EXAM_INFO (ID,EXAMINATION_ID,HEMOGLOBIN,LEUCOCYTE,PLATELET,BLOOD_OTHERS,PROTEINURIA,URINE_SUGAR,KETONE,URINE_BLOOD,URINE_OTHERS,BLOOD_TYPE,BLOOD_TYPE_RH,BLOOD_GLUCOSE,SGPT,SGOT,ALBUMIN,TOTAL_BILIRUBIN,DBIL,SCR,BUN,VAGINAL_FLUID,VAGINAL_FLUID_OTHERS,VAGINAL_CLEAN,HBSAG,HBSAB,HBCAB,HBEAB,HBEAG,SYPHILIS_SEROLOGY,HIVAB,B_SCAN,B_SCAN_REMARK,TANG_SYNDROME,TANG_SYNDROME_REMARK,FOUR_DIMENSIONAL,FOUR_DIMENSIONAL_REMARK,NT,NT_REMARK,NST,NST_REMARK,OTHERS)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ examinationId, javaType=String, jdbcType=VARCHAR},
+				#{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				#{ leucocyte, javaType=String, jdbcType=VARCHAR},
+				#{ platelet, javaType=String, jdbcType=VARCHAR},
+				#{ bloodOthers, javaType=String, jdbcType=VARCHAR},
+				#{ proteinuria, javaType=String, jdbcType=VARCHAR},
+				#{ urineSugar, javaType=String, jdbcType=VARCHAR},
+				#{ ketone, javaType=String, jdbcType=VARCHAR},
+				#{ urineBlood, javaType=String, jdbcType=VARCHAR},
+				#{ urineOthers, javaType=String, jdbcType=VARCHAR},
+				#{ bloodType, javaType=String, jdbcType=VARCHAR},
+				#{ bloodTypeRh, javaType=String, jdbcType=VARCHAR},
+				#{ bloodGlucose, javaType=String, jdbcType=VARCHAR},
+				#{ sgpt, javaType=String, jdbcType=VARCHAR},
+				#{ sgot, javaType=String, jdbcType=VARCHAR},
+				#{ albumin, javaType=String, jdbcType=VARCHAR},
+				#{ totalBilirubin, javaType=String, jdbcType=VARCHAR},
+				#{ dbil, javaType=String, jdbcType=VARCHAR},
+				#{ scr, javaType=String, jdbcType=VARCHAR},
+				#{ bun, javaType=String, jdbcType=VARCHAR},
+				#{ vaginalFluid, javaType=String, jdbcType=VARCHAR},
+				#{ vaginalFluidOthers, javaType=String, jdbcType=VARCHAR},
+				#{ vaginalClean, javaType=String, jdbcType=VARCHAR},
+				#{ hbsag, javaType=String, jdbcType=VARCHAR},
+				#{ hbsab, javaType=String, jdbcType=VARCHAR},
+				#{ hbcab, javaType=String, jdbcType=VARCHAR},
+				#{ hbeab, javaType=String, jdbcType=VARCHAR},
+				#{ hbeag, javaType=String, jdbcType=VARCHAR},
+				#{ syphilisSerology, javaType=String, jdbcType=VARCHAR},
+				#{ hivab, javaType=String, jdbcType=VARCHAR},
+				#{ bscan, javaType=String, jdbcType=VARCHAR},
+				#{ bscanRemark, javaType=String, jdbcType=VARCHAR},
+				#{ tangSyndrome, javaType=String, jdbcType=VARCHAR},
+				#{ tangSyndromeRemark, javaType=String, jdbcType=VARCHAR},
+				#{ fourDimensional, javaType=String, jdbcType=VARCHAR},
+				#{ fourDimensionalRemark, javaType=String, jdbcType=VARCHAR},
+				#{ nt, javaType=String, jdbcType=VARCHAR},
+				#{ ntRemark, javaType=String, jdbcType=VARCHAR},
+				#{ nst, javaType=String, jdbcType=VARCHAR},
+				#{ nstRemark, javaType=String, jdbcType=VARCHAR},
+				#{ others, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.prenatal.po.SupplementaryExamInfoPO" >
+    update SUPPLEMENTARY_EXAM_INFO
+    set
+			EXAMINATION_ID = #{ examinationId, javaType=String, jdbcType=VARCHAR},
+				HEMOGLOBIN = #{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				LEUCOCYTE = #{ leucocyte, javaType=String, jdbcType=VARCHAR},
+				PLATELET = #{ platelet, javaType=String, jdbcType=VARCHAR},
+				BLOOD_OTHERS = #{ bloodOthers, javaType=String, jdbcType=VARCHAR},
+				PROTEINURIA = #{ proteinuria, javaType=String, jdbcType=VARCHAR},
+				URINE_SUGAR = #{ urineSugar, javaType=String, jdbcType=VARCHAR},
+				KETONE = #{ ketone, javaType=String, jdbcType=VARCHAR},
+				URINE_BLOOD = #{ urineBlood, javaType=String, jdbcType=VARCHAR},
+				URINE_OTHERS = #{ urineOthers, javaType=String, jdbcType=VARCHAR},
+				BLOOD_TYPE = #{ bloodType, javaType=String, jdbcType=VARCHAR},
+				BLOOD_TYPE_RH = #{ bloodTypeRh, javaType=String, jdbcType=VARCHAR},
+				BLOOD_GLUCOSE = #{ bloodGlucose, javaType=String, jdbcType=VARCHAR},
+				SGPT = #{ sgpt, javaType=String, jdbcType=VARCHAR},
+				SGOT = #{ sgot, javaType=String, jdbcType=VARCHAR},
+				ALBUMIN = #{ albumin, javaType=String, jdbcType=VARCHAR},
+				TOTAL_BILIRUBIN = #{ totalBilirubin, javaType=String, jdbcType=VARCHAR},
+				DBIL = #{ dbil, javaType=String, jdbcType=VARCHAR},
+				SCR = #{ scr, javaType=String, jdbcType=VARCHAR},
+				BUN = #{ bun, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_FLUID = #{ vaginalFluid, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_FLUID_OTHERS = #{ vaginalFluidOthers, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_CLEAN = #{ vaginalClean, javaType=String, jdbcType=VARCHAR},
+				HBSAG = #{ hbsag, javaType=String, jdbcType=VARCHAR},
+				HBSAB = #{ hbsab, javaType=String, jdbcType=VARCHAR},
+				HBCAB = #{ hbcab, javaType=String, jdbcType=VARCHAR},
+				HBEAB = #{ hbeab, javaType=String, jdbcType=VARCHAR},
+				HBEAG = #{ hbeag, javaType=String, jdbcType=VARCHAR},
+				SYPHILIS_SEROLOGY = #{ syphilisSerology, javaType=String, jdbcType=VARCHAR},
+				HIVAB = #{ hivab, javaType=String, jdbcType=VARCHAR},
+				B_SCAN = #{ bscan, javaType=String, jdbcType=VARCHAR},
+				B_SCAN_REMARK = #{ bscanRemark, javaType=String, jdbcType=VARCHAR},
+				TANG_SYNDROME = #{ tangSyndrome, javaType=String, jdbcType=VARCHAR},
+				TANG_SYNDROME_REMARK = #{ tangSyndromeRemark, javaType=String, jdbcType=VARCHAR},
+				FOUR_DIMENSIONAL = #{ fourDimensional, javaType=String, jdbcType=VARCHAR},
+				FOUR_DIMENSIONAL_REMARK = #{ fourDimensionalRemark, javaType=String, jdbcType=VARCHAR},
+				NT = #{ nt, javaType=String, jdbcType=VARCHAR},
+				NT_REMARK = #{ ntRemark, javaType=String, jdbcType=VARCHAR},
+				NST = #{ nst, javaType=String, jdbcType=VARCHAR},
+				NST_REMARK = #{ nstRemark, javaType=String, jdbcType=VARCHAR},
+				OTHERS = #{ others, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,EXAMINATION_ID,HEMOGLOBIN,LEUCOCYTE,PLATELET,BLOOD_OTHERS,PROTEINURIA,URINE_SUGAR,KETONE,URINE_BLOOD,URINE_OTHERS,BLOOD_TYPE,BLOOD_TYPE_RH,BLOOD_GLUCOSE,SGPT,SGOT,ALBUMIN,TOTAL_BILIRUBIN,DBIL,SCR,BUN,VAGINAL_FLUID,VAGINAL_FLUID_OTHERS,VAGINAL_CLEAN,HBSAG,HBSAB,HBCAB,HBEAB,HBEAG,SYPHILIS_SEROLOGY,HIVAB,B_SCAN,B_SCAN_REMARK,TANG_SYNDROME,TANG_SYNDROME_REMARK,FOUR_DIMENSIONAL,FOUR_DIMENSIONAL_REMARK,NT,NT_REMARK,NST,NST_REMARK,OTHERS
+    from SUPPLEMENTARY_EXAM_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from SUPPLEMENTARY_EXAM_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

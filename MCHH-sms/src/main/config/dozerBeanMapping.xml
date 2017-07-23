@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://dozer.sourceforge.net
+      http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	  
+	  <configuration>
+		<stop-on-errors>true</stop-on-errors>
+		<date-format>yyyy-MM-dd</date-format>
+		<wildcard>true</wildcard>
+	<!-- 	<custom-converters> 
+			<converter type="cn.bus.buscard.core.dozer.EnumConverter">
+				<class-a>java.lang.Enum</class-a>
+				<class-b>java.lang.Integer</class-b>
+			</converter>
+		</custom-converters>
+		 -->
+	  </configuration>
+<!-- 
+      <mapping date-format="yyyy-MM-dd">
+      	<class-a>cn.bus.buscard.biz.vo.ReissueCardInputContext</class-a>
+      	<class-b>cn.bus.buscard.biz.po.IssueCardPO</class-b>
+      </mapping>
+       -->
+</mappings>
+
+   

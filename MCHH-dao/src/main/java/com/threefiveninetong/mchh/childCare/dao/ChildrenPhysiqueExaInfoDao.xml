@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.childCare.dao.ChildrenPhysiqueExaInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.childCare.po.ChildrenPhysiqueExaInfoPO" >
+	<result column="ID" property="id" />
+	<result column="HEALTH_EXA_ID" property="healthExaId" />
+	<result column="HEARING" property="hearing" />
+	<result column="DISEASE" property="disease" />
+	<result column="DISEASE_REMARK" property="diseaseRemark" />
+	<result column="WEIGHT" property="weight" />
+	<result column="WEIGHT_STANDARD" property="weightStandard" />
+	<result column="LENGTH" property="length" />
+	<result column="LENGTH_STANDARD" property="lengthStandard" />
+	<result column="FEEDING_MODE" property="feedingMode" />
+	<result column="FEEDING_AMOUNT" property="feedingAmount" />
+	<result column="VOMIT" property="vomit" />
+	<result column="MILK_NUM" property="milkNum" />
+	<result column="SHIT" property="shit" />
+	<result column="SHIT_NUM" property="shitNum" />
+	<result column="TEMPERATURE" property="temperature" />
+	<result column="PULSE_RATE" property="pulseRate" />
+	<result column="COMPLEXION" property="complexion" />
+	<result column="COMPLEXION_REMARK" property="complexionRemark" />
+	<result column="JAUNDICE_POSITION" property="jaundicePosition" />
+	<result column="RESPIRATORY_RATE" property="respiratoryRate" />
+	<result column="BREGMATIC" property="bregmatic" />
+	<result column="BREGMATIC_OTHER" property="bregmaticOther" />
+	<result column="BREGMATIC_SITUATION" property="bregmaticSituation" />
+	<result column="BREGMATIC_REMARK" property="bregmaticRemark" />
+	<result column="EYE" property="eye" />
+	<result column="EYE_REMARK" property="eyeRemark" />
+	<result column="LIMB" property="limb" />
+	<result column="LIMB_REMARK" property="limbRemark" />
+	<result column="EAR" property="ear" />
+	<result column="EAR_REMARK" property="earRemark" />
+	<result column="NECK_MASS" property="neckMass" />
+	<result column="NECK_MASS_REMARK" property="neckMassRemark" />
+	<result column="NOSE" property="nose" />
+	<result column="NOSE_REMARK" property="noseRemark" />
+	<result column="SKIN" property="skin" />
+	<result column="SKIN_REMARK" property="skinRemark" />
+	<result column="ORAL_CAVITY" property="oralCavity" />
+	<result column="ORAL_CAVITY_REMARK" property="oralCavityRemark" />
+	<result column="ANUS" property="anus" />
+	<result column="ANUS_REMARK" property="anusRemark" />
+	<result column="HEART_LUNG" property="heartLung" />
+	<result column="HEART_LUNG_REMARK" property="heartLungRemark" />
+	<result column="GENITALS" property="genitals" />
+	<result column="GENITALS_REMARK" property="genitalsRemark" />
+	<result column="ABDOMEN" property="abdomen" />
+	<result column="ABDOMEN_REMARK" property="abdomenRemark" />
+	<result column="SPINE" property="spine" />
+	<result column="SPINE_REMARK" property="spineRemark" />
+	<result column="UMBILICAL_CORD" property="umbilicalCord" />
+	<result column="UMBILICAL_CORD_REM" property="umbilicalCordRem" />
+	<result column="HEAD_CIR" property="headCir" />
+	<result column="RICKETS_SYMPTOM" property="ricketsSymptom" />
+	<result column="HEMOGLOBIN" property="hemoglobin" />
+	<result column="OUTDOOR_ACTIVITIES" property="outdoorActivities" />
+	<result column="VITAMIN_D" property="vitaminD" />
+	<result column="RICKETS_BODY_CHA" property="ricketsBodyCha" />
+	<result column="HIP_JOINT" property="hipJoint" />
+	<result column="HIP_JOINT_REMARK" property="hipJointRemark" />
+	<result column="NEU_DEVELOP" property="neuDevelop" />
+	<result column="NEU_ABNORMAL" property="neuAbnormal" />
+	<result column="NEU_REMARK" property="neuRemark" />
+	<result column="FOLLOW_ILL" property="followIll" />
+	<result column="FOLLOW_ILL_REMARK" property="followIllRemark" />
+	<result column="DEVELOP" property="develop" />
+	<result column="DEVELOP_REMARK" property="developRemark" />
+	<result column="TEETH_NUM" property="teethNum" />
+	<result column="DENTAL_CARIES_NUM" property="dentalCariesNum" />
+	<result column="GAIT" property="gait" />
+	<result column="GAIT_REMARK" property="gaitRemark" />
+	<result column="PHYSICAL_GROWTH" property="physicalGrowth" />
+	<result column="VISION" property="vision" />
+	<result column="VISION_REMARK" property="visionRemark" />
+	<result column="PNEUMONIA_NUM" property="pneumoniaNum" />
+	<result column="DIARRHEA_NUM" property="diarrheaNum" />
+	<result column="TRAUMA_NUM" property="traumaNum" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,HEALTH_EXA_ID,HEARING,DISEASE,DISEASE_REMARK,WEIGHT,WEIGHT_STANDARD,LENGTH,LENGTH_STANDARD,FEEDING_MODE,FEEDING_AMOUNT,VOMIT,MILK_NUM,SHIT,SHIT_NUM,TEMPERATURE,PULSE_RATE,COMPLEXION,COMPLEXION_REMARK,JAUNDICE_POSITION,RESPIRATORY_RATE,BREGMATIC,BREGMATIC_OTHER,BREGMATIC_SITUATION,BREGMATIC_REMARK,EYE,EYE_REMARK,LIMB,LIMB_REMARK,EAR,EAR_REMARK,NECK_MASS,NECK_MASS_REMARK,NOSE,NOSE_REMARK,SKIN,SKIN_REMARK,ORAL_CAVITY,ORAL_CAVITY_REMARK,ANUS,ANUS_REMARK,HEART_LUNG,HEART_LUNG_REMARK,GENITALS,GENITALS_REMARK,ABDOMEN,ABDOMEN_REMARK,SPINE,SPINE_REMARK,UMBILICAL_CORD,UMBILICAL_CORD_REM,HEAD_CIR,RICKETS_SYMPTOM,HEMOGLOBIN,OUTDOOR_ACTIVITIES,VITAMIN_D,RICKETS_BODY_CHA,HIP_JOINT,HIP_JOINT_REMARK,NEU_DEVELOP,NEU_ABNORMAL,NEU_REMARK,FOLLOW_ILL,FOLLOW_ILL_REMARK,DEVELOP,DEVELOP_REMARK,TEETH_NUM,DENTAL_CARIES_NUM,GAIT,GAIT_REMARK,PHYSICAL_GROWTH,VISION,VISION_REMARK,PNEUMONIA_NUM,DIARRHEA_NUM,TRAUMA_NUM
+    from CHILDREN_PHYSIQUE_EXA_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,HEALTH_EXA_ID,HEARING,DISEASE,DISEASE_REMARK,WEIGHT,WEIGHT_STANDARD,LENGTH,LENGTH_STANDARD,FEEDING_MODE,FEEDING_AMOUNT,VOMIT,MILK_NUM,SHIT,SHIT_NUM,TEMPERATURE,PULSE_RATE,COMPLEXION,COMPLEXION_REMARK,JAUNDICE_POSITION,RESPIRATORY_RATE,BREGMATIC,BREGMATIC_OTHER,BREGMATIC_SITUATION,BREGMATIC_REMARK,EYE,EYE_REMARK,LIMB,LIMB_REMARK,EAR,EAR_REMARK,NECK_MASS,NECK_MASS_REMARK,NOSE,NOSE_REMARK,SKIN,SKIN_REMARK,ORAL_CAVITY,ORAL_CAVITY_REMARK,ANUS,ANUS_REMARK,HEART_LUNG,HEART_LUNG_REMARK,GENITALS,GENITALS_REMARK,ABDOMEN,ABDOMEN_REMARK,SPINE,SPINE_REMARK,UMBILICAL_CORD,UMBILICAL_CORD_REM,HEAD_CIR,RICKETS_SYMPTOM,HEMOGLOBIN,OUTDOOR_ACTIVITIES,VITAMIN_D,RICKETS_BODY_CHA,HIP_JOINT,HIP_JOINT_REMARK,NEU_DEVELOP,NEU_ABNORMAL,NEU_REMARK,FOLLOW_ILL,FOLLOW_ILL_REMARK,DEVELOP,DEVELOP_REMARK,TEETH_NUM,DENTAL_CARIES_NUM,GAIT,GAIT_REMARK,PHYSICAL_GROWTH,VISION,VISION_REMARK,PNEUMONIA_NUM,DIARRHEA_NUM,TRAUMA_NUM
+    from CHILDREN_PHYSIQUE_EXA_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CHILDREN_PHYSIQUE_EXA_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenPhysiqueExaInfoPO" >
+    insert into CHILDREN_PHYSIQUE_EXA_INFO (ID,HEALTH_EXA_ID,HEARING,DISEASE,DISEASE_REMARK,WEIGHT,WEIGHT_STANDARD,LENGTH,LENGTH_STANDARD,FEEDING_MODE,FEEDING_AMOUNT,VOMIT,MILK_NUM,SHIT,SHIT_NUM,TEMPERATURE,PULSE_RATE,COMPLEXION,COMPLEXION_REMARK,JAUNDICE_POSITION,RESPIRATORY_RATE,BREGMATIC,BREGMATIC_OTHER,BREGMATIC_SITUATION,BREGMATIC_REMARK,EYE,EYE_REMARK,LIMB,LIMB_REMARK,EAR,EAR_REMARK,NECK_MASS,NECK_MASS_REMARK,NOSE,NOSE_REMARK,SKIN,SKIN_REMARK,ORAL_CAVITY,ORAL_CAVITY_REMARK,ANUS,ANUS_REMARK,HEART_LUNG,HEART_LUNG_REMARK,GENITALS,GENITALS_REMARK,ABDOMEN,ABDOMEN_REMARK,SPINE,SPINE_REMARK,UMBILICAL_CORD,UMBILICAL_CORD_REM,HEAD_CIR,RICKETS_SYMPTOM,HEMOGLOBIN,OUTDOOR_ACTIVITIES,VITAMIN_D,RICKETS_BODY_CHA,HIP_JOINT,HIP_JOINT_REMARK,NEU_DEVELOP,NEU_ABNORMAL,NEU_REMARK,FOLLOW_ILL,FOLLOW_ILL_REMARK,DEVELOP,DEVELOP_REMARK,TEETH_NUM,DENTAL_CARIES_NUM,GAIT,GAIT_REMARK,PHYSICAL_GROWTH,VISION,VISION_REMARK,PNEUMONIA_NUM,DIARRHEA_NUM,TRAUMA_NUM)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ healthExaId, javaType=String, jdbcType=VARCHAR},
+				#{ hearing, javaType=String, jdbcType=VARCHAR},
+				#{ disease, javaType=String, jdbcType=VARCHAR},
+				#{ diseaseRemark, javaType=String, jdbcType=VARCHAR},
+				#{ weight, javaType=String, jdbcType=VARCHAR},
+				#{ weightStandard, javaType=String, jdbcType=VARCHAR},
+				#{ length, javaType=String, jdbcType=VARCHAR},
+				#{ lengthStandard, javaType=String, jdbcType=VARCHAR},
+				#{ feedingMode, javaType=String, jdbcType=VARCHAR},
+				#{ feedingAmount, javaType=String, jdbcType=VARCHAR},
+				#{ vomit, javaType=String, jdbcType=VARCHAR},
+				#{ milkNum, javaType=String, jdbcType=VARCHAR},
+				#{ shit, javaType=String, jdbcType=VARCHAR},
+				#{ shitNum, javaType=String, jdbcType=VARCHAR},
+				#{ temperature, javaType=String, jdbcType=VARCHAR},
+				#{ pulseRate, javaType=String, jdbcType=VARCHAR},
+				#{ complexion, javaType=String, jdbcType=VARCHAR},
+				#{ complexionRemark, javaType=String, jdbcType=VARCHAR},
+				#{ jaundicePosition, javaType=String, jdbcType=VARCHAR},
+				#{ respiratoryRate, javaType=String, jdbcType=VARCHAR},
+				#{ bregmatic, javaType=String, jdbcType=VARCHAR},
+				#{ bregmaticOther, javaType=String, jdbcType=VARCHAR},
+				#{ bregmaticSituation, javaType=String, jdbcType=VARCHAR},
+				#{ bregmaticRemark, javaType=String, jdbcType=VARCHAR},
+				#{ eye, javaType=String, jdbcType=VARCHAR},
+				#{ eyeRemark, javaType=String, jdbcType=VARCHAR},
+				#{ limb, javaType=String, jdbcType=VARCHAR},
+				#{ limbRemark, javaType=String, jdbcType=VARCHAR},
+				#{ ear, javaType=String, jdbcType=VARCHAR},
+				#{ earRemark, javaType=String, jdbcType=VARCHAR},
+				#{ neckMass, javaType=String, jdbcType=VARCHAR},
+				#{ neckMassRemark, javaType=String, jdbcType=VARCHAR},
+				#{ nose, javaType=String, jdbcType=VARCHAR},
+				#{ noseRemark, javaType=String, jdbcType=VARCHAR},
+				#{ skin, javaType=String, jdbcType=VARCHAR},
+				#{ skinRemark, javaType=String, jdbcType=VARCHAR},
+				#{ oralCavity, javaType=String, jdbcType=VARCHAR},
+				#{ oralCavityRemark, javaType=String, jdbcType=VARCHAR},
+				#{ anus, javaType=String, jdbcType=VARCHAR},
+				#{ anusRemark, javaType=String, jdbcType=VARCHAR},
+				#{ heartLung, javaType=String, jdbcType=VARCHAR},
+				#{ heartLungRemark, javaType=String, jdbcType=VARCHAR},
+				#{ genitals, javaType=String, jdbcType=VARCHAR},
+				#{ genitalsRemark, javaType=String, jdbcType=VARCHAR},
+				#{ abdomen, javaType=String, jdbcType=VARCHAR},
+				#{ abdomenRemark, javaType=String, jdbcType=VARCHAR},
+				#{ spine, javaType=String, jdbcType=VARCHAR},
+				#{ spineRemark, javaType=String, jdbcType=VARCHAR},
+				#{ umbilicalCord, javaType=String, jdbcType=VARCHAR},
+				#{ umbilicalCordRem, javaType=String, jdbcType=VARCHAR},
+				#{ headCir, javaType=String, jdbcType=VARCHAR},
+				#{ ricketsSymptom, javaType=String, jdbcType=VARCHAR},
+				#{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				#{ outdoorActivities, javaType=String, jdbcType=VARCHAR},
+				#{ vitaminD, javaType=String, jdbcType=VARCHAR},
+				#{ ricketsBodyCha, javaType=String, jdbcType=VARCHAR},
+				#{ hipJoint, javaType=String, jdbcType=VARCHAR},
+				#{ hipJointRemark, javaType=String, jdbcType=VARCHAR},
+				#{ neuDevelop, javaType=String, jdbcType=VARCHAR},
+				#{ neuAbnormal, javaType=String, jdbcType=VARCHAR},
+				#{ neuRemark, javaType=String, jdbcType=VARCHAR},
+				#{ followIll, javaType=String, jdbcType=VARCHAR},
+				#{ followIllRemark, javaType=String, jdbcType=VARCHAR},
+				#{ develop, javaType=String, jdbcType=VARCHAR},
+				#{ developRemark, javaType=String, jdbcType=VARCHAR},
+				#{ teethNum, javaType=String, jdbcType=VARCHAR},
+				#{ dentalCariesNum, javaType=String, jdbcType=VARCHAR},
+				#{ gait, javaType=String, jdbcType=VARCHAR},
+				#{ gaitRemark, javaType=String, jdbcType=VARCHAR},
+				#{ physicalGrowth, javaType=String, jdbcType=VARCHAR},
+				#{ vision, javaType=String, jdbcType=VARCHAR},
+				#{ visionRemark, javaType=String, jdbcType=VARCHAR},
+				#{ pneumoniaNum, javaType=String, jdbcType=VARCHAR},
+				#{ diarrheaNum, javaType=String, jdbcType=VARCHAR},
+				#{ traumaNum, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenPhysiqueExaInfoPO" >
+    update CHILDREN_PHYSIQUE_EXA_INFO
+    set
+			HEALTH_EXA_ID = #{ healthExaId, javaType=String, jdbcType=VARCHAR},
+				HEARING = #{ hearing, javaType=String, jdbcType=VARCHAR},
+				DISEASE = #{ disease, javaType=String, jdbcType=VARCHAR},
+				DISEASE_REMARK = #{ diseaseRemark, javaType=String, jdbcType=VARCHAR},
+				WEIGHT = #{ weight, javaType=String, jdbcType=VARCHAR},
+				WEIGHT_STANDARD = #{ weightStandard, javaType=String, jdbcType=VARCHAR},
+				LENGTH = #{ length, javaType=String, jdbcType=VARCHAR},
+				LENGTH_STANDARD = #{ lengthStandard, javaType=String, jdbcType=VARCHAR},
+				FEEDING_MODE = #{ feedingMode, javaType=String, jdbcType=VARCHAR},
+				FEEDING_AMOUNT = #{ feedingAmount, javaType=String, jdbcType=VARCHAR},
+				VOMIT = #{ vomit, javaType=String, jdbcType=VARCHAR},
+				MILK_NUM = #{ milkNum, javaType=String, jdbcType=VARCHAR},
+				SHIT = #{ shit, javaType=String, jdbcType=VARCHAR},
+				SHIT_NUM = #{ shitNum, javaType=String, jdbcType=VARCHAR},
+				TEMPERATURE = #{ temperature, javaType=String, jdbcType=VARCHAR},
+				PULSE_RATE = #{ pulseRate, javaType=String, jdbcType=VARCHAR},
+				COMPLEXION = #{ complexion, javaType=String, jdbcType=VARCHAR},
+				COMPLEXION_REMARK = #{ complexionRemark, javaType=String, jdbcType=VARCHAR},
+				JAUNDICE_POSITION = #{ jaundicePosition, javaType=String, jdbcType=VARCHAR},
+				RESPIRATORY_RATE = #{ respiratoryRate, javaType=String, jdbcType=VARCHAR},
+				BREGMATIC = #{ bregmatic, javaType=String, jdbcType=VARCHAR},
+				BREGMATIC_OTHER = #{ bregmaticOther, javaType=String, jdbcType=VARCHAR},
+				BREGMATIC_SITUATION = #{ bregmaticSituation, javaType=String, jdbcType=VARCHAR},
+				BREGMATIC_REMARK = #{ bregmaticRemark, javaType=String, jdbcType=VARCHAR},
+				EYE = #{ eye, javaType=String, jdbcType=VARCHAR},
+				EYE_REMARK = #{ eyeRemark, javaType=String, jdbcType=VARCHAR},
+				LIMB = #{ limb, javaType=String, jdbcType=VARCHAR},
+				LIMB_REMARK = #{ limbRemark, javaType=String, jdbcType=VARCHAR},
+				EAR = #{ ear, javaType=String, jdbcType=VARCHAR},
+				EAR_REMARK = #{ earRemark, javaType=String, jdbcType=VARCHAR},
+				NECK_MASS = #{ neckMass, javaType=String, jdbcType=VARCHAR},
+				NECK_MASS_REMARK = #{ neckMassRemark, javaType=String, jdbcType=VARCHAR},
+				NOSE = #{ nose, javaType=String, jdbcType=VARCHAR},
+				NOSE_REMARK = #{ noseRemark, javaType=String, jdbcType=VARCHAR},
+				SKIN = #{ skin, javaType=String, jdbcType=VARCHAR},
+				SKIN_REMARK = #{ skinRemark, javaType=String, jdbcType=VARCHAR},
+				ORAL_CAVITY = #{ oralCavity, javaType=String, jdbcType=VARCHAR},
+				ORAL_CAVITY_REMARK = #{ oralCavityRemark, javaType=String, jdbcType=VARCHAR},
+				ANUS = #{ anus, javaType=String, jdbcType=VARCHAR},
+				ANUS_REMARK = #{ anusRemark, javaType=String, jdbcType=VARCHAR},
+				HEART_LUNG = #{ heartLung, javaType=String, jdbcType=VARCHAR},
+				HEART_LUNG_REMARK = #{ heartLungRemark, javaType=String, jdbcType=VARCHAR},
+				GENITALS = #{ genitals, javaType=String, jdbcType=VARCHAR},
+				GENITALS_REMARK = #{ genitalsRemark, javaType=String, jdbcType=VARCHAR},
+				ABDOMEN = #{ abdomen, javaType=String, jdbcType=VARCHAR},
+				ABDOMEN_REMARK = #{ abdomenRemark, javaType=String, jdbcType=VARCHAR},
+				SPINE = #{ spine, javaType=String, jdbcType=VARCHAR},
+				SPINE_REMARK = #{ spineRemark, javaType=String, jdbcType=VARCHAR},
+				UMBILICAL_CORD = #{ umbilicalCord, javaType=String, jdbcType=VARCHAR},
+				UMBILICAL_CORD_REM = #{ umbilicalCordRem, javaType=String, jdbcType=VARCHAR},
+				HEAD_CIR = #{ headCir, javaType=String, jdbcType=VARCHAR},
+				RICKETS_SYMPTOM = #{ ricketsSymptom, javaType=String, jdbcType=VARCHAR},
+				HEMOGLOBIN = #{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				OUTDOOR_ACTIVITIES = #{ outdoorActivities, javaType=String, jdbcType=VARCHAR},
+				VITAMIN_D = #{ vitaminD, javaType=String, jdbcType=VARCHAR},
+				RICKETS_BODY_CHA = #{ ricketsBodyCha, javaType=String, jdbcType=VARCHAR},
+				HIP_JOINT = #{ hipJoint, javaType=String, jdbcType=VARCHAR},
+				HIP_JOINT_REMARK = #{ hipJointRemark, javaType=String, jdbcType=VARCHAR},
+				NEU_DEVELOP = #{ neuDevelop, javaType=String, jdbcType=VARCHAR},
+				NEU_ABNORMAL = #{ neuAbnormal, javaType=String, jdbcType=VARCHAR},
+				NEU_REMARK = #{ neuRemark, javaType=String, jdbcType=VARCHAR},
+				FOLLOW_ILL = #{ followIll, javaType=String, jdbcType=VARCHAR},
+				FOLLOW_ILL_REMARK = #{ followIllRemark, javaType=String, jdbcType=VARCHAR},
+				DEVELOP = #{ develop, javaType=String, jdbcType=VARCHAR},
+				DEVELOP_REMARK = #{ developRemark, javaType=String, jdbcType=VARCHAR},
+				TEETH_NUM = #{ teethNum, javaType=String, jdbcType=VARCHAR},
+				DENTAL_CARIES_NUM = #{ dentalCariesNum, javaType=String, jdbcType=VARCHAR},
+				GAIT = #{ gait, javaType=String, jdbcType=VARCHAR},
+				GAIT_REMARK = #{ gaitRemark, javaType=String, jdbcType=VARCHAR},
+				PHYSICAL_GROWTH = #{ physicalGrowth, javaType=String, jdbcType=VARCHAR},
+				VISION = #{ vision, javaType=String, jdbcType=VARCHAR},
+				VISION_REMARK = #{ visionRemark, javaType=String, jdbcType=VARCHAR},
+				PNEUMONIA_NUM = #{ pneumoniaNum, javaType=String, jdbcType=VARCHAR},
+				DIARRHEA_NUM = #{ diarrheaNum, javaType=String, jdbcType=VARCHAR},
+				TRAUMA_NUM = #{ traumaNum, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,HEALTH_EXA_ID,HEARING,DISEASE,DISEASE_REMARK,WEIGHT,WEIGHT_STANDARD,LENGTH,LENGTH_STANDARD,FEEDING_MODE,FEEDING_AMOUNT,VOMIT,MILK_NUM,SHIT,SHIT_NUM,TEMPERATURE,PULSE_RATE,COMPLEXION,COMPLEXION_REMARK,JAUNDICE_POSITION,RESPIRATORY_RATE,BREGMATIC,BREGMATIC_OTHER,BREGMATIC_SITUATION,BREGMATIC_REMARK,EYE,EYE_REMARK,LIMB,LIMB_REMARK,EAR,EAR_REMARK,NECK_MASS,NECK_MASS_REMARK,NOSE,NOSE_REMARK,SKIN,SKIN_REMARK,ORAL_CAVITY,ORAL_CAVITY_REMARK,ANUS,ANUS_REMARK,HEART_LUNG,HEART_LUNG_REMARK,GENITALS,GENITALS_REMARK,ABDOMEN,ABDOMEN_REMARK,SPINE,SPINE_REMARK,UMBILICAL_CORD,UMBILICAL_CORD_REM,HEAD_CIR,RICKETS_SYMPTOM,HEMOGLOBIN,OUTDOOR_ACTIVITIES,VITAMIN_D,RICKETS_BODY_CHA,HIP_JOINT,HIP_JOINT_REMARK,NEU_DEVELOP,NEU_ABNORMAL,NEU_REMARK,FOLLOW_ILL,FOLLOW_ILL_REMARK,DEVELOP,DEVELOP_REMARK,TEETH_NUM,DENTAL_CARIES_NUM,GAIT,GAIT_REMARK,PHYSICAL_GROWTH,VISION,VISION_REMARK,PNEUMONIA_NUM,DIARRHEA_NUM,TRAUMA_NUM
+    from CHILDREN_PHYSIQUE_EXA_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from CHILDREN_PHYSIQUE_EXA_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

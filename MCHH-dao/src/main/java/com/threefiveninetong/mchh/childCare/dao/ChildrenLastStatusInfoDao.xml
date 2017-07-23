@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.childCare.dao.ChildrenLastStatusInfoDao" >
+	
+	<update id="updateCreatTime" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenLastStatusInfoPO" >
+	    update CHILDREN_LAST_STATUS_INFO
+	    set UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where ARCHIVES_ID = #{ archivesId}
+	</update>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.childCare.po.ChildrenLastStatusInfoPO" >
+	<result column="ID" property="id" />
+	<result column="ARCHIVES_ID" property="archivesId" />
+	<result column="PREGNANT_STATE" property="pregnantState" />
+	<result column="CLOSING_REASON" property="closingReason" />
+	<result column="CLOSING_DATE" property="closingDate" />
+	<result column="RISK_SIGN" property="riskSign" />
+	<result column="REFERRAL_SIGN" property="referralSign" />
+	<result column="OUT_HOSPITAL_ID" property="outHospitalId" />
+	<result column="IN_HOSPITAL_ID" property="inHospitalId" />
+	<result column="REFERRAL_TIME" property="referralTime" />
+	<result column="SCREENING_DATE" property="screeningDate" />
+	<result column="GRANT_SIGN" property="grantSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_ID,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,OUT_HOSPITAL_ID,IN_HOSPITAL_ID,REFERRAL_TIME,SCREENING_DATE,GRANT_SIGN,CREAT_TIME,UPDATE_TIME
+    from CHILDREN_LAST_STATUS_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,ARCHIVES_ID,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,OUT_HOSPITAL_ID,IN_HOSPITAL_ID,REFERRAL_TIME,SCREENING_DATE,GRANT_SIGN,CREAT_TIME,UPDATE_TIME
+    from CHILDREN_LAST_STATUS_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CHILDREN_LAST_STATUS_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenLastStatusInfoPO" >
+    insert into CHILDREN_LAST_STATUS_INFO (ID,ARCHIVES_ID,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,OUT_HOSPITAL_ID,IN_HOSPITAL_ID,REFERRAL_TIME,SCREENING_DATE,GRANT_SIGN,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ archivesId, javaType=String, jdbcType=VARCHAR},
+				#{ pregnantState, javaType=String, jdbcType=VARCHAR},
+				#{ closingReason, javaType=String, jdbcType=VARCHAR},
+				#{ closingDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ riskSign, javaType=String, jdbcType=VARCHAR},
+				#{ referralSign, javaType=String, jdbcType=VARCHAR},
+				#{ outHospitalId, javaType=String, jdbcType=VARCHAR},
+				#{ inHospitalId, javaType=String, jdbcType=VARCHAR},
+				#{ referralTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ screeningDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ grantSign, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenLastStatusInfoPO" >
+    update CHILDREN_LAST_STATUS_INFO
+    set
+			ARCHIVES_ID = #{ archivesId, javaType=String, jdbcType=VARCHAR},
+				PREGNANT_STATE = #{ pregnantState, javaType=String, jdbcType=VARCHAR},
+				CLOSING_REASON = #{ closingReason, javaType=String, jdbcType=VARCHAR},
+				CLOSING_DATE = #{ closingDate, javaType=Date, jdbcType=TIMESTAMP},
+				RISK_SIGN = #{ riskSign, javaType=String, jdbcType=VARCHAR},
+				REFERRAL_SIGN = #{ referralSign, javaType=String, jdbcType=VARCHAR},
+				OUT_HOSPITAL_ID = #{ outHospitalId, javaType=String, jdbcType=VARCHAR},
+				IN_HOSPITAL_ID = #{ inHospitalId, javaType=String, jdbcType=VARCHAR},
+				REFERRAL_TIME = #{ referralTime, javaType=Date, jdbcType=TIMESTAMP},
+				SCREENING_DATE = #{ screeningDate, javaType=Date, jdbcType=TIMESTAMP},
+				GRANT_SIGN = #{ grantSign, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,ARCHIVES_ID,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,OUT_HOSPITAL_ID,IN_HOSPITAL_ID,REFERRAL_TIME,SCREENING_DATE,GRANT_SIGN,CREAT_TIME,UPDATE_TIME
+    from CHILDREN_LAST_STATUS_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from CHILDREN_LAST_STATUS_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

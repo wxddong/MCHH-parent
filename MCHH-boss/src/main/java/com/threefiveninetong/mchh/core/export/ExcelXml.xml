@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excels>
+
+	<excel id="appMemberExport" name="会员信息列表">
+		<columns>
+			<cell title="会员账号" field="userName" format="" render=""/>
+			<cell title="昵称" field="nickName" format="" render=""/>
+			<cell title="性别" field="sex" format="" render="sex_type"/>
+			<cell title="孕育状态" field="currentStage" format="" render="prenarital_status"/>
+			<cell title="关联医院" field="appAffiliatedHospitalInfoPO.hospitalName" format="" render=""/>
+			<cell title="档案号" field="appAffiliatedHospitalInfoPO.archivesCode" format="" render=""/>
+			<cell title="状态" field="status" format="" render="member_status"/>
+			<cell title="注册时间" field="createTime"  format="yyyy-MM-dd" render=""/>
+			<cell title="上次登录时间" field="loginTime"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+		</columns>
+		<datasource dao="appMemberDao" method="getAll"/>
+	</excel>
+	
+	<!-- 女性婚检管理列表 -->
+	<excel id="womanPreExport" name="女性婚检管理列表">
+		<columns>
+			<cell title="档案编号" field="archivesCode" format="" render=""/>
+			<cell title="姓名" field="name" format="" render=""/>
+			<cell title="性别" field="sex" format="" render="sex_type"/>
+			<cell title="身份证号码" field="idNo" format="" render=""/>
+			<cell title="联系电话" field="telephone" format="" render=""/>
+			<cell title="家庭住址" field="homeAddress" format="" render=""/>
+			<cell title="对方姓名" field="manName" format="" render=""/>
+			<cell title="联系电话" field="manTele" format="" render=""/>
+			<cell title="建档日期" field="creatTime"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="建档医生" field="operatorPO.realName" format="" render=""/>
+			<cell title="婚检状态" field="premaritalExaInfoPO.premaritalStatus" format="" render="premarital_status"/>
+		</columns>
+		<datasource dao="archivesInfoDao" method="listForPage"/>
+	</excel>
+	
+	<!-- 男性婚检管理列表 -->
+	<excel id="manPreExport" name="男性婚检管理列表">
+		<columns>
+			<cell title="档案编号" field="archivesCode" format="" render=""/>
+			<cell title="姓名" field="manName" format="" render=""/>
+			<cell title="性别" field="manSex" format="" render="sex_type"/>
+			<cell title="身份证号码" field="manIdNo" format="" render=""/>
+			<cell title="联系电话" field="manTele" format="" render=""/>
+			<cell title="家庭住址" field="manHomeAddress" format="" render=""/>
+			<cell title="对方姓名" field="name" format="" render=""/>
+			<cell title="联系电话" field="telephone" format="" render=""/>
+			<cell title="建档日期" field="creatTime"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="建档医生" field="operatorPO.realName" format="" render=""/>
+			<cell title="婚检状态" field="premaritalExaInfoPO.premaritalStatus" format="" render="premarital_status"/>
+		</columns>
+		<datasource dao="archivesInfoDao" method="listForPage"/>
+	</excel>
+	
+	<!-- 男性婚检管理列表 -->
+	<excel id="countPreExport" name="婚前医学检查记录表">
+		<columns>
+			<cell title="建档日期" field="creatTime"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="编号" field="archivesInfoPO.archivesCode" format="" render=""/>
+			<cell title="姓名" field="archivesInfoPO.name" format="" render=""/>
+			<cell title="性别" field="sex" format="" render="sex_type"/>
+			<cell title="身份证号码" field="archivesInfoPO.idNo" format="" render=""/>
+			<cell title="年龄" field="age" format="" render=""/>
+			<cell title="家庭住址" field="archivesInfoPO.homeAddress" format="" render=""/>
+			<cell title="联系电话" field="archivesInfoPO.telephone" format="" render=""/>
+			<cell title="对方姓名" field="archivesInfoPO.manName" format="" render=""/>
+			<cell title="联系电话" field="archivesInfoPO.manTele" format="" render=""/>
+			<cell title="转诊医院" field="departmentPO.name" format="" render=""/>
+			<cell title="转诊日期" field="premaritalReferralInfoPO.referralDate"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="出具婚检证明日期" field="inspectionResultPO.issuedByDate"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="检查结果" field="inspectionResultPO.checkResult" format="" render="checkResult"/>
+			<cell title="医学意见" field="inspectionResultPO.medicalAdvice" format="" render="medicalAdvice"/>
+			<cell title="建档医生" field="operatorPO.realName" format="" render=""/>
+			<cell title="是否怀孕" field="healthInfoPO.whetherPregnant" format="" render="whetherPregnant"/>
+			<cell title="手册发放" field="birthArchivesInfoPO.grantSign" format="" render="grantSign"/>
+			<cell title="叶酸发放" field="birthArchivesInfoPO.frantNum" format="" render="frantNum"/>
+		</columns>
+		<datasource dao="premaritalExaInfoDao" method="getAll"/>
+	</excel>
+	
+	<excel id="prenatalList" name="孕产妇管理检查记录表">
+		<columns>
+			
+			<cell title="档案编号" field="birthArchivesInfoPO.archivesInfoPO.archivesCode" format="" render=""/>
+			<cell title="姓名" field="birthArchivesInfoPO.archivesInfoPO.name" format="" render=""/>
+			<cell title="建档日期" field="birthArchivesInfoPO.archivesInfoPO.creatTime"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="身份证号码" field="birthArchivesInfoPO.archivesInfoPO.idNo" format="" render=""/>
+			<cell title="手机号码" field="birthArchivesInfoPO.archivesInfoPO.telephone" format="" render=""/>
+			<cell title="结案状态" field="birthArchivesInfoPO.pregnantState" format="" render="pregnantState"/>
+			<cell title="建档医生" field="birthArchivesInfoPO.archivesInfoPO.operatorPO.realName" format="" render=""/>
+			<cell title="建档医院" field="birthArchivesInfoPO.archivesInfoPO.departmentPO.name" format="" render=""/>
+			<cell title="最近检查日期" field="creatTime"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="检查医生" field="operatorPO.realName" format="" render=""/>
+			<cell title="下次随访时间" field="prenatalReferralInfoPO.nextFollowingDate"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+		</columns>
+		<datasource dao="prenatalExaInfoService" method="getListByMap"/>
+	</excel>
+	
+	<!--县级绩效列表导出  -->
+	<excel id="countyExport" name="县级绩效管理列表">
+		<columns>
+			<cell title="单位" field="departmentName" format="" render=""/>
+			<cell title="辖区内人口总数" field="populationNum" format="" render=""/>
+			<cell title="辖区内应结案产妇数" field="shouldCloseNum" format="" render=""/>
+			<cell title="实际结案产妇数" field="actualCloseNum" format="" render=""/>
+			<cell title="产前健康管理人数" field="preGreat0Num" format="" render=""/>
+			<cell title="产前健康管理率" field="preManageRate" format="" render=""/>
+			<cell title="早孕建卡数" field="earlyCardNum" format="" render=""/>
+			<cell title="早孕健康率" field="earlyRate" format="" render=""/>
+			<cell title="系统管理人数" field="sysManagementPersonsNum"  format="" render=""/>
+			<cell title="系统管理率" field="sysManagementRate" format="" render=""/>
+			<cell title="产后访视人数" field="postGreat0Num" format="" render=""/>
+			<cell title="产后访视率" field="postRate" format="" render=""/>
+			<cell title="血常规检查人数" field="bloodNum" format="" render=""/>
+			<cell title="尿常规检查人数" field="urineNum" format="" render=""/>
+			<cell title="血型" field="bloodTypeNum" format="" render=""/>
+			<cell title="肝功能检查人数" field="liverNum" format="" render=""/>
+			<cell title="肾功能检查人数" field="kidneyNum" format="" render=""/>
+			<cell title="乙肝表抗检查人数" field="hepatitisBNum" format="" render=""/>
+			<cell title="梅毒检查人数" field="syphilisNum" format="" render=""/>
+			<cell title="艾滋病检查人数" field="aidsNum" format="" render=""/>
+			<cell title="血红蛋白检查人数" field="hemoglobinNum" format="" render=""/>
+			<cell title="尿蛋白检查人数" field="urineProteinNum" format="" render=""/>
+			<cell title="结案产妇电子录入数" field="actualCloseNum" format="" render=""/>
+		</columns>
+		<datasource dao="achievementsService" method="countyListForExport"/>
+	</excel>
+	
+	<!--医生绩效列表导出  -->
+	<excel id="doctorExport" name="医生绩效管理列表">
+		<columns>
+			<cell title="单位" field="hospitalName" format="" render=""/>
+			<cell title="医生姓名" field="doctorName" format="" render=""/>
+			<cell title="孕13周前检查人次" field="before13Num" format="" render=""/>
+			<cell title="孕16-20周检查人次" field="at16to20Num" format="" render=""/>
+			<cell title="孕21-24周检查人次" field="at21to24Num" format="" render=""/>
+			<cell title="孕28-36周检查人次" field="at28to36Num" format="" render=""/>
+			<cell title="孕37-40周检查人次" field="at37to40Num" format="" render=""/>
+			<cell title="出院3-7天检查人次" field="post3to7Num" format="" render=""/>
+			<cell title="产后42天检查人次" field="post42Num"  format="" render=""/>
+			<cell title="血常规检查人数" field="bloodNum" format="" render=""/>
+			<cell title="尿常规检查人数" field="urineNum" format="" render=""/>
+			<cell title="血型" field="bloodTypeNum" format="" render=""/>
+			<cell title="肝功能检查人数" field="liverNum" format="" render=""/>
+			<cell title="肾功能检查人数" field="kidneyNum" format="" render=""/>
+			<cell title="乙肝表抗检查人数" field="hepatitisBNum" format="" render=""/>
+			<cell title="梅毒检查人数" field="syphilisNum" format="" render=""/>
+			<cell title="艾滋病检查人数" field="aidsNum" format="" render=""/>
+			<cell title="血红蛋白检查人次数" field="hemoglobinNum" format="" render=""/>
+			<cell title="尿蛋白检查人次数数" field="urineProteinNum" format="" render=""/>
+			<cell title="结案产妇电子录入数" field="actualCloseNum" format="" render=""/>
+		</columns>
+		<datasource dao="achievementsService" method="doctorListForExport"/>
+	</excel>
+	
+	<!--高危孕产妇管理列表导出  -->
+	<excel id="highRiskMaternalExport" name="高危孕产妇管理列表">
+		<columns>
+			<cell title="建卡日期" field="creatTime" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="编号" field="archivesCode" format="" render=""/>
+			<cell title="姓名" field="name" format="" render=""/>
+			<cell title="年龄" field="age" format="" render=""/>
+			<cell title="末次月经" field="lastMenses" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕周" field="weeks" format="" render=""/>
+			<cell title="预产期" field="predictDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="筛查日期" field="checkDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="高危因素" field="highRisk"  format="" render=""/>
+			<cell title="高危评分" field="score" format="" render=""/>
+			<cell title="转出医院" field="outHospitalName" format="" render=""/>
+			<cell title="转入医院" field="inHospitalName" format="" render=""/>
+			<cell title="接诊医生" field="doctorName" format="" render=""/>
+			<cell title="转归" field="lapseTo" format="" render=""/>
+			<cell title="分娩情况-分娩日期" field="birthDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="分娩情况-分娩地点" field="childbirthPlace" format="" render=""/>
+			<cell title="分娩情况-分娩方式" field="deliveryType" format="" render=""/>
+			<cell title="诊断结果" field="diaResult" format="" render=""/>
+			<cell title="家庭住址" field="address" format="" render=""/>
+			<cell title="联系电话" field="telephone" format="" render=""/>
+		</columns>
+		<datasource dao="highRiskMaternalManageService" method="listForExport"/>
+	</excel>
+	
+	<!--高位专案记录列表导出  -->
+	<excel id="highRiskProjectExport" name="高危孕产妇专案管理记录">
+		<columns>
+			<cell title="检查日期" field="checkDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕周" field="weeks" format="" render=""/>
+			<cell title="高危因素-固定因素" field="staticRisk" format="" render=""/>
+			<cell title="高危因素-动态因素" field="moveRisk" format="" render=""/>
+			<cell title="高危评分" field="score" format="" render=""/>
+			<cell title="本次检查结果" field="result" format="" render=""/>
+			<cell title="指导意见" field="guidance" format="" render=""/>
+			<cell title="预约时间" field="orderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="转归" field="lapseTo"  format="" render=""/>
+			<cell title="分娩情况-分娩时间" field="birthDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="分娩情况-分娩地点" field="childbirthPlace" format="" render=""/>
+			<cell title="分娩情况-分娩方式" field="deliveryType" format="" render=""/>
+			<cell title="转出医院" field="outHospitalName" format="" render=""/>
+			<cell title="转入医院" field="inHospitalName" format="" render=""/>
+			<cell title="随访医生" field="doctorName" format="" render=""/>
+		</columns>
+		<datasource dao="highRiskProjectMmanagementService" method="listForExport"/>
+	</excel>
+	
+	<!--孕产妇保健统计列表导出  -->
+<!-- 	<excel id="maternalHealthCareExport" name="孕产妇保健统计列表"> -->
+<!-- 		<columns> -->
+<!-- 			<cell title="建卡日期" field="creatDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="编号" field="archivesCode" format="" render=""/> -->
+<!-- 			<cell title="姓名" field="name" format="" render=""/> -->
+<!-- 			<cell title="年龄" field="age" format="" render=""/> -->
+<!-- 			<cell title="末次月经" field="lastMenses" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="预产期" field="predictDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="建卡孕周" field="weeks" format="" render=""/> -->
+<!-- 			<cell title="孕13周6天前-随访时间" field="oneCheckDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕13周6天前-预约时间" field="oneOrderDate"  format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕14周-15周6天-随访次数" field="twoCheckTimes" format="" render=""/> -->
+<!-- 			<cell title="孕14周-15周6天-预约时间" field="twoOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕16周-20周6天-随访次数" field="threeCheckTimes" format="" render=""/> -->
+<!-- 			<cell title="孕16周-20周6天-预约时间" field="threeOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕21周-24周6天-随访次数" field="fourCheckTimes" format="" render=""/> -->
+<!-- 			<cell title="孕21周-24周6天-预约时间" field="fourOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕25周-27周6天-随访次数" field="fiveCheckTimes" format="" render=""/> -->
+<!-- 			<cell title="孕25周-27周6天-预约时间" field="fiveOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕28周-36周6天-随访次数" field="sixCheckTimes" format="" render=""/> -->
+<!-- 			<cell title="孕28周-36周6天-预约时间" field="sixOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="孕37周-40周6天-随访次数" field="sevenCheckTimes" format="" render=""/> -->
+<!-- 			<cell title="孕37周-40周6天-预约时间" field="sevenOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="出院3-7天-随访次数" field="post3to7Times" format="" render=""/> -->
+<!-- 			<cell title="出院3-7天-预约时间" field="post3to7Date" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="产后42天-检查次数" field="post42Times" format="" render=""/> -->
+<!-- 			<cell title="产后42天-结案时间" field="closeDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="高危因素" field="highRisk" format="" render=""/> -->
+<!-- 			<cell title="分娩时间" field="birthDate" format="yyyy-MM-dd HH:mm:ss" render=""/> -->
+<!-- 			<cell title="分娩地点" field="childbirthPlace" format="" render=""/> -->
+<!-- 			<cell title="家庭住址" field="address" format="" render=""/> -->
+<!-- 			<cell title="联系电话" field="telephone" format="" render=""/> -->
+<!-- 		</columns> -->
+<!-- 		<datasource dao="maternalHealthCareStatisticsService" method="listForExport"/> -->
+<!-- 	</excel> -->
+	<excel id="maternalHealthCareExport" name="孕产妇保健统计列表" filePath="孕产妇保健统计列表.xls">
+		<columns>
+			<cell title="建卡日期" field="creatDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="编号" field="archivesCode" format="" render=""/>
+			<cell title="姓名" field="name" format="" render=""/>
+			<cell title="年龄" field="age" format="" render=""/>
+			<cell title="末次月经" field="lastMenses" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="预产期" field="predictDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="建卡孕周" field="weeks" format="" render=""/>
+			<cell title="孕13周6天前-随访时间" field="oneCheckDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕13周6天前-预约时间" field="oneOrderDate"  format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕14周-15周6天-随访次数" field="twoCheckTimes" format="" render=""/>
+			<cell title="孕14周-15周6天-预约时间" field="twoOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕16周-20周6天-随访次数" field="threeCheckTimes" format="" render=""/>
+			<cell title="孕16周-20周6天-预约时间" field="threeOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕21周-24周6天-随访次数" field="fourCheckTimes" format="" render=""/>
+			<cell title="孕21周-24周6天-预约时间" field="fourOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕25周-27周6天-随访次数" field="fiveCheckTimes" format="" render=""/>
+			<cell title="孕25周-27周6天-预约时间" field="fiveOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕28周-36周6天-随访次数" field="sixCheckTimes" format="" render=""/>
+			<cell title="孕28周-36周6天-预约时间" field="sixOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="孕37周-40周6天-随访次数" field="sevenCheckTimes" format="" render=""/>
+			<cell title="孕37周-40周6天-预约时间" field="sevenOrderDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="出院3-7天-随访次数" field="post3to7Times" format="" render=""/>
+			<cell title="出院3-7天-预约时间" field="post3to7Date" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="产后42天-检查次数" field="post42Times" format="" render=""/>
+			<cell title="产后42天-结案时间" field="closeDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="高危因素" field="highRisk" format="" render=""/>
+			<cell title="分娩时间" field="birthDate" format="yyyy-MM-dd HH:mm:ss" render=""/>
+			<cell title="分娩地点" field="childbirthPlace" format="" render=""/>
+			<cell title="家庭住址" field="address" format="" render=""/>
+			<cell title="联系电话" field="telephone" format="" render=""/>
+		</columns>
+		<datasource dao="maternalHealthCareStatisticsService" method="listForExport"/>
+	</excel>
+	
+</excels>

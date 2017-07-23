@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppParentingSixYearRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppParentingSixYearRecordPO" >
+	<result column="ID" property="id" />
+	<result column="PAR_ID" property="parId" />
+	<result column="SIMPLE_HOUSEWORK" property="simpleHousework" />
+	<result column="SHARE_FOOD" property="shareFood" />
+	<result column="COMPLY_GAME_RULE" property="complyGameRule" />
+	<result column="WRITE_OWN_NAME" property="writeOwnName" />
+	<result column="EXPRESS_IDEAS" property="expressIdeas" />
+	<result column="PLAY_COSPLAY_GAME" property="playCosplayGame" />
+	<result column="DRAW_SQUARE" property="drawSquare" />
+	<result column="RUN" property="run" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PAR_ID,SIMPLE_HOUSEWORK,SHARE_FOOD,COMPLY_GAME_RULE,WRITE_OWN_NAME,EXPRESS_IDEAS,PLAY_COSPLAY_GAME,DRAW_SQUARE,RUN,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_SIX_YEAR_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PAR_ID,SIMPLE_HOUSEWORK,SHARE_FOOD,COMPLY_GAME_RULE,WRITE_OWN_NAME,EXPRESS_IDEAS,PLAY_COSPLAY_GAME,DRAW_SQUARE,RUN,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_SIX_YEAR_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PARENTING_SIX_YEAR_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingSixYearRecordPO" >
+    insert into APP_PARENTING_SIX_YEAR_RECORD (ID,PAR_ID,SIMPLE_HOUSEWORK,SHARE_FOOD,COMPLY_GAME_RULE,WRITE_OWN_NAME,EXPRESS_IDEAS,PLAY_COSPLAY_GAME,DRAW_SQUARE,RUN,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ parId, javaType=String, jdbcType=VARCHAR},
+				#{ simpleHousework, javaType=String, jdbcType=VARCHAR},
+				#{ shareFood, javaType=String, jdbcType=VARCHAR},
+				#{ complyGameRule, javaType=String, jdbcType=VARCHAR},
+				#{ writeOwnName, javaType=String, jdbcType=VARCHAR},
+				#{ expressIdeas, javaType=String, jdbcType=VARCHAR},
+				#{ playCosplayGame, javaType=String, jdbcType=VARCHAR},
+				#{ drawSquare, javaType=String, jdbcType=VARCHAR},
+				#{ run, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingSixYearRecordPO" >
+    update APP_PARENTING_SIX_YEAR_RECORD
+    set
+			PAR_ID = #{ parId, javaType=String, jdbcType=VARCHAR},
+				SIMPLE_HOUSEWORK = #{ simpleHousework, javaType=String, jdbcType=VARCHAR},
+				SHARE_FOOD = #{ shareFood, javaType=String, jdbcType=VARCHAR},
+				COMPLY_GAME_RULE = #{ complyGameRule, javaType=String, jdbcType=VARCHAR},
+				WRITE_OWN_NAME = #{ writeOwnName, javaType=String, jdbcType=VARCHAR},
+				EXPRESS_IDEAS = #{ expressIdeas, javaType=String, jdbcType=VARCHAR},
+				PLAY_COSPLAY_GAME = #{ playCosplayGame, javaType=String, jdbcType=VARCHAR},
+				DRAW_SQUARE = #{ drawSquare, javaType=String, jdbcType=VARCHAR},
+				RUN = #{ run, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,PAR_ID,SIMPLE_HOUSEWORK,SHARE_FOOD,COMPLY_GAME_RULE,WRITE_OWN_NAME,EXPRESS_IDEAS,PLAY_COSPLAY_GAME,DRAW_SQUARE,RUN,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_SIX_YEAR_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PARENTING_SIX_YEAR_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	
+	<select id="findAppParentingSixYearRecordListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,PAR_ID,SIMPLE_HOUSEWORK,SHARE_FOOD,COMPLY_GAME_RULE,WRITE_OWN_NAME,EXPRESS_IDEAS,PLAY_COSPLAY_GAME,DRAW_SQUARE,RUN,CREATE_TIME,UPDATE_TIME
+	    from APP_PARENTING_SIX_YEAR_RECORD
+	    where 1=1
+	    <if test="parId != null and parId != ''">
+	    	and PAR_ID = #{parId}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

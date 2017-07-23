@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd  
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd  
+   	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+   	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd ">
+
+
+	<!-- 搜索的包路径 -->
+	<context:component-scan base-package="com.threefiveninetong.mchh.controller" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	    <!--
+   mvc:annotation-driven 会自动注册DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个实例,  
+  <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" /> -->
+    <mvc:annotation-driven   conversion-service="conversionService">
+    <!-- 处理ajax调用返回json乱码问题 -->
+  <!--   
+		    <mvc:message-converters>
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+            <property name="supportedMediaTypes">
+                <list>
+                    <value>application/json;charset=UTF-8</value>
+                </list>
+            </property>
+        </bean>
+    </mvc:message-converters>
+
+		-->
+       <mvc:message-converters>
+			<bean
+				class="com.threefiveninetong.mchh.core.handler.JsonAbstractHttpMessageConverter">
+				<property name="serializerFeature">
+					<list>
+						<value>WriteMapNullValue</value>
+						<value>QuoteFieldNames</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters> 
+    </mvc:annotation-driven>
+    
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+     <property name="converters">
+           <list>
+                <bean class="com.threefiveninetong.mchh.core.handler.StringToDateFormate">
+                </bean>           
+           </list>
+     </property>
+    </bean>
+	<!-- 放过导入的JS CSS 图片等文件 
+	可能这个标签的真谛就是为了引用资源的访问不会类似CONTROLLER一样被拦截，区分出关注的资源的访问，一般我们在springMVC里面的拦截都会配置为"/"，拦截所有的。 
+	-->
+	<mvc:resources location="/" mapping="/static/**"
+		cache-period="31556926" />
+	<!-- 文件上传解析器-->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:defaultEncoding="UTF-8">
+	</bean>
+	<!-- 视图解析类,基于jsp和jstl基础之上解析-->
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="requestContextAttribute" value="rc"></property>
+		
+	</bean>
+	<!--  解析器 -->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+	
+	    <!-- spring拦截器 -->
+    <mvc:interceptors>
+    	<!-- 入参日志 
+    	<mvc:interceptor>
+	        <mvc:mapping path="/**"/>
+	        <bean class="com.threefivenineMCHHre.aop.SystemParamsPrintInterceptor"/>
+	    </mvc:interceptor> -->
+	    
+	    <mvc:interceptor>
+	        <mvc:mapping path="/**"/>
+	        <bean class="com.threefiveninetong.mchh.core.handler.SignInterceptor"/>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+</beans>

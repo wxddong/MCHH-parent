@@ -1,0 +1,77 @@
+﻿@charset "utf-8";
+/* 样式说明： 初始化css
+ * 开发时间： 2014-09-19
+ * 开发者：    
+ * 维护者： 
+ *
+ * 样式版本： v1.1
+ * 版本时间： 2014-09-19
+ * 注意事项： 基本样式,所有共用基本样式将在这里定义
+ */
+/**---------------------------- topbar--------------------------*/
+#main_box{width:1077px; margin:0 auto;}
+#topbar{border-top:6px solid #edac00; height:61px; overflow:hidden; background:#fff;}
+#topbar .logo{float:left; _display:inline; cursor:pointer; margin-top:5px; width:269px; height:55px;}
+#topbar .welcome{float:right; _display:inline; height:61px;}
+.welcome ul li{float:left; display:inline; border-left:1px solid #d5d5d5;font-family:"微软雅黑","宋体"; color:#000; padding:9px 15px; cursor:pointer; height:43px;}
+.welcome ul li i{width:16px; height:16px; display:block; text-align:center;}
+.welcome ul li i.modify{background:url(../images/modify.png) no-repeat; margin:8px 0 2px 14px;}
+.welcome ul li i.quit{background:url(../images/quit.png) no-repeat; width:15px; height:15px; margin:8px 0 2px 5px;}
+.welcome ul li.admin{cursor:default; border-left:none; line-height:43px;}
+/**---------------------------- main--------------------------*/
+.main{width:1077px;background:#f1f2f7;}
+.side{float:left; display:inline; background:#3273d0; padding:25px 0 0 0px; width:175px; height:auto; height:730px;min-height:730px;}
+.side ul li{color:#fdfdfd; cursor:pointer; line-height:35px; margin-left:32px;}
+.side ul li ul{display:none;}
+.side ul li ul li{opacity:0.5;filter:alpha(opacity=50); margin-left:8px;}
+.side ul li ul li a,.side ul li a{color:#fdfdfd;}
+.side ul li ul li.on{background:url(../images/arr.png) no-repeat 152px center #e7e8f1; margin-left:-32px; padding-left:40px; width:135px; display:block; color:#5a69d9; opacity:1;filter:alpha(opacity=100);}
+.side ul li ul li.on a{color:#5a69d9;}
+.aside{}
+.aside .title{background:#dfe1ee; height:35px; margin:7px 4px; line-height:35px; font-weight:bold; border-radius:6px; font-size:14px; color:#656565; padding-left:5px;}
+.aside .search_box{background:#fff;border-radius:6px;  margin-top:15px; height:50px; font-size:14px; color:#000;font-family:"微软雅黑","宋体"; padding:10px 0 0 25px;}
+.aside .search_box .btn{background:url(../images/search.png) no-repeat 12px center #f5f5f5; padding-left:15px;}
+.aside .search_box .text{width:446px; margin:0 15px;}
+.aside .column{color:#656565; font-weight:bold;font-size:14px; background:url(../images/ico1.png) no-repeat 0px 6px; padding-left:10px; margin:20px 0 0px;}
+.aside .mar_l_20{margin:0 0 10px 20px;}
+.aside .column .add{background:url(../images/ico2.png) no-repeat 0 2px; cursor:pointer; margin-left:15px; padding-left:12px; color:#009ce6;}
+.aside .index_box{width:320px; margin:290px auto 0; font-size:22px; text-align:center; color:#dfe1ee;font-family:"微软雅黑","宋体"; line-height:30px;}
+#login{background:url(../images/logo_bj1.png) no-repeat center center #1d69e0; margin:0 auto; width:100%; height:652px;}
+#login .login_box{width:340px; height:260px; padding:200px 0 0; margin:0 auto;}
+.login_box .text{width:310px; margin-bottom:15px; height:40px; line-height:40px; padding-left:25px;}
+.login_box .user{background:url(../images/user.gif) no-repeat 15px center #fff;}
+.login_box .password{background:url(../images/password.gif) no-repeat 15px center #fff;}
+.login_box .yzm{width:110px; margin-right:10px;}
+.login_box .login_btn{width:100px; border:none; height:32px; margin-top:25px; line-height:22px;font-family:"微软雅黑","宋体"; cursor:pointer; color:#fff; font-size:14px; border-radius:4px;}
+.login_box .login_ok{background:url(../images/login_btn.png) repeat-x; border:1px solid #2f85d4;}
+.login_box .login_cancel{background:url(../images/login_btn1.png) repeat-x; margin-left:10px; border:1px solid #9a9a9a; color:#535353;}
+/**---------------------------- table--------------------------*/
+.tab_none{margin-top:20px;}
+.tab_none th,.tab_none td{line-height:40px;}
+.tab_none th{color:#646464; text-align:right; font-weight:bold;}
+.tab_none td{color:#000; padding-left:10px; text-align:left;}
+.tab_circle{margin-top:10px; border:1px solid #c8c9cd; border-radius:6px;}
+.tab_circle th,.tab_circle td{line-height:40px;height:40px; color:#5e5e5e; background:#f1f2f7; text-align:center;}
+.tab_circle th{background:#e7e7f1;}
+.tab_circle thead th{font-weight:bold; color:#000;}
+.tab_circle a{color:#009ce6;}
+.tab_border{width:90%; margin:10px auto; text-align:center; border-collapse:collapse;}
+.tab_border th,.tab_border td{border:1px solid #ccc; height:40px; line-height:40px;}
+.tab_border .tab_text{border:1px solid #ccc; height:25px; line-height:25px;}
+.tab_posi{position:absolute; right:3%; top:10px; font-size:26px; cursor:pointer; font-weight:bold;}
+.tab_reduce{top:35px;}
+/**---------------------------- input--------------------------*/
+.text{height:26px; width:310px; line-height:26px; border:1px solid #c6c6ca; padding-left:8px;}
+.select{height:28px; height:25px\9;}
+.btn{width:75px; height:30px; line-height:23px; background:url(../images/ico_bj.png) repeat-x; border-radius:4px;border:none; border:1px solid #c6c6ca; cursor:pointer; font-size:14px; color:#000; text-align:center;}
+.area{border:1px solid #c6c6ca; resize:none; width:570px; height:110px; padding:5px;}
+.combo .validatebox-text{background:none;vertical-align:7px; vertical-align:-5px\9;}
+.detail_box{background:#f1f2f7;}
+.detail_tab,.detail_circle{border-collapse: collapse; width:96%; margin:0 10px;}
+.detail_tab th,.detail_tab td,.detail_circle td,.detail_circle th{border:1px dotted #c8c9cd;}
+.detail_tab th{text-align:center;}
+.area_sh{width:480px; margin-left:5px; vertical-align:middle; border:1px solid #ddd;}
+.span_area{color:#656565; vertical-align:middle; font-weight:bold;margin-left:6px; font-size:14px;}
+.wid_50{width:50px;}
+.wid_100{width:100px;}
+.aside .add_business{margin:15px 7px; padding:15px 0 0 25px;height:45px;}

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPrenatal.dao.AppPrenatalSelfRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPrenatal.po.AppPrenatalSelfRecordPO" >
+	<result column="ID" property="id" />
+	<result column="MBR_ID" property="mbrId" />
+	<result column="LAST_MENSES" property="lastMenses" />
+	<result column="PREDICT_DATE" property="predictDate" />
+	<result column="FIRST_MOVE_DATE" property="firstMoveDate" />
+	<result column="B_EXA_DATE" property="bExaDate" />
+	<result column="TEST_MOVE_SIGN" property="testMoveSign" />
+	<result column="GROWTH_RANGE" property="growthRange" />
+	<result column="RISK_SIGN" property="riskSign" />
+	<result column="RISK_REMARK" property="riskRemark" />
+	<result column="PERIOD" property="period" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MBR_ID,LAST_MENSES,PREDICT_DATE,FIRST_MOVE_DATE,B_EXA_DATE,TEST_MOVE_SIGN,GROWTH_RANGE,RISK_SIGN,RISK_REMARK,PERIOD,CREATE_TIME,UPDATE_TIME
+    from APP_PRENATAL_SELF_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MBR_ID,LAST_MENSES,PREDICT_DATE,FIRST_MOVE_DATE,B_EXA_DATE,TEST_MOVE_SIGN,GROWTH_RANGE,RISK_SIGN,RISK_REMARK,PERIOD,CREATE_TIME,UPDATE_TIME
+    from APP_PRENATAL_SELF_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PRENATAL_SELF_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPrenatal.po.AppPrenatalSelfRecordPO" >
+    insert into APP_PRENATAL_SELF_RECORD (ID,MBR_ID,LAST_MENSES,PREDICT_DATE,FIRST_MOVE_DATE,B_EXA_DATE,TEST_MOVE_SIGN,GROWTH_RANGE,RISK_SIGN,RISK_REMARK,PERIOD,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ mbrId, javaType=String, jdbcType=VARCHAR},
+				#{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				#{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ firstMoveDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ bExaDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ testMoveSign, javaType=String, jdbcType=VARCHAR},
+				#{ growthRange, javaType=String, jdbcType=VARCHAR},
+				#{ riskSign, javaType=String, jdbcType=VARCHAR},
+				#{ riskRemark, javaType=String, jdbcType=VARCHAR},
+				#{ period, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPrenatal.po.AppPrenatalSelfRecordPO" >
+    update APP_PRENATAL_SELF_RECORD
+    set
+			MBR_ID = #{ mbrId, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+				FIRST_MOVE_DATE = #{ firstMoveDate, javaType=Date, jdbcType=TIMESTAMP},
+				B_EXA_DATE = #{ bExaDate, javaType=Date, jdbcType=TIMESTAMP},
+				TEST_MOVE_SIGN = #{ testMoveSign, javaType=String, jdbcType=VARCHAR},
+				GROWTH_RANGE = #{ growthRange, javaType=String, jdbcType=VARCHAR},
+				RISK_SIGN = #{ riskSign, javaType=String, jdbcType=VARCHAR},
+				RISK_REMARK = #{ riskRemark, javaType=String, jdbcType=VARCHAR},
+				PERIOD = #{ period, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MBR_ID,LAST_MENSES,PREDICT_DATE,FIRST_MOVE_DATE,B_EXA_DATE,TEST_MOVE_SIGN,GROWTH_RANGE,RISK_SIGN,RISK_REMARK,PERIOD,CREATE_TIME,UPDATE_TIME
+    from APP_PRENATAL_SELF_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PRENATAL_SELF_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppPrenatalSelfRecordListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    Select ID,MBR_ID,LAST_MENSES,PREDICT_DATE,FIRST_MOVE_DATE,B_EXA_DATE,TEST_MOVE_SIGN,GROWTH_RANGE,RISK_SIGN,RISK_REMARK,PERIOD,CREATE_TIME,UPDATE_TIME
+	    From APP_PRENATAL_SELF_RECORD
+	    Where 1=1
+	    <if test="mbrId != null and mbrId != ''">
+	    	and MBR_ID = #{mbrId}
+	    </if>
+	    <if test="period != null and period != ''">
+	    	and PERIOD = #{period}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.VillageInfoDao" >
+  
+  <select id="getTownshipByCountyId" resultMap="BaseResultMap">
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where DELETE_SIGN = "1"
+	and	TOWNSHIP_ID = #{townshipId}
+  </select>
+
+  <select id="listForPage" resultMap="ListResultMap"  parameterType="hashmap">
+    select v.ID,v.TOWNSHIP_ID,v.NAME,v.NAME_SPELL,v.FIRST_LETTER,v.DELETE_SIGN,v.NUMBER,v.SORT_NUM,v.CREAT_TIME,v.UPDATE_TIME
+    ,t.number tNumber,t.id tId,t.name tName,d.number dNumber,d.id dId,d.Name dName,c.number cNumber,c.id cId,c.name cName,p.number pNumber,p.id pId,p.name pName
+    from VILLAGE_INFO v
+    LEFT OUTER JOIN township_info t
+	on v.TOWNSHIP_ID = t.ID
+	LEFT OUTER JOIN district_and_county_info d
+	on t.COUNTY_ID = d.ID
+	LEFT OUTER JOIN city_info c
+	on d.CITY_ID = c.ID
+	LEFT OUTER JOIN province_info p
+	ON c.PROVINCE_ID = p.ID
+	WHERE v.DELETE_SIGN = '1'
+	<if test="pName!=null and pName!=''">
+		and p.NAME like '%${pName}%'
+	</if>
+    <if test="cName!=null and cName!=''">
+		and c.NAME like '%${cName}%'
+	</if>
+	<if test="dName!=null and dName!=''">
+		and d.NAME like '%${dName}%'
+	</if>
+	<if test="tName!=null and tName!=''">
+		and t.NAME like '%${tName}%'
+	</if>
+	<if test="vName!=null and vName!=''">
+		and v.Name = #{vName}
+	</if>
+	<if test="number!=null and number!=''">
+		and v.NUMBER = #{number}
+	</if>
+	ORDER BY v.SORT_NUM
+  </select>
+	
+  <resultMap id="ListResultMap" type="com.threefiveninetong.mchh.config.po.VillageInfoPO" >
+	<result column="ID" property="id" />
+	<result column="tNumber" property="townshipInfoPO.number" />
+	<result column="tId" property="townshipInfoPO.id" />
+	<result column="tName" property="townshipInfoPO.name" />
+	<result column="dNumber" property="townshipInfoPO.countyInfoPO.number" />
+	<result column="dId" property="townshipInfoPO.countyInfoPO.id" />
+	<result column="dName" property="townshipInfoPO.countyInfoPO.name" />
+	<result column="cNumber" property="townshipInfoPO.countyInfoPO.cityInfoPO.number" />
+	<result column="cId" property="townshipInfoPO.countyInfoPO.cityInfoPO.id" />
+	<result column="cName" property="townshipInfoPO.countyInfoPO.cityInfoPO.name" />
+	<result column="pId" property="townshipInfoPO.countyInfoPO.cityInfoPO.provinceInfoPO.id" />
+	<result column="pName" property="townshipInfoPO.countyInfoPO.cityInfoPO.provinceInfoPO.name" />
+	<result column="pNumber" property="townshipInfoPO.countyInfoPO.cityInfoPO.provinceInfoPO.number" />
+	<result column="NAME" property="name" />
+	<result column="NAME_SPELL" property="nameSpell" />
+	<result column="FIRST_LETTER" property="firstLetter" />
+	<result column="DELETE_SIGN" property="deleteSign" />
+	<result column="NUMBER" property="number" />
+	<result column="SORT_NUM" property="sortNum" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.VillageInfoPO" >
+	<result column="ID" property="id" />
+	<result column="TOWNSHIP_ID" property="townshipId" />
+	<result column="NAME" property="name" />
+	<result column="NAME_SPELL" property="nameSpell" />
+	<result column="FIRST_LETTER" property="firstLetter" />
+	<result column="DELETE_SIGN" property="deleteSign" />
+	<result column="NUMBER" property="number" />
+	<result column="SORT_NUM" property="sortNum" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where
+			ID = #{ id}
+	  </select>
+	  
+	  <select id="getByName" resultMap="BaseResultMap" parameterType="String" >
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where
+			NAME = #{ name} AND DELETE_SIGN='1'
+	  </select>
+	  
+	<select id="findByName" resultMap="BaseResultMap" parameterType="String" >
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where
+			NAME = #{ name}
+	  </select>
+	  
+	  
+	  
+	  
+	 <select id="findAllSortNum" resultType="String" >
+    select DISTINCT(SORT_NUM)
+    from VILLAGE_INFO
+    where DELETE_SIGN = '1'
+    order by SORT_NUM
+  </select>
+  
+  
+  <select id="findAlls" resultMap="BaseResultMap" >
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where DELETE_SIGN = '1' AND TOWNSHIP_ID=#{parentId}
+    order by SORT_NUM
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where DELETE_SIGN = '1'
+    order by SORT_NUM
+  </select>
+  
+  <!--查询乡下面所有的村  -->
+  <select id="findAllByVillage" resultMap="BaseResultMap" >
+    select ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    from VILLAGE_INFO
+    where DELETE_SIGN = '1'
+    and
+    TOWNSHIP_ID=#{villageId}
+    order by SORT_NUM
+  </select>
+  
+  
+  
+  
+  
+  <select id="queryCunName" resultMap="BaseResultMap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	village_info
+	  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from VILLAGE_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+	  
+	   <insert id="addVillageInfo" parameterType="com.threefiveninetong.mchh.config.po.VillageInfoPO" >
+    insert into VILLAGE_INFO (ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ townshipInfoPO.id, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				#{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				#{ deleteSign, javaType=String, jdbcType=VARCHAR},
+				#{ number, javaType=String, jdbcType=VARCHAR},
+				#{ sortNum},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.VillageInfoPO" >
+    insert into VILLAGE_INFO (ID,TOWNSHIP_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ townshipId, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				#{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				#{ deleteSign, javaType=String, jdbcType=VARCHAR},
+				#{ number, javaType=String, jdbcType=VARCHAR},
+				#{ sortNum},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+  
+  <update id="updateTownshipInfo" parameterType="com.threefiveninetong.mchh.config.po.VillageInfoPO" >
+    update VILLAGE_INFO
+    set
+			TOWNSHIP_ID = #{ townshipInfoPO.id, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				NAME_SPELL = #{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				FIRST_LETTER = #{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				NUMBER = #{ number, javaType=String, jdbcType=VARCHAR},
+				SORT_NUM = #{ sortNum},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.VillageInfoPO" >
+    update VILLAGE_INFO
+    set
+			TOWNSHIP_ID = #{ townshipId, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				NAME_SPELL = #{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				FIRST_LETTER = #{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				DELETE_SIGN = #{ deleteSign, javaType=String, jdbcType=VARCHAR},
+				NUMBER = #{ number, javaType=String, jdbcType=VARCHAR},
+				SORT_NUM = #{ sortNum},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+	  
+	    <update id="dedelVillageInfo"  >
+    update VILLAGE_INFO
+    set
+				DELETE_SIGN = "0"
+	    where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	  </update>
+	  
+	  
+<!-- 	  <delete id="dedelVillageInfo"> -->
+<!-- 		delete from VILLAGE_INFO -->
+<!-- 		where id in -->
+<!-- 		<foreach collection="array" index="index" item="item" open="(" -->
+<!-- 			separator="," close=")"> -->
+<!-- 			#{item}    -->
+<!-- 	    </foreach> -->
+<!-- 	</delete> -->
+
+<delete id="deletes">
+		delete from VILLAGE_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

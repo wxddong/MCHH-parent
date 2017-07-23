@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sys.dao.CodeDao">
+
+	<resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.sys.po.CodePO">
+		<result column="ID" property="id" />
+		<result column="CATEGORY_ID" property="categoryId" />
+		<result column="CODE_KEY" property="codeKey" />
+		<result column="CODE_VALUE" property="codeValue" />
+		<result column="ONUM" property="onum" />
+		<result column="REMARK" property="remark" />
+	</resultMap>
+
+	<select id="listCodeForPage" resultMap="BaseResultMap"
+		parameterType="hashmap">
+		select ID,CATEGORY_ID,CODE_KEY,CODE_VALUE,ONUM,REMARK
+		from sys_code where category_id = #{categoryId} order by onum
+	</select>
+	<select id="getCode" resultMap="BaseResultMap" parameterType="hashmap">
+		select ID,CATEGORY_ID,CODE_KEY,CODE_VALUE,ONUM,REMARK
+		from sys_code
+	</select>
+
+	<delete id="delete">
+		delete from sys_code
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<insert id="add" parameterType="com.threefiveninetong.mchh.sys.po.CodePO">
+		insert into sys_code (ID,CATEGORY_ID,CODE_KEY,CODE_VALUE,ONUM,REMARK)
+		values (
+		#{ id, javaType=String, jdbcType=VARCHAR},
+		#{ categoryId, javaType=String, jdbcType=VARCHAR},
+		#{ codeKey, javaType=String, jdbcType=VARCHAR},
+		#{ codeValue, javaType=String, jdbcType=VARCHAR},
+		#{ onum, javaType=double, jdbcType=DECIMAL},
+		#{ remark, javaType=String, jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="update" parameterType="com.threefiveninetong.mchh.sys.po.CodePO">
+		update sys_code
+		set
+		CATEGORY_ID = #{ categoryId, javaType=String, jdbcType=VARCHAR},
+		CODE_KEY = #{ codeKey, javaType=String, jdbcType=VARCHAR},
+		CODE_VALUE = #{ codeValue, javaType=String, jdbcType=VARCHAR},
+		ONUM = #{ onum, javaType=double, jdbcType=DECIMAL},
+		REMARK = #{ remark, javaType=String, jdbcType=VARCHAR}
+		where
+		ID = #{ id}
+	</insert>
+
+	<select id="queryForList" resultType="hashmap" parameterType="hashmap">
+		select co.id,co.category_id,co.code_key,co.code_value,co.onum,co.remark,ca.category_name
+		from sys_code co
+		left join sys_code_category ca on co.category_id = ca.id 
+		 <trim prefix="where" prefixOverrides="and |or ">
+         <if test="categoryId!=null and categoryId!=''">
+              and co.category_id = #{categoryId}
+         </if>
+         <if test="codeKey!=null and codeKey!=''">
+              and co.code_key=#{codeKey}
+         </if>
+	    </trim>
+		order by ca.category_name, co.onum
+	</select>
+
+</mapper>

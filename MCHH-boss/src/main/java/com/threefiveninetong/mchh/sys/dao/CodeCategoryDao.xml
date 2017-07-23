@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sys.dao.CodeCategoryDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.sys.po.CodeCategoryPO" >
+	<result column="id" property="id" />
+	<result column="category_name" property="categoryName" />
+	<result column="remark" property="remark" />
+  </resultMap>
+  
+	<select id="listCodeCategoryForPage" resultMap="BaseResultMap"
+		parameterType="hashmap">
+		select cc.id, cc.category_name,cc.remark
+		from sys_code_category cc
+		<trim prefix="where" prefixOverrides="and |or ">
+         <if test="categoryName!=null and categoryName!=''">
+              and category_name = #{categoryName}
+         </if>
+         <if test="remark!=null and remark!=''">
+              and remark like '%${remark}%'
+         </if>
+   		</trim>
+		 order by cc.category_name
+	</select>
+	<select id="getCodeCategory" resultMap="BaseResultMap" parameterType="hashmap">
+		select cc.id, cc.category_name,cc.remark
+		from sys_code_category
+	</select>
+
+	<delete id="delete">
+		delete from sys_code_category
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	<delete id="deleteCode">
+		delete from sys_code
+		where category_id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<insert id="add" parameterType="com.threefiveninetong.mchh.sys.po.CodeCategoryPO">
+		insert into sys_code_category (id,category_name, remark)
+		values (
+		#{ id, javaType=String, jdbcType=VARCHAR},
+		#{ categoryName, javaType=String, jdbcType=VARCHAR},
+		#{ remark, javaType=String, jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="update" parameterType="com.threefiveninetong.mchh.sys.po.CodeCategoryPO">
+		update sys_code_category 
+		set
+		category_name = #{ categoryName, javaType=String, jdbcType=VARCHAR},
+		remark = #{ remark, javaType=String, jdbcType=VARCHAR}
+		where 
+		id = #{ id}
+	</insert>
+	<select id="queryCategoryForList" resultType="hashmap" parameterType="hashmap">
+		select cc.id, cc.category_name,cc.remark
+		from sys_code_category cc order by cc.category_name
+	</select>
+</mapper>

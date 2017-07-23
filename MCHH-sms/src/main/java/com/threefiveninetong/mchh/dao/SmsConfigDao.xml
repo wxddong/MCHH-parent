@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.dao.SmsConfigDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.po.SmsConfigPO" >
+	<result column="ID" property="id" />
+	<result column="NAME" property="name" />
+	<result column="SMS_TYPE" property="smsType" />
+	<result column="PHONE_ACCEPED" property="phoneAcceped" />
+	<result column="IS_USE" property="isUse" />
+	<result column="OPERATOR" property="operator" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="BALANCE_NOTIFY" property="balanceNotify" />
+	<result column="NOTIFYER" property="notifyer" />
+	<result column="FAILNUM" property="failnum" />
+	<result column="SEND_PHONE_NUM" property="sendPhoneNum" />
+	<result column="PLATE_ID" property="plateId" />
+	<result column="PLATE_PWD" property="platePwd" />
+	<result column="PLATFORM_CODE" property="platformCode" />
+	<result column="FAIL_CODE" property="failCode" />
+	<result column="PRIORITY" property="priority" />
+	<result column="MAX_SEND_NUM" property="maxSendNum" />
+	<result column="EXCLUDE_SMS_TYPE" property="excludeSmsType" />
+	<result column="BALANCE" property="balance" />
+	<result column="CHANNEL" property="channel" />
+	<result column="EXCLUDE_CHANNEL" property="excludeChannel" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,NAME,SMS_TYPE,PHONE_ACCEPED,IS_USE,OPERATOR,UPDATE_TIME,BALANCE_NOTIFY,NOTIFYER,FAILNUM,SEND_PHONE_NUM,PLATE_ID,PLATE_PWD,PLATFORM_CODE,FAIL_CODE,PRIORITY,MAX_SEND_NUM,EXCLUDE_SMS_TYPE,BALANCE,CHANNEL,EXCLUDE_CHANNEL
+    from sys_sms_config
+    where
+			ID = #{ id}
+	  </select>
+
+	<select id="findAll" resultMap="BaseResultMap">
+		<![CDATA[
+			select
+			ID,NAME,SMS_TYPE,PHONE_ACCEPED,IS_USE,OPERATOR,UPDATE_TIME,BALANCE_NOTIFY,NOTIFYER,FAILNUM,SEND_PHONE_NUM,PLATE_ID,PLATE_PWD,PLATFORM_CODE,FAIL_CODE,PRIORITY,MAX_SEND_NUM,EXCLUDE_SMS_TYPE,BALANCE,CHANNEL,EXCLUDE_CHANNEL
+			from sys_sms_config where IS_USE='1' order by PRIORITY asc
+		]]>
+	</select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from sys_sms_config
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.po.SmsConfigPO" >
+    insert into sys_sms_config (ID,NAME,SMS_TYPE,PHONE_ACCEPED,IS_USE,OPERATOR,UPDATE_TIME,BALANCE_NOTIFY,NOTIFYER,FAILNUM,SEND_PHONE_NUM,PLATE_ID,PLATE_PWD,PLATFORM_CODE,FAIL_CODE,PRIORITY,MAX_SEND_NUM,EXCLUDE_SMS_TYPE,BALANCE,CHANNEL,EXCLUDE_CHANNEL)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ smsType, javaType=String, jdbcType=VARCHAR},
+				#{ phoneAcceped, javaType=String, jdbcType=VARCHAR},
+				#{ isUse, javaType=String, jdbcType=VARCHAR},
+				#{ operator, javaType=String, jdbcType=VARCHAR},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ balanceNotify, javaType=String, jdbcType=VARCHAR},
+				#{ notifyer, javaType=String, jdbcType=VARCHAR},
+				#{ failnum, javaType=String, jdbcType=VARCHAR},
+				#{ sendPhoneNum, javaType=String, jdbcType=VARCHAR},
+				#{ plateId, javaType=String, jdbcType=VARCHAR},
+				#{ platePwd, javaType=String, jdbcType=VARCHAR},
+				#{ platformCode, javaType=String, jdbcType=VARCHAR},
+				#{ failCode, javaType=String, jdbcType=VARCHAR},
+				#{ priority, javaType=String, jdbcType=VARCHAR},
+				#{ maxSendNum, javaType=int, jdbcType=INTEGER},
+				#{ excludeSmsType, javaType=String, jdbcType=VARCHAR},
+				#{ balance, javaType=String, jdbcType=VARCHAR},
+				#{ channel, javaType=String, jdbcType=VARCHAR},
+				#{ excludeChannel, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.po.SmsConfigPO" >
+    update sys_sms_config
+    set
+			NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				SMS_TYPE = #{ smsType, javaType=String, jdbcType=VARCHAR},
+				PHONE_ACCEPED = #{ phoneAcceped, javaType=String, jdbcType=VARCHAR},
+				IS_USE = #{ isUse, javaType=String, jdbcType=VARCHAR},
+				OPERATOR = #{ operator, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				BALANCE_NOTIFY = #{ balanceNotify, javaType=String, jdbcType=VARCHAR},
+				NOTIFYER = #{ notifyer, javaType=String, jdbcType=VARCHAR},
+				FAILNUM = #{ failnum, javaType=String, jdbcType=VARCHAR},
+				SEND_PHONE_NUM = #{ sendPhoneNum, javaType=String, jdbcType=VARCHAR},
+				PLATE_ID = #{ plateId, javaType=String, jdbcType=VARCHAR},
+				PLATE_PWD = #{ platePwd, javaType=String, jdbcType=VARCHAR},
+				PLATFORM_CODE = #{ platformCode, javaType=String, jdbcType=VARCHAR},
+				FAIL_CODE = #{ failCode, javaType=String, jdbcType=VARCHAR},
+				PRIORITY = #{ priority, javaType=String, jdbcType=VARCHAR},
+				MAX_SEND_NUM = #{ maxSendNum, javaType=int, jdbcType=INTEGER},
+				EXCLUDE_SMS_TYPE = #{ excludeSmsType, javaType=String, jdbcType=VARCHAR},
+				BALANCE = #{ balance, javaType=String, jdbcType=VARCHAR},
+				CHANNEL = #{ channel, javaType=String, jdbcType=VARCHAR},
+				EXCLUDE_CHANNEL = #{ excludeChannel, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,NAME,SMS_TYPE,PHONE_ACCEPED,IS_USE,OPERATOR,UPDATE_TIME,BALANCE_NOTIFY,NOTIFYER,FAILNUM,SEND_PHONE_NUM,PLATE_ID,PLATE_PWD,PLATFORM_CODE,FAIL_CODE,PRIORITY,MAX_SEND_NUM,EXCLUDE_SMS_TYPE,BALANCE,CHANNEL,EXCLUDE_CHANNEL
+    from sys_sms_config
+  </select>
+
+
+<delete id="deletes">
+		delete from sys_sms_config
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+ <update id="updateSort" parameterType="hashMap" >
+       update sys_sms_config
+       set
+				PRIORITY = #{ priority}
+	    where ID = #{ id}
+  </update>
+    <update id="updateByParams" parameterType="hashMap" >
+       update sys_sms_config
+       set
+				BALANCE = #{ balance}
+	    where ID = #{ id}
+  </update>
+<!--codegen-->
+
+</mapper>

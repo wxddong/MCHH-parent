@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppParentingOneYearRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppParentingOneYearRecordPO" >
+	<result column="ID" property="id" />
+	<result column="PAR_ID" property="parId" />
+	<result column="MEAL_NUM" property="mealNum" />
+	<result column="TOOTH_NUM" property="toothNum" />
+	<result column="MEAL_SITUATION" property="mealSituation" />
+	<result column="BREAST_MILK" property="breastMilk" />
+	<result column="NAME_REACTION" property="nameReaction" />
+	<result column="IMITATE" property="imitate" />
+	<result column="PINCH_THING" property="pinchThing" />
+	<result column="STANDING_UP" property="standingUp" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PAR_ID,MEAL_NUM,TOOTH_NUM,MEAL_SITUATION,BREAST_MILK,NAME_REACTION,IMITATE,PINCH_THING,STANDING_UP,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_ONE_YEAR_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PAR_ID,MEAL_NUM,TOOTH_NUM,MEAL_SITUATION,BREAST_MILK,NAME_REACTION,IMITATE,PINCH_THING,STANDING_UP,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_ONE_YEAR_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PARENTING_ONE_YEAR_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingOneYearRecordPO" >
+    insert into APP_PARENTING_ONE_YEAR_RECORD (ID,PAR_ID,MEAL_NUM,TOOTH_NUM,MEAL_SITUATION,BREAST_MILK,NAME_REACTION,IMITATE,PINCH_THING,STANDING_UP,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ parId, javaType=String, jdbcType=VARCHAR},
+				#{ mealNum, javaType=String, jdbcType=VARCHAR},
+				#{ toothNum, javaType=String, jdbcType=VARCHAR},
+				#{ mealSituation, javaType=String, jdbcType=VARCHAR},
+				#{ breastMilk, javaType=String, jdbcType=VARCHAR},
+				#{ nameReaction, javaType=String, jdbcType=VARCHAR},
+				#{ imitate, javaType=String, jdbcType=VARCHAR},
+				#{ pinchThing, javaType=String, jdbcType=VARCHAR},
+				#{ standingUp, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingOneYearRecordPO" >
+    update APP_PARENTING_ONE_YEAR_RECORD
+    set
+			PAR_ID = #{ parId, javaType=String, jdbcType=VARCHAR},
+				MEAL_NUM = #{ mealNum, javaType=String, jdbcType=VARCHAR},
+				TOOTH_NUM = #{ toothNum, javaType=String, jdbcType=VARCHAR},
+				MEAL_SITUATION = #{ mealSituation, javaType=String, jdbcType=VARCHAR},
+				BREAST_MILK = #{ breastMilk, javaType=String, jdbcType=VARCHAR},
+				NAME_REACTION = #{ nameReaction, javaType=String, jdbcType=VARCHAR},
+				IMITATE = #{ imitate, javaType=String, jdbcType=VARCHAR},
+				PINCH_THING = #{ pinchThing, javaType=String, jdbcType=VARCHAR},
+				STANDING_UP = #{ standingUp, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,PAR_ID,MEAL_NUM,TOOTH_NUM,MEAL_SITUATION,BREAST_MILK,NAME_REACTION,IMITATE,PINCH_THING,STANDING_UP,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_ONE_YEAR_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PARENTING_ONE_YEAR_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppParentingOneYearRecordListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,PAR_ID,MEAL_NUM,TOOTH_NUM,MEAL_SITUATION,BREAST_MILK,NAME_REACTION,IMITATE,PINCH_THING,STANDING_UP,CREATE_TIME,UPDATE_TIME
+	    from APP_PARENTING_ONE_YEAR_RECORD
+	    where 1=1
+	    <if test="parId != null and parId != ''">
+	    	and PAR_ID = #{parId}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.premarital.dao.PremaritalReferralInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.premarital.po.PremaritalReferralInfoPO" >
+	<result column="ID" property="id" />
+	<result column="MARRIAGE_TA_ID" property="marriageTaId" />
+	<result column="REFERRAL" property="referral" />
+	<result column="REASON" property="reason" />
+	<result column="MECHANISM" property="mechanism" />
+	<result column="APPOINTMENT_DATE" property="appointmentDate" />
+	<result column="REFERRAL_DATE" property="referralDate" />
+	<result column="DOCTOR_APPOINTMENTS" property="doctorAppointments" />
+	<result column="REAL_NAME" property="operatorPO.realName" />
+	<result column="NAME" property="departmentPO.name" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,REFERRAL,REASON,MECHANISM,APPOINTMENT_DATE,REFERRAL_DATE,DOCTOR_APPOINTMENTS
+    from PREMARITAL_REFERRAL_INFO
+    where
+			ID = #{ id}
+  </select>
+  
+  <select id="getPreReferralByPremaritalId" resultMap="BaseResultMap" parameterType="hashmap" >
+    select prefer.ID,MARRIAGE_TA_ID,REFERRAL,REASON,MECHANISM,APPOINTMENT_DATE,REFERRAL_DATE,DOCTOR_APPOINTMENTS,REAL_NAME,dep.NAME
+    from PREMARITAL_REFERRAL_INFO prefer
+    left join sys_operator oper on oper.ID = prefer.DOCTOR_APPOINTMENTS
+    left join sys_department dep on dep.ID = prefer.MECHANISM
+    where
+			prefer.MARRIAGE_TA_ID = #{ premaritalId}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MARRIAGE_TA_ID,REFERRAL,REASON,MECHANISM,APPOINTMENT_DATE,REFERRAL_DATE,DOCTOR_APPOINTMENTS
+    from PREMARITAL_REFERRAL_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from PREMARITAL_REFERRAL_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.premarital.po.PremaritalReferralInfoPO" >
+    insert into PREMARITAL_REFERRAL_INFO (ID,MARRIAGE_TA_ID,REFERRAL,REASON,MECHANISM,APPOINTMENT_DATE,REFERRAL_DATE,DOCTOR_APPOINTMENTS)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				#{ referral, javaType=String, jdbcType=VARCHAR},
+				#{ reason, javaType=String, jdbcType=VARCHAR},
+				#{ mechanism, javaType=String, jdbcType=VARCHAR},
+				#{ appointmentDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ referralDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ doctorAppointments, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.premarital.po.PremaritalReferralInfoPO" >
+    update PREMARITAL_REFERRAL_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				REFERRAL = #{ referral, javaType=String, jdbcType=VARCHAR},
+				REASON = #{ reason, javaType=String, jdbcType=VARCHAR},
+				MECHANISM = #{ mechanism, javaType=String, jdbcType=VARCHAR},
+				APPOINTMENT_DATE = #{ appointmentDate, javaType=Date, jdbcType=TIMESTAMP},
+				REFERRAL_DATE = #{ referralDate, javaType=Date, jdbcType=TIMESTAMP},
+				DOCTOR_APPOINTMENTS = #{ doctorAppointments, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+<update id="edit" parameterType="com.threefiveninetong.mchh.premarital.po.PremaritalReferralInfoPO" >
+    update PREMARITAL_REFERRAL_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				REFERRAL = #{ referral, javaType=String, jdbcType=VARCHAR},
+				REASON = #{ reason, javaType=String, jdbcType=VARCHAR},
+				MECHANISM = #{ mechanism, javaType=String, jdbcType=VARCHAR},
+				APPOINTMENT_DATE = #{ appointmentDate, javaType=Date, jdbcType=TIMESTAMP},
+				REFERRAL_DATE = #{ referralDate, javaType=Date, jdbcType=TIMESTAMP},
+				DOCTOR_APPOINTMENTS = #{ doctorAppointments, javaType=String, jdbcType=VARCHAR}
+	    where 
+			MARRIAGE_TA_ID = #{ marriageTaId}
+	  </update>
+	  
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MARRIAGE_TA_ID,REFERRAL,REASON,MECHANISM,APPOINTMENT_DATE,REFERRAL_DATE,DOCTOR_APPOINTMENTS
+    from PREMARITAL_REFERRAL_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from PREMARITAL_REFERRAL_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

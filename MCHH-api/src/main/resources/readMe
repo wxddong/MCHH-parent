@@ -1,0 +1,17 @@
+模块说明：
+appConfig -- 配置
+appPremarital -- 备孕期
+appPrenatal -- 孕产期
+appPostpartum -- 育儿期
+appMember -- 我
+appHospital -- 医院
+appStatis -- 统计
+
+
+响应码说明：
+0000：成功
+-1001：请求参数异常
+-2001：服务器异常
+-3001：业务逻辑错误
+
+

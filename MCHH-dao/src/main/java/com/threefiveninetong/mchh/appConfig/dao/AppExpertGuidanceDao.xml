@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appConfig.dao.AppExpertGuidanceDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appConfig.po.AppExpertGuidancePO" >
+	<result column="ID" property="id" />
+	<result column="TITLE" property="title" />
+	<result column="CONTENT" property="content" />
+	<result column="SMALL_IMAGE_URL" property="smallImageUrl" />
+	<result column="BIG_IMAGE_URL" property="bigImageUrl" />
+	<result column="BIGEN_TIME" property="bigenTime" />
+	<result column="END_TIME" property="endTime" />
+	<result column="STATUS" property="status" />
+	<result column="TYPE" property="type" />
+	<result column="CLASSIFICATION" property="classification" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,TITLE,CONTENT,SMALL_IMAGE_URL,BIG_IMAGE_URL,BIGEN_TIME,END_TIME,STATUS,TYPE,CLASSIFICATION,CREATE_TIME,UPDATE_TIME
+    from APP_EXPERT_GUIDANCE
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,TITLE,CONTENT,SMALL_IMAGE_URL,BIG_IMAGE_URL,BIGEN_TIME,END_TIME,STATUS,TYPE,CLASSIFICATION,CREATE_TIME,UPDATE_TIME
+    from APP_EXPERT_GUIDANCE
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_EXPERT_GUIDANCE
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appConfig.po.AppExpertGuidancePO" >
+    insert into APP_EXPERT_GUIDANCE (ID,TITLE,CONTENT,SMALL_IMAGE_URL,BIG_IMAGE_URL,BIGEN_TIME,END_TIME,STATUS,TYPE,CLASSIFICATION,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ title, javaType=String, jdbcType=VARCHAR},
+				#{ content, javaType=String, jdbcType=VARCHAR},
+				#{ smallImageUrl, javaType=String, jdbcType=VARCHAR},
+				#{ bigImageUrl, javaType=String, jdbcType=VARCHAR},
+				#{ bigenTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ endTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ status, javaType=String, jdbcType=VARCHAR},
+				#{ type, javaType=String, jdbcType=VARCHAR},
+				#{ classification, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appConfig.po.AppExpertGuidancePO" >
+    update APP_EXPERT_GUIDANCE
+    set
+			TITLE = #{ title, javaType=String, jdbcType=VARCHAR},
+				CONTENT = #{ content, javaType=String, jdbcType=VARCHAR},
+				SMALL_IMAGE_URL = #{ smallImageUrl, javaType=String, jdbcType=VARCHAR},
+				BIG_IMAGE_URL = #{ bigImageUrl, javaType=String, jdbcType=VARCHAR},
+				BIGEN_TIME = #{ bigenTime, javaType=Date, jdbcType=TIMESTAMP},
+				END_TIME = #{ endTime, javaType=Date, jdbcType=TIMESTAMP},
+				STATUS = #{ status, javaType=String, jdbcType=VARCHAR},
+				TYPE = #{ type, javaType=String, jdbcType=VARCHAR},
+				CLASSIFICATION = #{ classification, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,TITLE,CONTENT,SMALL_IMAGE_URL,BIG_IMAGE_URL,BIGEN_TIME,END_TIME,STATUS,TYPE,CLASSIFICATION,CREATE_TIME,UPDATE_TIME
+    from APP_EXPERT_GUIDANCE
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_EXPERT_GUIDANCE
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppExpertGuidanceListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    Select ID,TITLE,CONTENT,SMALL_IMAGE_URL,BIG_IMAGE_URL,BIGEN_TIME,END_TIME,STATUS,TYPE,CLASSIFICATION,CREATE_TIME,UPDATE_TIME
+	    From APP_EXPERT_GUIDANCE
+	    Where 1=1
+	    <if test="effective == 'effective'">
+	    	<![CDATA[
+	    		and BIGEN_TIME <= now() and END_TIME > now()
+	    	]]>
+	    </if>
+	    <if test="id != null and id != ''">
+	    	and ID = #{id}
+	    </if>
+	    <if test="typeList != null">
+	    	and TYPE in
+	    	<foreach collection="typeList" index="index" item="item" open="(" separator="," close=")">
+				#{item}   
+		    </foreach>
+	    </if>
+	    <if test="classificationList != null">
+	    	and CLASSIFICATION in
+	    	<foreach collection="classificationList" index="index" item="item" open="(" separator="," close=")">
+				#{item}   
+		    </foreach>
+	    </if>
+	    <if test="status != null and status != ''">
+	    	and STATUS = #{status}
+	    </if>
+	    Order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

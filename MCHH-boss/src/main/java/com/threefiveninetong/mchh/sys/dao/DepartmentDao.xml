@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sys.dao.DepartmentDao">
+
+	<resultMap id="Department" type="com.threefiveninetong.mchh.sys.po.DepartmentPO">
+		<result column="ID" property="id" />
+		<result column="NAME" property="name" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="REMARK" property="remark" />
+		<result column="LEVEL" property="level" />
+		<result column="REGION_ID" property="regionId" />
+		<!-- <association property="Operator"  resultMap="com/threefiveninetong/mchh/sys/dao/OperatorDao.BaseColumns0"/> -->
+	</resultMap>
+
+	<select id="listDepartment" resultMap="Department"
+		parameterType="hashmap">
+		select t1.id,name,t1.parent_id,t1.level,t1.region_id,t1.remark,CASE WHEN childcount > 0 THEN
+		'closed' ELSE NULL END state
+		from sys_department t1 left join (SELECT parent_id, COUNT(0) childcount
+		FROM sys_department GROUP BY parent_id ) t2 on t1.id = t2.parent_id
+		where 1=1
+		<if test="name!=null and name!=''">
+			and name like '%${name}%'
+		    </if>
+		<if test="parentId!=null and parentId!=''">
+			and t1.parent_id = #{parentId}
+		    </if>
+	</select>
+	
+	<select id="allDepartment" resultMap="Department"
+		parameterType="hashmap">
+		select ID,NAME
+		from sys_department
+		
+	</select>
+	
+	<select id="getOpeCountByDepId" resultType="int" parameterType="string">
+		select count(0) c from sys_operator o where o.dep_id = #{depId}
+	</select>
+	<select id="getchdCountByDepId" resultType="int" parameterType="string">
+		select count(0) c from sys_department d where d.parent_id = #{depId}
+	</select>
+
+	<delete id="delete">
+		delete from sys_department
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	<insert id="add" parameterType="com.threefiveninetong.mchh.sys.po.DepartmentPO">
+		 insert into sys_department (ID,NAME,REMARK,LEVEL,REGION_ID,PARENT_ID)
+         values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+			#{ name, javaType=String, jdbcType=VARCHAR},
+			#{ remark, javaType=String, jdbcType=VARCHAR},
+			#{ level, javaType=String, jdbcType=VARCHAR},
+			#{ regionId, javaType=String, jdbcType=VARCHAR},
+			#{ parentId, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+	<update id="update" parameterType="com.threefiveninetong.mchh.sys.po.DepartmentPO">
+		 update sys_department
+    set
+			NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				REMARK = #{ remark, javaType=String, jdbcType=VARCHAR},
+				LEVEL = #{ level, javaType=String, jdbcType=VARCHAR},
+				REGION_ID = #{ regionId, javaType=String, jdbcType=VARCHAR},
+				PARENT_ID = #{ parentId, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+	  
+	  <select id="queryQyByName" parameterType="string" resultType="string">
+	  	select 
+	  	LEVEL
+	  	from
+	  	sys_department
+	  	where
+	  	NAME = #{val}
+	  </select>
+	  
+	  <select id="getDepByName" resultMap="Department" parameterType="hashmap">
+	  	select 
+	  	ID,NAME,LEVEL,REGION_ID
+	  	from
+	  	sys_department
+	  	where NAME = #{val}
+	  </select>
+	  
+	  <select id="queryCountyName" resultType="string">
+	  	select 
+	  	NAME
+	  	from
+	  	city_info
+	  </select>
+	  
+	  
+	  
+	  <select id="queryXiangName" resultType="string">
+	  	select 
+	  	NAME
+	  	from
+	  	township_info
+	  </select>
+	  
+	  <select id="queryCunName" resultType="string">
+	  	select 
+	  	NAME
+	  	from
+	  	village_info
+	  </select>
+	  
+	  <select id="findXianHospital" resultMap="Department" parameterType="hashmap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	sys_department
+	  	where LEVEL = "0"
+	  </select>
+	  
+	  <select id="findXiangHospital" resultMap="Department" parameterType="hashmap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	sys_department
+	  	where LEVEL = "1"
+	  </select>
+	  
+	  <select id="findCunHospital" resultMap="Department" parameterType="hashmap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	sys_department
+	  	where LEVEL = "2"
+	  </select>
+	  
+	  <select id="getDep" resultMap="Department" parameterType="hashmap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	sys_department
+	  	where PARENT_ID = #{parentId}
+	  </select>
+	  
+	  <select id="getDepartmentById" resultMap="Department" parameterType="hashmap">
+	  	select 
+	  	ID,NAME,LEVEL
+	  	from
+	  	sys_department
+	  	where ID = #{depId}
+	  </select>
+	  
+	  
+	   <select id="getAllDepartment" resultMap="Department" parameterType="hashmap">
+	  	select *
+	  	from
+	  	sys_department
+	  </select>
+	  
+</mapper>

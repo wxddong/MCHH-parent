@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appMember.dao.AppMbrOperationRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appMember.po.AppMbrOperationRecordPO" >
+	<result column="ID" property="id" />
+	<result column="MBR_ID" property="mbrId" />
+	<result column="ORN_TIME" property="ornTime" />
+	<result column="ORN_TYPE" property="ornType" />
+	<result column="REMARK" property="remark" />
+	
+	<result column="PHONE" property="appMemberPO.phone" />
+	<result column="NICK_NAME" property="appMemberPO.nickName" />
+	<result column="USER_NAME" property="appMemberPO.userName" />
+  </resultMap>
+  
+  <select id="getAll" resultMap="BaseResultMap"  parameterType="hashmap">
+    select operation.ID,MBR_ID,ORN_TIME,ORN_TYPE,REMARK,mbr.ID,mbr.PHONE,mbr.NICK_NAME,mbr.USER_NAME
+    from APP_MBR_OPERATION_RECORD operation
+    left join APP_MEMBER mbr on operation.MBR_ID = mbr.ID
+    where 1=1
+    <if test="userName!=null and userName!=''">
+		and mbr.USER_NAME like #{userName}
+	</if>
+	<if test="nickName!=null and nickName!=''">
+		and NICK_NAME like #{nickName}
+	</if>
+	<if test="ornType!=null and ornType!=''">
+		and ORN_TYPE = #{ornType}
+	</if>
+    <if test="txtBegin!=null and txtBegin!=''">
+		and ORN_TIME >= STR_TO_DATE(#{txtBegin},'%Y%m%d')
+	</if>
+	<if test="txtEnd!=null and txtEnd!=''">
+		and STR_TO_DATE(#{txtEnd},'%Y%m%d') >= ORN_TIME
+	</if>
+  </select>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MBR_ID,ORN_TIME,ORN_TYPE,REMARK
+    from APP_MBR_OPERATION_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MBR_ID,ORN_TIME,ORN_TYPE,REMARK
+    from APP_MBR_OPERATION_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_MBR_OPERATION_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appMember.po.AppMbrOperationRecordPO" >
+    insert into APP_MBR_OPERATION_RECORD (ID,MBR_ID,ORN_TIME,ORN_TYPE,REMARK)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ mbrId, javaType=String, jdbcType=VARCHAR},
+				#{ ornTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ ornType, javaType=String, jdbcType=VARCHAR},
+				#{ remark, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appMember.po.AppMbrOperationRecordPO" >
+    update APP_MBR_OPERATION_RECORD
+    set
+			MBR_ID = #{ mbrId, javaType=String, jdbcType=VARCHAR},
+				ORN_TIME = #{ ornTime, javaType=Date, jdbcType=TIMESTAMP},
+				ORN_TYPE = #{ ornType, javaType=String, jdbcType=VARCHAR},
+				REMARK = #{ remark, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MBR_ID,ORN_TIME,ORN_TYPE,REMARK
+    from APP_MBR_OPERATION_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_MBR_OPERATION_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

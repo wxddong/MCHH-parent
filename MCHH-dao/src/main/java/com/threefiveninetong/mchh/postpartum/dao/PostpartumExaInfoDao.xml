@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.postpartum.dao.PostpartumExaInfoDao" >
+
+
+	<select id="getMechanismById" resultType="String" parameterType="String" >
+	    select SD.`NAME`
+		FROM sys_department SD
+		WHERE SD.ID = #{mechanismId}
+	  </select>
+
+	<select id="getPost3To7ExaByBirthId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+	    from POSTPARTUM_EXA_INFO
+	    where
+			BIRTH_ARCHIVES_ID = #{ birthArchivesId}  
+			AND EDIT_STATUS = 1 
+			and TYPE = 0
+			order by CREAT_TIME desc
+	  </select>
+	
+	<select id="getPost42ExaByBirthId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+	    from POSTPARTUM_EXA_INFO
+	    where
+			BIRTH_ARCHIVES_ID = #{ birthArchivesId}  
+			AND EDIT_STATUS = 1 
+			and TYPE = 1
+			order by CREAT_TIME desc
+	  </select>
+
+ <select id="findLatestPostpartumExa" resultMap="BaseResultMap" parameterType="String" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from POSTPARTUM_EXA_INFO
+    where
+			BIRTH_ARCHIVES_ID = #{ birthArchivesId}  AND EDIT_STATUS = 1
+			order by CREAT_TIME DESC
+			limit 1
+		
+	  </select>
+ <select id="getPostExaByBirthId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from POSTPARTUM_EXA_INFO
+    where
+			BIRTH_ARCHIVES_ID = #{ id}
+			order by CREAT_TIME DESC
+			limit 1
+		
+	  </select>
+
+ <select id="findPostpartumExa" resultMap="BaseResultMap" parameterType="String" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN
+    from POSTPARTUM_EXA_INFO
+    where
+			ID = #{ postpartumExaId} 
+		
+	  </select>
+
+  <select id="getPostHistoryChecks" resultMap="historyCheck" >
+    select a.ID checkID,a.CREAT_TIME checkDate,a.RESULT evaluate,a.GUIDANCE guidance,
+    b.REFERRAL referral,b.NEXT_FOLLOWING_DATE nextDate,a.TYPE postCheckType,
+    c.real_name doctorName,d.name HospitalName
+    from POSTPARTUM_EXA_INFO a
+    left outer join POSTPARTUM_REFERRAL_INFO b
+    on b.POS_ID = a.ID
+    left outer join SYS_OPERATOR c
+	on a.DOCTOR_ID = c.id
+	left outer join SYS_DEPARTMENT d
+	on c.DEP_ID = d.id
+	where a.BIRTH_ARCHIVES_ID = #{birthArchivesId} AND a.EDIT_STATUS = "1"
+	order by checkDate
+  </select>
+  
+  <select id="getPostpartumHistoryChecks" resultType="com.threefiveninetong.mchh.postpartum.dto.PostHistoryCheckVO" >
+     select a.ID checkID,a.CREAT_TIME checkDate, c.real_name checkDoctor,d.name checkHospital,a.TYPE type,a.RESULT resultSign,a.GUIDANCE  guidance,
+	 peo.VAGINA vulavaSign,peo.VAGINA vaginaSign,peo.CERVICAL cervicalSign,ped.BODY_TEMPERATURE bodyTemperature,CONCAT(ped.BLOOD_LOW,'/',ped.BLOOD_HI) blood,
+	 ped.HEALTH health,ped.PSYCHOLOGICAL psychological,ped.BREAST breastSign,ped.UTERUS uterusSign,ped.LOCHIA lochiaSign,ped.WOUND woundSign,b.REFERRAL referralSign,
+	 b.NEXT_FOLLOWING_DATE nextFollowingDate
+     from POSTPARTUM_EXA_INFO a
+     left outer join POSTPARTUM_REFERRAL_INFO b
+     on b.POS_ID = a.ID
+     left outer join SYS_OPERATOR c
+	 on a.DOCTOR_ID = c.id
+	 left outer join SYS_DEPARTMENT d
+	 on c.DEP_ID = d.id
+	 LEFT JOIN POSTPARTUM_EXA_OTHER_INFO peo
+	 ON peo.POS_CHECKLIST_ID = a.ID
+	 LEFT JOIN POSTPARTUM_EXA_DETAILED_INFO ped
+	 ON ped.POS_CHECKLIST_ID = a.ID
+	 where a.BIRTH_ARCHIVES_ID = #{birthArchivesId} AND a.EDIT_STATUS = "1"
+	 order by checkDate
+  </select>
+  
+  <resultMap id="historyCheck" type="com.threefiveninetong.mchh.postpartum.dto.HistoryCheckVO" >
+		<result column="checkId" property="checkId" />
+		<result column="checkDate" property="checkDate" />
+		<result column="weeks" property="pregnancyWeeks" />
+		<result column="zhuSu" property="chiefComplaint" />
+		<result column="high" property="bloodHi" />
+		<result column="low" property="bloodLow" />
+		<result column="weight" property="weight" />
+		<result column="uterusHight" property="uterusHight" />
+		<result column="abdomen" property="abdomen" />
+		<result column="fetusPosition" property="fetusPosition" />
+		<result column="heartRate" property="heartRate" />
+		<result column="red" property="hemoglobin" />
+		<result column="pro" property="proteinuria" />
+		<result column="BG" property="bloodGlucose" />
+		<result column="TS" property="tangSyndrome" />
+		<result column="NT" property="NT" />
+		<result column="four" property="fourDimensional" />
+		<result column="BS" property="bScan" />
+		<result column="NST" property="NST" />
+		<result column="SGPT" property="sgpt" />
+		<result column="SGOT" property="sgot" />
+		<result column="albumin" property="albumin" />
+		<result column="TB" property="totalBilirubin" />
+		<result column="DBIL" property="dbil" />
+		<result column="SCR" property="scr" />
+		<result column="BUN" property="bun" />
+		<result column="score" property="score" />
+		<result column="evaluate" property="evaluate" />
+		<result column="referral" property="referral" />
+		<result column="nextDate" property="nextFollowingDate" />
+		<result column="guidance" property="guidance" />
+		<result column="doctorName" property="doctorName" />
+		<result column="HospitalName" property="hospital" />
+		<result column="postCheckType" property="postCheckType" />
+  </resultMap>
+  
+  
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.postpartum.po.PostpartumExaInfoPO" >
+	<result column="ID" property="id" />
+	<result column="BIRTH_ARCHIVES_ID" property="birthArchivesId" />
+	<result column="DOCTOR_ID" property="doctorId" />
+	<result column="RESULT" property="result" />
+	<result column="REASON" property="reason" />
+	<result column="REMARK" property="remark" />
+	<result column="GUIDANCE" property="guidance" />
+	<result column="TYPE" property="type" />
+	<result column="EDIT_STATUS" property="editStatus" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="NORMAL_SIGN" property="normalSign" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from POSTPARTUM_EXA_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from POSTPARTUM_EXA_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from POSTPARTUM_EXA_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.postpartum.po.PostpartumExaInfoPO" >
+    insert into POSTPARTUM_EXA_INFO (ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ birthArchivesId, javaType=String, jdbcType=VARCHAR},
+				#{ doctorId, javaType=String, jdbcType=VARCHAR},
+				#{ result, javaType=String, jdbcType=VARCHAR},
+				#{ reason, javaType=String, jdbcType=VARCHAR},
+				#{ remark, javaType=String, jdbcType=VARCHAR},
+				#{ guidance, javaType=String, jdbcType=VARCHAR},
+				#{ type, javaType=String, jdbcType=VARCHAR},
+				#{ editStatus, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ normalSign, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+  
+  
+  <update id="updateState" parameterType="string" >
+	   	update birth_archives_info b
+		SET b.PREGNANT_STATE = 2
+		WHERE b.ID= ${birthArchivesId}
+  </update>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.postpartum.po.PostpartumExaInfoPO" >
+    update POSTPARTUM_EXA_INFO
+    set
+				RESULT = #{ result, javaType=String, jdbcType=VARCHAR},
+				REASON = #{ reason, javaType=String, jdbcType=VARCHAR},
+				REMARK = #{ remark, javaType=String, jdbcType=VARCHAR},
+				GUIDANCE = #{ guidance, javaType=String, jdbcType=VARCHAR},
+				EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+				<if test="creatTime!=null">
+					,CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP}
+				</if>
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,RESULT,REASON,REMARK,GUIDANCE,TYPE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from POSTPARTUM_EXA_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from POSTPARTUM_EXA_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

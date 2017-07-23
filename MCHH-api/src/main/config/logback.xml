@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="10 seconds">
+	<property name="LOG_HOME" value="${catalina.home}/logs/MCHH-api/" /> 
+	<!-- 控制台输出 -->
+	<appender name="stdout"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<!-- 
+		如果返回DENY，那么记录事件立即被抛弃，不再经过剩余过滤器；
+		
+		如果返回NEUTRAL，那么有序列表里的下一个过滤器会接着处理记录事件；
+		
+		如果返回ACCEPT，那么记录事件被立即处理，不再经过剩余过滤器。
+	 -->
+	<!-- 时间滚动输出 level为 INFO 日志 -->
+	<appender name="file—info"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>NEUTRAL</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/info.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 时间滚动输出 level为 WARN 日志 -->
+	<appender name="file—warn"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>NEUTRAL</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/warn.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 时间滚动输出 level为 ERROR 日志 -->
+	<appender name="file—error"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/error.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- web入参出参日志 -->
+	<appender name="webParamsFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/webParamsFile.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="com.threefiveninetong.mchh.core.aop.SystemParamsPrintInterceptor" additivity="false">
+		 <appender-ref ref="webParamsFile"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.core.handler.JsonHttpMessageConverter" additivity="false">
+		 <appender-ref ref="webParamsFile"/>
+	</logger>
+	
+	<!-- 统一配置日志 -->
+	<appender name="file-config" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/config.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="fileConfig" additivity="false">
+		 <appender-ref ref="file-config"/>
+	</logger>
+	
+	<!-- 会员日志 -->
+	<appender name="file-member" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/member.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="fileMember" additivity="false">
+		 <appender-ref ref="file-member"/>
+	</logger>
+	
+	<!-- 医院日志 -->
+	<appender name="file-hospital" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/hospital.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="fileHospital" additivity="false">
+		 <appender-ref ref="file-hospital"/>
+	</logger>
+	
+	<!-- 统计日志 -->
+	<appender name="file-statis" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/statis.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="fileStatis" additivity="false">
+		 <appender-ref ref="file-statis"/>
+	</logger>
+	
+	<!-- 备孕期日志 -->
+	<appender name="file-premarital" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/premarital.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="filePremarital" additivity="false">
+		 <appender-ref ref="file-premarital"/>
+	</logger>
+	
+	<!-- 孕产期日志 -->
+	<appender name="file-prenatal" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/prenatal.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="filPrenatal" additivity="false">
+		 <appender-ref ref="file-prenatal"/>
+	</logger>
+	
+	<!-- 育儿期日志 -->
+	<appender name="file-postpartum" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/%d{yyyy-MM-dd}/postpartum.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="filePostpartum" additivity="false">
+		 <appender-ref ref="file-postpartum"/>
+	</logger>
+	
+	<!--输出jdbctemplate的sql -->
+	<logger name="org.springframework.jdbc.core" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<!--  -->
+	<logger name="org.springframework" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	
+	<logger name="org.springframework.web.servlet.DispatcherServlet" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<root level="DEBUG">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="file—info" />
+		<appender-ref ref="file—error" />
+		<appender-ref ref="email" />
+	</root>
+</configuration>

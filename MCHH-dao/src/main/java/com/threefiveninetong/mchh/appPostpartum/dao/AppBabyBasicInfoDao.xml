@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppBabyBasicInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppBabyBasicInfoPO" >
+	<result column="ID" property="id" />
+	<result column="MBR_ID" property="mbrId" />
+	<result column="BIRTHDAY" property="birthday" />
+	<result column="NAME" property="name" />
+	<result column="SEX" property="sex" />
+	<result column="BIRTH_TIME" property="birthTime" />
+	<result column="LENGTH" property="length" />
+	<result column="WEIGHT" property="weight" />
+	<result column="BIRTH_GES_WEEKS" property="birthGesWeeks" />
+	<result column="BIRTH_PLACE" property="birthPlace" />
+	<result column="DELIVERY_MEC" property="deliveryMec" />
+	<result column="STATUS" property="status" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MBR_ID,BIRTHDAY,NAME,SEX,BIRTH_TIME,LENGTH,WEIGHT,BIRTH_GES_WEEKS,BIRTH_PLACE,DELIVERY_MEC,STATUS,CREATE_TIME,UPDATE_TIME
+    from APP_BABY_BASIC_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MBR_ID,BIRTHDAY,NAME,SEX,BIRTH_TIME,LENGTH,WEIGHT,BIRTH_GES_WEEKS,BIRTH_PLACE,DELIVERY_MEC,STATUS,CREATE_TIME,UPDATE_TIME
+    from APP_BABY_BASIC_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_BABY_BASIC_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppBabyBasicInfoPO" >
+    insert into APP_BABY_BASIC_INFO (ID,MBR_ID,BIRTHDAY,NAME,SEX,BIRTH_TIME,LENGTH,WEIGHT,BIRTH_GES_WEEKS,BIRTH_PLACE,DELIVERY_MEC,STATUS,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ mbrId, javaType=String, jdbcType=VARCHAR},
+				#{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ sex, javaType=String, jdbcType=VARCHAR},
+				#{ birthTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ length, javaType=String, jdbcType=VARCHAR},
+				#{ weight, javaType=String, jdbcType=VARCHAR},
+				#{ birthGesWeeks, javaType=String, jdbcType=VARCHAR},
+				#{ birthPlace, javaType=String, jdbcType=VARCHAR},
+				#{ deliveryMec, javaType=String, jdbcType=VARCHAR},
+				#{ status, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppBabyBasicInfoPO" >
+    update APP_BABY_BASIC_INFO
+    set
+			MBR_ID = #{ mbrId, javaType=String, jdbcType=VARCHAR},
+				BIRTHDAY = #{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+				BIRTH_TIME = #{ birthTime, javaType=Date, jdbcType=TIMESTAMP},
+				LENGTH = #{ length, javaType=String, jdbcType=VARCHAR},
+				WEIGHT = #{ weight, javaType=String, jdbcType=VARCHAR},
+				BIRTH_GES_WEEKS = #{ birthGesWeeks, javaType=String, jdbcType=VARCHAR},
+				BIRTH_PLACE = #{ birthPlace, javaType=String, jdbcType=VARCHAR},
+				DELIVERY_MEC = #{ deliveryMec, javaType=String, jdbcType=VARCHAR},
+				STATUS = #{ status, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MBR_ID,BIRTHDAY,NAME,SEX,BIRTH_TIME,LENGTH,WEIGHT,BIRTH_GES_WEEKS,BIRTH_PLACE,DELIVERY_MEC,STATUS,CREATE_TIME,UPDATE_TIME
+    from APP_BABY_BASIC_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_BABY_BASIC_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppBabyBasicListByConditon" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,MBR_ID,BIRTHDAY,NAME,SEX,BIRTH_TIME,LENGTH,WEIGHT,BIRTH_GES_WEEKS,BIRTH_PLACE,DELIVERY_MEC,STATUS,CREATE_TIME,UPDATE_TIME
+	    from APP_BABY_BASIC_INFO
+	    Where 1=1
+	    <if test="mbrId != null and mbrId != ''">
+	    	and MBR_ID = #{mbrId}
+	    </if>
+	    <if test="status != null and status != ''">
+	    	and STATUS = #{status}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

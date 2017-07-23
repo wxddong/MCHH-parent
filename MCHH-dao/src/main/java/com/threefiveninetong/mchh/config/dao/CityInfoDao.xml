@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.CityInfoDao">
+
+	<select id="getCountyCountBycityId" resultType="int" parameterType="string">
+		SELECT COUNT(0) c FROM DISTRICT_AND_COUNTY_INFO d
+		WHERE d.CITY_ID=#{cityId} AND d.DELETE_SIGN = "1"
+	</select>
+	
+	<update id="delCityInfo"  >
+    update CITY_INFO
+    set DELETE_SIGN = "0"
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	  </update>
+	
+<!-- 	<delete id="delCityInfo"> -->
+<!-- 		delete from CITY_INFO -->
+<!-- 		where id in -->
+<!-- 		<foreach collection="array" index="index" item="item" open="(" -->
+<!-- 			separator="," close=")"> -->
+<!-- 			#{item} -->
+<!-- 		</foreach> -->
+<!-- 	</delete> -->
+	
+	<select id="queryCountyName" resultMap="BaseResultMap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	city_info
+	  </select>
+
+	<select id="getCityByProvinceId" resultMap="BaseResultMap">
+		select
+		ID,PROVINCE_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,CREAT_TIME,SORT_NUM,NUMBER,UPDATE_TIME
+		from CITY_INFO
+		where DELETE_SIGN = "1"
+		and PROVINCE_ID = #{provinceId}
+	</select>
+
+  <select id="listForPage" resultMap="ListResultMap"  parameterType="hashmap">
+    select c.ID,c.PROVINCE_ID,c.NAME,c.NAME_SPELL,c.FIRST_LETTER,c.DELETE_SIGN,c.CREAT_TIME,c.SORT_NUM,c.NUMBER,c.UPDATE_TIME,p.number pNumber,p.id pId
+    from CITY_INFO c
+    left outer join province_info p
+    on c.PROVINCE_ID = p.ID
+    where c.DELETE_SIGN = "1"
+    <if test="pName!=null and pName!=''">
+		and p.NAME like '%${pName}%'
+	</if>
+    <if test="cName!=null and cName!=''">
+		and c.NAME like '%${cName}%'
+	</if>
+	<if test="number!=null and number!=''">
+		and c.NUMBER = #{number}
+	</if>
+	order by c.SORT_NUM 
+    
+  </select>
+	
+  <resultMap id="ListResultMap" type="com.threefiveninetong.mchh.config.po.CityInfoPO" >
+	<result column="ID" property="id" />
+	<result column="pNumber" property="provinceInfoPO.number"/>
+	<result column="pId" property="provinceInfoPO.id"/>
+	<result column="NAME" property="name" />
+	<result column="NAME_SPELL" property="nameSpell" />
+	<result column="FIRST_LETTER" property="firstLetter" />
+	<result column="DELETE_SIGN" property="deleteSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="SORT_NUM" property="sortNum" />
+	<result column="NUMBER" property="number" />
+	<result column="UPDATE_TIME" property="updateTime"/>
+  </resultMap>
+ 
+  <resultMap id="BaseResultMap"
+		type="com.threefiveninetong.mchh.config.po.CityInfoPO">
+		<result column="ID" property="id" />
+		<result column="PROVINCE_ID" property="provinceId" />
+		<result column="NAME" property="name" />
+		<result column="NAME_SPELL" property="nameSpell" />
+		<result column="FIRST_LETTER" property="firstLetter" />
+		<result column="DELETE_SIGN" property="deleteSign" />
+		<result column="CREAT_TIME" property="creatTime" />
+		<result column="SORT_NUM" property="sortNum" />
+		<result column="NUMBER" property="number" />
+		<result column="UPDATE_TIME" property="updateTime" />
+	</resultMap>
+  
+  <select id="getByName" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PROVINCE_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,CREAT_TIME,SORT_NUM,NUMBER,UPDATE_TIME
+    from CITY_INFO
+    where
+			NAME = #{ name} AND DELETE_SIGN='1'
+	  </select>
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PROVINCE_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,CREAT_TIME,SORT_NUM,NUMBER,UPDATE_TIME
+    from CITY_INFO
+    where
+			ID = #{ id}
+	  </select>
+	  
+	<select id="findAllSortNum" resultType="String" >
+    select DISTINCT(SORT_NUM)
+    from CITY_INFO
+    where DELETE_SIGN = "1"
+    order by SORT_NUM
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PROVINCE_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,CREAT_TIME,SORT_NUM,NUMBER,UPDATE_TIME
+    from CITY_INFO
+    where DELETE_SIGN = "1"
+    order by SORT_NUM
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CITY_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="addCityInfo" parameterType="com.threefiveninetong.mchh.config.po.CityInfoPO" >
+    insert into CITY_INFO (ID,PROVINCE_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,CREAT_TIME,SORT_NUM,NUMBER,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ provinceInfoPO.id, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				#{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				#{ deleteSign, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ sortNum},
+				#{ number, javaType=String, jdbcType=VARCHAR},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.CityInfoPO" >
+    update CITY_INFO
+    set
+			PROVINCE_ID = #{ provinceInfoPO.id, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				NAME_SPELL = #{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				FIRST_LETTER = #{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				SORT_NUM = #{ sortNum},
+				NUMBER = #{ number, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+<delete id="deletes">
+		delete from CITY_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+	<!--codegen -->
+
+</mapper>

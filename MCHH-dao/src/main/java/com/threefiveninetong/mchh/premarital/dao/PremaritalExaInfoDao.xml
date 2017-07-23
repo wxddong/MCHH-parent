@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.premarital.dao.PremaritalExaInfoDao" >
+<select id="getManAddressByArchivesId" resultType="String"  parameterType="String" >
+  	    SELECT CONCAT(IFNULL(p.`NAME`,''),',',IFNULL(c.`NAME`,''),',',IFNULL(d.`NAME`,''),',',IFNULL(t.`NAME`,''),',',IFNULL(v.`NAME`,''),',',IFNULL(a.MAN_HOME_ADDRESS,'')) address
+		FROM archives_info a
+		LEFT OUTER JOIN province_info p
+		ON p.ID = a.MAN_HOME_PROVINCE_ID
+		LEFT OUTER JOIN city_info c
+		ON c.ID = a.MAN_HOME_CITY_ID
+		LEFT OUTER JOIN district_and_county_info d
+		ON d.ID = a.MAN_HOME_COUNTY_ID
+		LEFT OUTER JOIN township_info t
+		ON t.ID =a.MAN_HOME_TOWNSHIP_ID
+		LEFT OUTER JOIN village_info v
+		ON v.ID = a.MAN_HOME_VILLAGE_ID
+		WHERE  a.id = #{archivesId}
+  </select>
+<select id="getWomanAddressByArchivesId" resultType="String"  parameterType="String" >
+  	    SELECT CONCAT(IFNULL(p.`NAME`,''),',',IFNULL(c.`NAME`,''),',',IFNULL(d.`NAME`,''),',',IFNULL(t.`NAME`,''),',',IFNULL(v.`NAME`,''),',',IFNULL(a.HOME_ADDRESS,'')) address
+		FROM archives_info a
+		LEFT OUTER JOIN province_info p
+		ON p.ID = a.HOME_PROVINCE_ID
+		LEFT OUTER JOIN city_info c
+		ON c.ID = a.HOME_CITY_ID
+		LEFT OUTER JOIN district_and_county_info d
+		ON d.ID = a.HOME_COUNTY_ID
+		LEFT OUTER JOIN township_info t
+		ON t.ID =a.HOME_TOWNSHIP_ID
+		LEFT OUTER JOIN village_info v
+		ON v.ID = a.HOME_VILLAGE_ID
+		WHERE  a.id = #{archivesId}
+  </select>
+	<select id="listForPage2" resultType="com.threefiveninetong.mchh.reportForm.po.PremaritalCheckPO"  parameterType="hashmap" >
+  	    SELECT a.ID archivesId,a.ARCHIVES_CODE archivesCode,pei.SEX sex,CASE pei.SEX WHEN '0' THEN a.`NAME` WHEN '1' THEN a.MAN_NAME END name,
+														CASE pei.SEX WHEN '0' THEN a.BIRTHDAY WHEN '1' THEN a.MAN_BIRTHDAY END birthday,
+														CASE pei.SEX WHEN '0' THEN a.TELEPHONE WHEN '1' THEN a.MAN_TELE END telephone,pei.CREAT_TIME checkDate,
+														sdi.GENETIC_DIS geneticDis,sdi.INFECTIOUS_DIS infectiousDis,sdi.MEDICAL_DIS medicalDis	,sdi.MENTAL_DIS mentalDis,sdi.REPRODUCTIVE_DIS reproductiveDis
+																								
+
+		FROM PREMARITAL_EXA_INFO pei
+		LEFT OUTER JOIN archives_info a
+		ON pei.ARCHIVES_ID = a.ID
+		LEFT OUTER JOIN inspection_result ir
+		ON ir.MARRIAGE_TA_ID = pei.ID
+		LEFT OUTER JOIN special_disease_info sdi
+		ON sdi.RESULT_ID = ir.ID
+		
+		WHERE a.DELTET_SIGN = '1' AND pei.PREMARITAL_STATUS = '1' AND pei.EDIT_STATUS = '1' 
+		<if test="checkDateStare!=null and checkDateStare!=''">
+			and pei.CREAT_TIME <![CDATA[>=]]> DATE(#{checkDateStare})
+		</if>
+		<if test="checkDateEnd!=null and checkDateEnd!=''">
+			and pei.CREAT_TIME <![CDATA[<=]]> DATE(#{checkDateEnd})
+		</if>
+		<if test="sex!=null and sex!='' and sex!='不限'.toString()">
+			and pei.SEX = #{sex}
+		</if>
+		<if test="exc1!=null and exc1!='' and exc1=='无'.toString()">
+			AND sdi.INFECTIOUS_DIS IS NULL
+		</if>
+		<if test="exc1!=null and exc1!='' and exc1!='无'.toString() and exc1!='不限'.toString()">
+			AND sdi.INFECTIOUS_DIS like '%${exc1}%'
+		</if>
+		<if test="exc2!=null and exc2!='' and exc2=='无'.toString()">
+			AND sdi.GENETIC_DIS IS NULL 
+		</if>
+		<if test="exc2!=null and exc2!='' and exc2!='无'.toString() and exc2!='不限'.toString()">
+			AND sdi.GENETIC_DIS like '%${exc2}%' 
+		</if>
+		<if test="exc3!=null and exc3!='' and exc3=='无'.toString()">
+			AND sdi.MENTAL_DIS IS NULL
+		</if>
+		<if test="exc3!=null and exc3!='' and exc3!='无'.toString() and exc3!='不限'.toString()">
+			AND sdi.MENTAL_DIS like '%${exc3}%'
+		</if>
+		<if test="exc4!=null and exc4!='' and exc4=='无'.toString()">
+			AND sdi.REPRODUCTIVE_DIS IS NULL
+		</if>
+		<if test="exc4!=null and exc4!='' and exc4!='无'.toString() and exc4!='不限'.toString()">
+			AND sdi.REPRODUCTIVE_DIS like '%${exc4}%'
+		</if>
+		<if test="exc5!=null and exc5!='' and exc5=='无'.toString()">
+			AND sdi.MEDICAL_DIS IS NULL 
+		</if>
+		<if test="exc5!=null and exc5!='' and exc5!='无'.toString() and exc5!='不限'.toString()">
+			AND sdi.MEDICAL_DIS like '%${exc5}%' 
+		</if>
+		<if test="exc6!=null and exc6!='' and exc6=='无'.toString()">
+			AND sdi.REPRODUCTIVE_DIS IS NULL
+		</if>
+		<if test="exc6!=null and exc6!='' and exc6!='无'.toString() and exc6!='不限'.toString()">
+			AND sdi.REPRODUCTIVE_DIS like '%${exc6}%'
+		</if>
+  </select>
+
+<select id="adviceNum" resultType="integer"  parameterType="hashmap" >
+    SELECT COUNT(pei.ID)
+	FROM premarital_exa_info pei
+	LEFT OUTER JOIN archives_info a
+	ON a.ID = pei.ARCHIVES_ID
+	LEFT OUTER JOIN inspection_result ir	
+	ON pei.ID = ir.MARRIAGE_TA_ID
+	
+	WHERE pei.PREMARITAL_STATUS = '1' AND pei.EDIT_STATUS = '1' AND a.DELTET_SIGN = '1' AND ir.MEDICAL_ADVICE != '0' AND a.HOME_COUNTY_ID = #{countyId}  
+
+ 	<if test="checkDateStare!=null and checkDateStare!=''">
+		and pei.CREAT_TIME <![CDATA[>=]]> DATE(#{checkDateStare})
+	</if>
+	<if test="checkDateEnd!=null and checkDateEnd!=''">
+		and pei.CREAT_TIME <![CDATA[<=]]> DATE(#{checkDateEnd})
+	</if>
+  </select>
+
+<select id="disNum" resultType="integer"  parameterType="hashmap" >
+    SELECT COUNT(pei.ID)
+	FROM PREMARITAL_EXA_INFO pei
+	LEFT OUTER JOIN archives_info a
+	ON a.ID = pei.ARCHIVES_ID
+	LEFT OUTER JOIN INSPECTION_RESULT ir
+	ON ir.MARRIAGE_TA_ID = pei.ID
+	RIGHT OUTER JOIN SPECIAL_DISEASE_INFO sdi
+	ON sdi.RESULT_ID = ir.ID
+	WHERE a.DELTET_SIGN = '1' AND pei.PREMARITAL_STATUS = '1' AND pei.EDIT_STATUS = '1' AND a.HOME_COUNTY_ID = #{countyId} 
+	<if test="dis!=null and dis=='infectious'.toString()">
+		AND sdi.INFECTIOUS_DIS is NOT NULL
+	</if>
+	<if test="dis!=null and dis=='genetic'.toString()">
+		AND sdi.GENETIC_DIS is NOT NULL
+	</if>
+	<if test="dis!=null and dis=='mental'.toString()">
+		AND sdi.MENTAL_DIS is NOT NULL
+	</if>
+	<if test="dis!=null and dis=='reproductive'.toString()">
+		AND sdi.REPRODUCTIVE_DIS is NOT NULL
+	</if>
+	<if test="dis!=null and dis=='medical'.toString()">
+		AND sdi.MEDICAL_DIS is NOT NULL
+	</if>
+ 	<if test="checkDateStare!=null and checkDateStare!=''">
+		and pei.CREAT_TIME <![CDATA[>=]]> DATE(#{checkDateStare})
+	</if>
+	<if test="checkDateEnd!=null and checkDateEnd!=''">
+		and pei.CREAT_TIME <![CDATA[<=]]> DATE(#{checkDateEnd})
+	</if>
+  </select>
+
+<select id="findAllAsk" resultType="integer"  parameterType="hashmap" >
+    SELECT COUNT(pei.ID)
+	FROM PREMARITAL_EXA_INFO pei
+	LEFT OUTER JOIN inspection_result ir
+	ON ir.MARRIAGE_TA_ID = pei.ID
+	LEFT OUTER JOIN archives_info a
+	ON a.ID = pei.ARCHIVES_ID
+	WHERE ir.MARITAL_CONSULTATION IS NOT NULL AND pei.PREMARITAL_STATUS = '1' AND pei.EDIT_STATUS = '1' AND a.DELTET_SIGN = '1' AND a.HOME_COUNTY_ID = #{countyId}
+ 	<if test="checkDateStare!=null and checkDateStare!=''">
+		and pei.CREAT_TIME <![CDATA[>=]]> DATE(#{checkDateStare})
+	</if>
+	<if test="checkDateEnd!=null and checkDateEnd!=''">
+		and pei.CREAT_TIME <![CDATA[<=]]> DATE(#{checkDateEnd})
+	</if>
+  </select>
+
+<select id="allPremaritalExa" resultMap="BaseResultMap" >
+    select p.ID,p.ARCHIVES_ID,p.SEX,p.DOCTOR_ID,p.PREMARITAL_STATUS,p.EDIT_STATUS,p.CREAT_TIME,p.UPDATE_TIME
+    from PREMARITAL_EXA_INFO p
+    LEFT OUTER JOIN archives_info a
+	ON a.ID = p.ARCHIVES_ID
+ 	where p.PREMARITAL_STATUS = '1' AND p.EDIT_STATUS = '1' AND a.DELTET_SIGN = '1' AND  a.HOME_COUNTY_ID = #{countyId}
+ 	<if test="checkDateStare!=null and checkDateStare!=''">
+		and p.CREAT_TIME <![CDATA[>=]]> DATE(#{checkDateStare})
+	</if>
+	<if test="checkDateEnd!=null and checkDateEnd!=''">
+		and p.CREAT_TIME <![CDATA[<=]]> DATE(#{checkDateEnd})
+	</if>
+  </select>
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.premarital.po.PremaritalExaInfoPO" >
+	<result column="ID" property="id" />
+	<result column="ARCHIVES_ID" property="archivesId" />
+	<result column="SEX" property="sex" />
+	<result column="DOCTOR_ID" property="doctorId" />
+	<result column="PREMARITAL_STATUS" property="premaritalStatus" />
+	<result column="EDIT_STATUS" property="editStatus" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	
+	<!-- <result column="ARCH_ID" property="archivesInfoPO.id" /> -->
+	<result column="ARCHIVES_CODE" property="archivesInfoPO.archivesCode" />
+	<result column="REAL_NAME" property="operatorPO.realName" />
+	<result column="HOSPITAL_ID" property="archivesInfoPO.hospitalId" />
+	<result column="DOCTOR_ID" property="archivesInfoPO.doctorId" />
+	<result column="NAME" property="archivesInfoPO.name" />
+	<result column="INTERNATIONAL" property="archivesInfoPO.international" />
+	<result column="TELEPHONE" property="archivesInfoPO.telephone" />
+	<result column="ID_NO" property="archivesInfoPO.idNo" />
+	<result column="NATION" property="archivesInfoPO.nation" />
+	<result column="BIRTHDAY" property="archivesInfoPO.birthday" />
+	<!-- <result column="AGE" property="age" /> -->
+	<result column="HOUSEHOLD_TYPE" property="archivesInfoPO.householdType" />
+	<result column="ACCOUNT_TYPE" property="archivesInfoPO.accountType" />
+	<result column="OCCUPATION" property="archivesInfoPO.occupation" />
+	<result column="EDUCATION" property="archivesInfoPO.education" />
+	<result column="ACC_PROVINCE_ID" property="archivesInfoPO.accProvinceId" />
+	<result column="ACC_CITY_ID" property="archivesInfoPO.accCityId" />
+	<result column="ACC_COUNTY_ID" property="archivesInfoPO.accCountyId" />
+	<result column="ACC_TOWNSHIP_ID" property="archivesInfoPO.accTownshipId" />
+	<result column="ACC_VILLAGE_ID" property="archivesInfoPO.accVillageId" />
+	<result column="ACC_ADDRESS" property="archivesInfoPO.accAddress" />
+	<result column="HOME_PROVINCE_ID" property="archivesInfoPO.homeProvinceId" />
+	<result column="HOME_CITY_ID" property="archivesInfoPO.homeCityId" />
+	<result column="HOME_COUNTY_ID" property="archivesInfoPO.homeCountyId" />
+	<result column="HOME_TOWNSHIP_ID" property="archivesInfoPO.homeTownshipId" />
+	<result column="HOME_VILLAGE_ID" property="archivesInfoPO.homeVillageId" />
+	<result column="HOME_ADDRESS" property="archivesInfoPO.homeAddress" />
+	<result column="WORK_UNIT" property="archivesInfoPO.workUnit" />
+	<result column="URGENT_CALL" property="archivesInfoPO.urgentCall" />
+	<result column="MAN_NAME" property="archivesInfoPO.manName" />
+	<result column="MAN_ID_NO" property="archivesInfoPO.manIdNo" />
+	<result column="MAN_TELE" property="archivesInfoPO.manTele" />
+	<result column="MAN_INTE" property="archivesInfoPO.manInte" />
+	<result column="MAN_SEX" property="archivesInfoPO.manSex" />
+	<result column="MAN_BIRTHDAY" property="archivesInfoPO.manBirthday" />
+	<result column="MAN_ACC_PROVINCE_ID" property="archivesInfoPO.manAccProvinceId" />
+	<result column="MAN_ACC_CITY_ID" property="archivesInfoPO.manAccCityId" />
+	<result column="MAN_ACC_COUNTY_ID" property="archivesInfoPO.manAccCountyId" />
+	<result column="MAN_ACC_TOWNSHIP_ID" property="archivesInfoPO.manAccTownshipId" />
+	<result column="MAN_ACC_VILLAGE_ID" property="archivesInfoPO.manAccVillageId" />
+	<result column="MAN_ACC_ADDRESS" property="archivesInfoPO.manAccAddress" />
+	<result column="MAN_HOME_PROVINCE_ID" property="archivesInfoPO.manHomeProvinceId" />
+	<result column="MAN_HOME_CITY_ID" property="archivesInfoPO.manHomeCityId" />
+	<result column="MAN_HOME_COUNTY_ID" property="archivesInfoPO.manHomeCountyId" />
+	<result column="MAN_HOME_TOWNSHIP_ID" property="archivesInfoPO.manHomeTownshipId" />
+	<result column="MAN_HOME_VILLAGE_ID" property="archivesInfoPO.manHomeVillageId" />
+	<result column="MAN_HOME_ADDRESS" property="archivesInfoPO.manHomeAddress" />
+	<result column="MAN_WORK_UNIT" property="archivesInfoPO.manWorkUnit" />
+	<result column="MAN_URGENT_CALL" property="archivesInfoPO.manUrgentCall" />
+	<result column="MAN_NATION" property="archivesInfoPO.manNation" />
+	<result column="MAN_HOU_TYPE" property="archivesInfoPO.manHouType" />
+	<result column="MAN_ACC_TYPE" property="archivesInfoPO.manAccType" />
+	<result column="MAN_OCCUPATION" property="archivesInfoPO.manOccupation" />
+	<result column="MAN_EDUCATION" property="archivesInfoPO.manEducation" />
+	<result column="DELTET_SIGN" property="archivesInfoPO.deltetSign" />
+	<result column="AGE" property="age" />
+	<result column="MECHANISM" property="premaritalReferralInfoPO.mechanism" />
+	<result column="APPOINTMENT_DATE" property="premaritalReferralInfoPO.appointmentDate" />
+	<result column="REFERRAL_DATE" property="premaritalReferralInfoPO.referralDate" />
+	<result column="ADDRESS" property="address" />
+	<result column="CHECK_RESULT" property="inspectionResultPO.checkResult" />
+	<result column="EXC_TERM" property="inspectionResultPO.excTerm" />
+	<result column="OTHER_EXC" property="inspectionResultPO.otherExc" />
+	<result column="DISEASE_DIAGNOSIS" property="inspectionResultPO.diseaseDiagnosis" />
+	<result column="MEDICAL_ADVICE" property="inspectionResultPO.medicalAdvice" />
+	<result column="MARITAL_CONSULTATION" property="inspectionResultPO.maritalConsultation" />
+	<result column="CONSULTATIVE_RESULTS" property="inspectionResultPO.consultativeResults" />
+	<result column="ISSUED_BY_DATE" property="inspectionResultPO.issuedByDate" />
+	
+	<result column="WHETHER_PREGNANT" property="healthInfoPO.whetherPregnant" />
+	
+	<result column="DEP_NAME" property="premaritalReferralInfoPO.departmentPO.name" />
+	<result column="DEPT_NAME" property="archivesInfoPO.departmentPO.name" />
+	<result column="DEPT_ID" property="archivesInfoPO.departmentPO.id" />
+	
+	<result column="GRANT_SIGN" property="birthArchivesInfoPO.grantSign" />
+	<result column="FRANT_NUM" property="birthArchivesInfoPO.frantNum" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_ID,SEX,DOCTOR_ID,PREMARITAL_STATUS,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PREMARITAL_EXA_INFO
+    where
+			ID = #{ id}
+	  </select>
+	 
+	 <select id="getPremaritalByArchivesId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_ID,SEX,DOCTOR_ID,PREMARITAL_STATUS,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PREMARITAL_EXA_INFO
+    where
+			ARCHIVES_ID = #{ archivesId}
+	  </select> 
+	  
+  <select id="findPremaritalByArchivesId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_ID,SEX,DOCTOR_ID,PREMARITAL_STATUS,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PREMARITAL_EXA_INFO
+    where SEX = '1' and
+			ARCHIVES_ID = #{ archivesId}
+  </select> 
+  
+  <select id="findWomanPremaritalByArchivesId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_ID,SEX,DOCTOR_ID,PREMARITAL_STATUS,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PREMARITAL_EXA_INFO
+    where SEX = '0' and
+			ARCHIVES_ID = #{ archivesId}
+  </select> 
+
+  <select id="findById" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from PREMARITAL_EXA_INFO pre
+    LEFT JOIN ARCHIVES_INFO archives ON archives.ID = pre.ARCHIVES_ID
+    where
+			ID = #{ id}
+  </select>
+  
+  <select id="getById" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from PREMARITAL_EXA_INFO pre
+    LEFT JOIN ARCHIVES_INFO archives ON archives.ID = pre.ARCHIVES_ID
+    where
+			pre.ID = #{ premaritalId}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,ARCHIVES_ID,SEX,DOCTOR_ID,PREMARITAL_STATUS,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PREMARITAL_EXA_INFO
+  </select>
+  
+  
+  <select id="getAll" resultMap="BaseResultMap" >
+    select arch.ARCHIVES_CODE,arch.DOCTOR_ID,arch.NAME,arch.ID_NO,arch.MAN_ID_NO,
+    	(year(now())-year(arch.BIRTHDAY)-1) + ( DATE_FORMAT(arch.BIRTHDAY, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d') ) as AGE,
+    	arch.TELEPHONE,arch.BIRTHDAY,arch.HOUSEHOLD_TYPE,arch.ACCOUNT_TYPE,arch.OCCUPATION,
+    	arch.HOME_PROVINCE_ID,arch.HOME_CITY_ID,arch.HOME_COUNTY_ID,arch.HOME_TOWNSHIP_ID,arch.HOME_VILLAGE_ID,
+    	arch.HOME_ADDRESS,arch.WORK_UNIT,arch.URGENT_CALL,arch.MAN_NAME,arch.MAN_TELE,arch.MAN_INTE,
+    	arch.MAN_SEX,arch.MAN_BIRTHDAY,arch.MAN_HOME_PROVINCE_ID,arch.MAN_HOME_CITY_ID,arch.MAN_HOME_COUNTY_ID,
+    	arch.MAN_HOME_TOWNSHIP_ID,arch.MAN_HOME_VILLAGE_ID,arch.MAN_HOME_ADDRESS,arch.MAN_NATION,arch.MAN_HOU_TYPE,
+    	arch.MAN_ACC_TYPE,arch.MAN_OCCUPATION,arch.MAN_EDUCATION,arch.DELTET_SIGN,arch.CREAT_TIME,arch.UPDATE_TIME,
+    	pre.EDIT_STATUS,pre.ID,pre.ARCHIVES_ID,pre.SEX,pre.DOCTOR_ID,pre.PREMARITAL_STATUS,pre.CREAT_TIME,pre.UPDATE_TIME,
+    	oper.REAL_NAME,prefer.MECHANISM,prefer.REFERRAL_DATE,inspect.CHECK_RESULT,inspect.ISSUED_BY_DATE,inspect.MEDICAL_ADVICE,
+    	health.WHETHER_PREGNANT,b3.GRANT_SIGN,b3.FRANT_NUM,dep.NAME as DEP_NAME,dept.NAME as DEPT_NAME,dept.ID as DEPT_ID,
+    	CONCAT(pro.NAME,city.NAME) AS ADDRESS 
+    from PREMARITAL_EXA_INFO pre
+    left join ARCHIVES_INFO arch on pre.ARCHIVES_ID = arch.ID
+    left join sys_operator oper on arch.DOCTOR_ID = oper.ID
+    left join PREMARITAL_REFERRAL_INFO prefer on pre.ID = prefer.MARRIAGE_TA_ID
+    left join sys_department dep on dep.ID = prefer.mechanism
+    left join sys_department dept on dept.ID = arch.HOSPITAL_ID
+    left join INSPECTION_RESULT inspect on pre.ID = inspect.MARRIAGE_TA_ID
+    left join HEALTH_INFO health on pre.ID = health.MARRIAGE_TA_ID
+    left join (SELECT b.DELTET_SIGN,b.ARCHIVES_ID, b.ID bId,b.GRANT_SIGN,b.FRANT_NUM FROM birth_archives_info b
+								right JOIN (SELECT b1.ID,b1.ARCHIVES_ID, MIN(b1.CREAT_TIME) minTime FROM birth_archives_info b1 GROUP BY ARCHIVES_ID ) b2
+								ON b.ARCHIVES_ID= b2.ARCHIVES_ID AND b.CREAT_TIME = b2.minTime	
+				) b3
+	ON b3.ARCHIVES_ID = pre.ARCHIVES_ID 
+    left join PROVINCE_INFO pro on pro.ID = arch.HOME_PROVINCE_ID
+    left join CITY_INFO city on city.ID = arch.HOME_CITY_ID
+	where arch.DELTET_SIGN = "1" AND b3.DELTET_SIGN = 1
+	and (pre.EDIT_STATUS != '2' 
+    OR pre.EDIT_STATUS is NULL)
+    <if test="archivesCode!=null and archivesCode!=''">
+		and arch.ARCHIVES_CODE = #{archivesCode}
+	</if>
+    <if test="name!=null and name!=''">
+    	
+		and arch.NAME like #{name} or arch.MAN_NAME like #{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		and arch.ID_NO = #{idNo}
+	</if>
+	
+	<if test="countyMechanism!=null and countyMechanism!=''">
+		and dept.ID = #{departmentId}
+	</if>
+	<if test="townMechanism!=null and townMechanism!=''">
+		and dept.ID = #{departmentId}
+	</if>
+	<if test="villageMechanism!=null and villageMechanism!=''">
+		and dept.ID = #{departmentId}
+	</if>
+	<if test="txtBegin!=null and txtBegin!=''">
+		and arch.CREAT_TIME >= STR_TO_DATE(#{txtBegin},'%Y-%m-%d')
+	</if>
+	<if test="txtEnd!=null and txtEnd!=''">
+		<!-- <![CDATA[and arch.CREATE_TIME <=STR_TO_DATE(#{txtEnd},'%Y-%m-%d')]]> -->
+		and STR_TO_DATE(#{txtEnd},'%Y-%m-%d') >= arch.CREAT_TIME
+	</if>
+  	<if test="sex!=null and sex!=''">
+		and pre.SEX = #{sex}
+	</if>
+	<if test="checkResult!=null and checkResult!=''">
+		and inspect.CHECK_RESULT = #{checkResult}
+	</if>
+	<if test="medicalAdvice!=null and medicalAdvice!=''">
+		and inspect.MEDICAL_ADVICE = #{medicalAdvice}
+	</if>
+	<!-- <if test="grantSign!=null and grantSign!=''">
+		and birthArch.GRANT_SIGN = #{grantSign}
+	</if> -->
+	<if test="grantSign1 !=null and grantSign1!=''">
+		and b3.GRANT_SIGN != "1"
+	</if>
+	<if test="grantSign2 !=null and grantSign2!=''">
+		and b3.GRANT_SIGN = "1"
+	</if>
+	<!-- <if test="frantNum =='0'">
+		and birthArch.FRANT_NUM = "0"
+	</if>
+	<if test="frantNum =='-1'">
+		and birthArch.FRANT_NUM != "0"
+	</if> -->
+	<if test="frantNum1 !=null and frantNum1!=''">
+		and (b3.FRANT_NUM is null or b3.FRANT_NUM = "0")
+	</if>
+	<if test="frantNum2 !=null and frantNum2!=''">
+		and b3.FRANT_NUM != "0"
+		and b3.FRANT_NUM is not null
+	</if>
+	<if test="whetherPregnant!=null and whetherPregnant!=''">
+		and health.WHETHER_PREGNANT = #{whetherPregnant}
+	</if>
+	order by arch.CREAT_TIME desc
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from PREMARITAL_EXA_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.premarital.po.PremaritalExaInfoPO" >
+    insert into PREMARITAL_EXA_INFO (ID,ARCHIVES_ID,SEX,DOCTOR_ID,PREMARITAL_STATUS,EDIT_STATUS,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ archivesId, javaType=String, jdbcType=VARCHAR},
+				#{ sex, javaType=String, jdbcType=VARCHAR},
+				#{ doctorId, javaType=String, jdbcType=VARCHAR},
+				#{ premaritalStatus, javaType=String, jdbcType=VARCHAR},
+				#{ editStatus, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.premarital.po.PremaritalExaInfoPO" >
+    update PREMARITAL_EXA_INFO
+    set
+			ARCHIVES_ID = #{ archivesId, javaType=String, jdbcType=VARCHAR},
+				SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+				DOCTOR_ID = #{ doctorId, javaType=String, jdbcType=VARCHAR},
+				PREMARITAL_STATUS = #{ premaritalStatus, javaType=String, jdbcType=VARCHAR},
+				EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+ </update>
+ 
+ <update id="delWoman" parameterType="String" >
+    update PREMARITAL_EXA_INFO
+    set
+				EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+ </update>
+ 
+  <update id="delMan" parameterType="String" >
+    update PREMARITAL_EXA_INFO
+    set
+				EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+ </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+     select ID,ARCHIVES_ID,SEX,DOCTOR_ID,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PREMARITAL_EXA_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from PREMARITAL_EXA_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

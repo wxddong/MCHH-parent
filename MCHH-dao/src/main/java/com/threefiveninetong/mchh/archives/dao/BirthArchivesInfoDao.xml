@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.archives.dao.BirthArchivesInfoDao" >
+	
+	<update id="toChangeStatue" parameterType="String">
+		update BIRTH_ARCHIVES_INFO
+	  	set PREGNANT_STATE = '1'
+		where ID = #{ birthArchivesId}
+	</update>
+	<update id="saveBirthArchivesUpdate" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	  	set LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+		  	 PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+		  	 CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+		  	 UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+		where ID = #{ id}
+	</update>
+	<update id="saveBirthArchivesToUpdate" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	  	set LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+		  	 PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+		  	 UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+		where ID = #{ id}
+	</update>
+	<update id="delBirthArchivesByBirthId" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	  	set DELTET_SIGN = "0"
+		where ID = #{ birthArchivesId}
+	</update>
+	
+	<update id="updateRiskSign" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	  	set  
+  		  	RISK_SIGN = #{ riskSign, javaType=String, jdbcType=VARCHAR},
+			SCREENING_DATE = #{ screeningDate, javaType=Date, jdbcType=TIMESTAMP},
+			UPDATE_TIME = #{ screeningDate, javaType=Date, jdbcType=TIMESTAMP}
+		where ID = #{ id}
+	</update>
+	
+	<update id="saveLastMensesAndPredictDate" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	  	set  
+  		  	LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+			PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+			UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+		where ID = #{ id}
+	</update>
+
+	<update id="toCloseCase" parameterType="hashmap">
+		update BIRTH_ARCHIVES_INFO
+	  		  set  PREGNANT_STATE = 2,
+				   CLOSING_REASON = #{ closeCaseReason, javaType=String, jdbcType=VARCHAR},
+				   CLOSING_DATE = #{ closeCaseTime, javaType=Date, jdbcType=TIMESTAMP},
+				   UPDATE_TIME = #{ closeCaseTime, javaType=Date, jdbcType=TIMESTAMP}
+		where ID = #{ birthArchivesId}
+	</update>
+	
+	<select id="getNearBirthArchivesByArchivesId" resultMap="BaseResultMap" parameterType="String" >
+		select *
+	    from BIRTH_ARCHIVES_INFO
+	    where ARCHIVES_ID = #{ archivesId} 
+	    and DELTET_SIGN = 1
+	    order by CREAT_TIME DESC
+	    limit 1
+	</select>
+	
+	<update id="updateReferralSign" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	    set REFERRAL_SIGN = #{ referralSign, javaType=String, jdbcType=VARCHAR},
+	    	REFERRAL_TIME = #{ referralTime, javaType=Date, jdbcType=TIMESTAMP},
+	    	OUT_HOSPITAL_ID = #{ outHospitalId, javaType=String, jdbcType=VARCHAR},
+	    	IN_HOSPITAL_ID = #{ inHospitalId, javaType=String, jdbcType=VARCHAR},
+	    	UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+		where ID = #{ id}
+	</update>
+	
+	<select id="getBirthArchivesByArchivesIdAndState" resultMap="BaseResultMap" parameterType="String" >
+		select *
+	    from BIRTH_ARCHIVES_INFO
+	    where ARCHIVES_ID = #{ archivesId}
+	    and PREGNANT_STATE = #{ pregnantState}
+	    and DELTET_SIGN = 1
+	    order by CREAT_TIME DESC
+	    limit 1
+	</select>
+	
+	<update id="updateStatus" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO">
+		update BIRTH_ARCHIVES_INFO
+	    set PREGNANT_STATE = #{ pregnantState, javaType=String, jdbcType=VARCHAR}
+		where ID = #{ id}
+	</update>
+	
+	<select id="getBirthArchivesByArchivesId" resultMap="BaseResultMap" parameterType="String" >
+		select *
+	    from BIRTH_ARCHIVES_INFO
+	    where ARCHIVES_ID = #{ archivesId} 
+	    and DELTET_SIGN = 1
+	    order by CREAT_TIME DESC
+	    limit 1
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO" >
+	<result column="ID" property="id" />
+	<result column="ARCHIVES_ID" property="archivesId" />
+	<result column="HOSPITAL_ID" property="hospitalId" />
+	<result column="GRANT_SIGN" property="grantSign" />
+	<result column="FRANT_NUM" property="frantNum" />
+	<result column="LAST_MENSES" property="lastMenses" />
+	<result column="PREDICT_DATE" property="predictDate" />
+	<result column="PREGNANT_STATE" property="pregnantState" />
+	<result column="CLOSING_REASON" property="closingReason" />
+	<result column="CLOSING_DATE" property="closingDate" />
+	<result column="RISK_SIGN" property="riskSign" />
+	<result column="REFERRAL_SIGN" property="referralSign" />
+	<result column="OUT_HOSPITAL_ID" property="outHospitalId" />
+	<result column="IN_HOSPITAL_ID" property="inHospitalId" />
+	<result column="REFERRAL_TIME" property="referralTime" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="DELTET_SIGN" property="deltetSign" />
+  </resultMap>
+  
+  <select id="getTotal" resultType="Integer" >
+    select count(0)
+    from BIRTH_ARCHIVES_INFO birArch
+    left join ARCHIVES_INFO arch on birArch.ARCHIVES_ID = arch.ID
+    left join sys_department dep on dep.ID = birArch.HOSPITAL_ID
+    where birArch.DELTET_SIGN = "1"
+    and birArch.PREGNANT_STATE = "0"
+  </select>
+  
+  <select id="getNoAgriculture" resultType="Integer" >
+    select count(0)
+    from BIRTH_ARCHIVES_INFO birArch
+    left join ARCHIVES_INFO arch on birArch.ARCHIVES_ID = arch.ID
+    left join sys_department dep on dep.ID = birArch.HOSPITAL_ID
+    where birArch.DELTET_SIGN = "1"
+    and birArch.PREGNANT_STATE = "0"
+    and arch.ACCOUNT_TYPE = "1"
+  </select>
+  
+  <select id="getAgriculture" resultType="Integer" >
+    select count(0)
+    from BIRTH_ARCHIVES_INFO birArch
+    left join ARCHIVES_INFO arch on birArch.ARCHIVES_ID = arch.ID
+    left join sys_department dep on dep.ID = birArch.HOSPITAL_ID
+    where birArch.DELTET_SIGN = "1"
+    and birArch.PREGNANT_STATE = "0"
+    and arch.ACCOUNT_TYPE = "0"
+  </select>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from BIRTH_ARCHIVES_INFO
+    where ID = #{ id}
+	and DELTET_SIGN = 1
+	</select>
+	<!-- 通过档案id -->
+	<select id="findbirth" resultMap="BaseResultMap" parameterType="String" >
+   select ID,ARCHIVES_ID,HOSPITAL_ID,GRANT_SIGN,FRANT_NUM,LAST_MENSES,PREDICT_DATE,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,REFERRAL_TIME,CREAT_TIME,UPDATE_TIME
+    from BIRTH_ARCHIVES_INFO
+   
+    where ARCHIVES_ID =#{id}	
+    and DELTET_SIGN = 1
+	order by CREAT_TIME desc
+	limit 1
+	</select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,ARCHIVES_ID,HOSPITAL_ID,GRANT_SIGN,FRANT_NUM,LAST_MENSES,PREDICT_DATE,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,REFERRAL_TIME,CREAT_TIME,UPDATE_TIME
+    from BIRTH_ARCHIVES_INFO
+    where DELTET_SIGN = 1
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from BIRTH_ARCHIVES_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO" >
+    insert into BIRTH_ARCHIVES_INFO (ID,ARCHIVES_ID,HOSPITAL_ID,GRANT_SIGN,FRANT_NUM,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,REFERRAL_TIME,CREAT_TIME,UPDATE_TIME,DELTET_SIGN,LAST_MENSES,PREDICT_DATE)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ archivesId, javaType=String, jdbcType=VARCHAR},
+				#{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				#{ grantSign, javaType=String, jdbcType=VARCHAR},
+				#{ frantNum, javaType=String, jdbcType=VARCHAR},
+				#{ pregnantState, javaType=String, jdbcType=VARCHAR},
+				#{ closingReason, javaType=String, jdbcType=VARCHAR},
+				#{ closingDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ riskSign, javaType=String, jdbcType=VARCHAR},
+				#{ referralSign, javaType=String, jdbcType=VARCHAR},
+				#{ referralTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ deltetSign, javaType=String, jdbcType=VARCHAR},
+				#{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				#{ predictDate, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.archives.po.BirthArchivesInfoPO" >
+    update BIRTH_ARCHIVES_INFO
+    set
+			ARCHIVES_ID = #{ archivesId, javaType=String, jdbcType=VARCHAR},
+				HOSPITAL_ID = #{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				GRANT_SIGN = #{ grantSign, javaType=String, jdbcType=VARCHAR},
+				FRANT_NUM = #{ frantNum, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+				PREGNANT_STATE = #{ pregnantState, javaType=String, jdbcType=VARCHAR},
+				CLOSING_REASON = #{ closingReason, javaType=String, jdbcType=VARCHAR},
+				CLOSING_DATE = #{ closingDate, javaType=Date, jdbcType=TIMESTAMP},
+				RISK_SIGN = #{ riskSign, javaType=String, jdbcType=VARCHAR},
+				REFERRAL_SIGN = #{ referralSign, javaType=String, jdbcType=VARCHAR},
+				REFERRAL_TIME = #{ referralTime, javaType=Date, jdbcType=TIMESTAMP},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select *
+    from BIRTH_ARCHIVES_INFO
+    where DELTET_SIGN = 1
+  </select>
+
+
+<delete id="deletes">
+		delete from BIRTH_ARCHIVES_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+  <select id="getNoCloseCase" resultMap="BaseResultMap" >
+    select ID,ARCHIVES_ID,HOSPITAL_ID,GRANT_SIGN,FRANT_NUM,LAST_MENSES,PREDICT_DATE,PREGNANT_STATE,CLOSING_REASON,CLOSING_DATE,RISK_SIGN,REFERRAL_SIGN,REFERRAL_TIME,CREAT_TIME,UPDATE_TIME
+    from BIRTH_ARCHIVES_INFO where PREGNANT_STATE != '2' and DELTET_SIGN='1'
+  </select>
+  
+  <select id="getLastMensesByBirthArchivesId" resultType="date" parameterType="String" >
+    SELECT b.LAST_MENSES lastMenses 
+	FROM `birth_archives_info` b
+	WHERE b.ID = #{birthArchivesId}
+  </select>
+  
+<!--codegen-->
+
+</mapper>

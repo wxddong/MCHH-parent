@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.premarital.dao.LaboratorySpecialInsInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.premarital.po.LaboratorySpecialInsInfoPO" >
+	<result column="ID" property="id" />
+	<result column="MARRIAGE_TA_ID" property="marriageTaId" />
+	<result column="HEMOGLOBIN" property="hemoglobin" />
+	<result column="WHITE_CELL_COUNT" property="whiteCellCount" />
+	<result column="PLATELET" property="platelet" />
+	<result column="ROUTINE_BLOOD" property="routineBlood" />
+	<result column="URINE_PROTEIN" property="urineProtein" />
+	<result column="PH" property="ph" />
+	<result column="WHITE_CELL" property="whiteCell" />
+	<result column="URINE_SUGAR" property="urineSugar" />
+	<result column="KETONE_BODY" property="ketoneBody" />
+	<result column="ERY" property="ery" />
+	<result column="ROUTINE_URINE" property="routineUrine" />
+	<result column="SERUM_ALT" property="serumAlt" />
+	<result column="ASPERTATE_AMI" property="aspertateAmi" />
+	<result column="ALBUMIN" property="albumin" />
+	<result column="TOTAL_BILIRUBIN" property="totalBilirubin" />
+	<result column="COMBINING_BILIRUBIN" property="combiningBilirubin" />
+	<result column="SERUM_CREATININE" property="serumCreatinine" />
+	<result column="VAGINAL_DISCHARGE" property="vaginalDischarge" />
+	<result column="BLOOD_UREA_NITROGEN" property="bloodUreaNitrogen" />
+	<result column="OTHER_SECRETION" property="otherSecretion" />
+	<result column="CLEANLINESS" property="cleanliness" />
+	<result column="ANTIGEN_HEPATITIS" property="antigenHepatitis" />
+	<result column="HEPATITIS_ANTIBODY" property="hepatitisAntibody" />
+	<result column="CORE_ANTIBODY" property="coreAntibody" />
+	<result column="E_ANTIBODY" property="eantibody" />
+	<result column="E_ANTIGEN" property="eantigen" />
+	<result column="SYPHILIS_SERUM" property="syphilisSerum" />
+	<result column="HIV_ANTIBODIES" property="hivAntibodies" />
+	<result column="CHEST" property="chest" />
+	<result column="NOTE" property="note" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,HEMOGLOBIN,WHITE_CELL_COUNT,PLATELET,ROUTINE_BLOOD,URINE_PROTEIN,PH,WHITE_CELL,URINE_SUGAR,KETONE_BODY,ERY,ROUTINE_URINE,SERUM_ALT,ASPERTATE_AMI,ALBUMIN,TOTAL_BILIRUBIN,COMBINING_BILIRUBIN,SERUM_CREATININE,VAGINAL_DISCHARGE,BLOOD_UREA_NITROGEN,OTHER_SECRETION,CLEANLINESS,ANTIGEN_HEPATITIS,HEPATITIS_ANTIBODY,CORE_ANTIBODY,E_ANTIBODY,E_ANTIGEN,SYPHILIS_SERUM,HIV_ANTIBODIES,CHEST,NOTE
+    from LABORATORY_SPECIAL_INS_INFO
+    where
+			ID = #{ id}
+  </select>
+  
+  <select id="getLaboratoryByPremaritalId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,HEMOGLOBIN,WHITE_CELL_COUNT,PLATELET,ROUTINE_BLOOD,URINE_PROTEIN,PH,WHITE_CELL,URINE_SUGAR,KETONE_BODY,ERY,ROUTINE_URINE,SERUM_ALT,ASPERTATE_AMI,ALBUMIN,TOTAL_BILIRUBIN,COMBINING_BILIRUBIN,SERUM_CREATININE,VAGINAL_DISCHARGE,BLOOD_UREA_NITROGEN,OTHER_SECRETION,CLEANLINESS,ANTIGEN_HEPATITIS,HEPATITIS_ANTIBODY,CORE_ANTIBODY,E_ANTIBODY,E_ANTIGEN,SYPHILIS_SERUM,HIV_ANTIBODIES,CHEST,NOTE
+    from LABORATORY_SPECIAL_INS_INFO
+    where
+			MARRIAGE_TA_ID = #{ premaritalId}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MARRIAGE_TA_ID,HEMOGLOBIN,WHITE_CELL_COUNT,PLATELET,ROUTINE_BLOOD,URINE_PROTEIN,PH,WHITE_CELL,URINE_SUGAR,KETONE_BODY,ERY,ROUTINE_URINE,SERUM_ALT,ASPERTATE_AMI,ALBUMIN,TOTAL_BILIRUBIN,COMBINING_BILIRUBIN,SERUM_CREATININE,VAGINAL_DISCHARGE,BLOOD_UREA_NITROGEN,OTHER_SECRETION,CLEANLINESS,ANTIGEN_HEPATITIS,HEPATITIS_ANTIBODY,CORE_ANTIBODY,E_ANTIBODY,E_ANTIGEN,SYPHILIS_SERUM,HIV_ANTIBODIES,CHEST,NOTE
+    from LABORATORY_SPECIAL_INS_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from LABORATORY_SPECIAL_INS_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.premarital.po.LaboratorySpecialInsInfoPO" >
+    insert into LABORATORY_SPECIAL_INS_INFO (ID,MARRIAGE_TA_ID,HEMOGLOBIN,WHITE_CELL_COUNT,PLATELET,ROUTINE_BLOOD,URINE_PROTEIN,PH,WHITE_CELL,URINE_SUGAR,KETONE_BODY,ERY,ROUTINE_URINE,SERUM_ALT,ASPERTATE_AMI,ALBUMIN,TOTAL_BILIRUBIN,COMBINING_BILIRUBIN,SERUM_CREATININE,VAGINAL_DISCHARGE,BLOOD_UREA_NITROGEN,OTHER_SECRETION,CLEANLINESS,ANTIGEN_HEPATITIS,HEPATITIS_ANTIBODY,CORE_ANTIBODY,E_ANTIBODY,E_ANTIGEN,SYPHILIS_SERUM,HIV_ANTIBODIES,CHEST,NOTE)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				#{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				#{ whiteCellCount, javaType=String, jdbcType=VARCHAR},
+				#{ platelet, javaType=String, jdbcType=VARCHAR},
+				#{ routineBlood, javaType=String, jdbcType=VARCHAR},
+				#{ urineProtein, javaType=String, jdbcType=VARCHAR},
+				#{ ph, javaType=String, jdbcType=VARCHAR},
+				#{ whiteCell, javaType=String, jdbcType=VARCHAR},
+				#{ urineSugar, javaType=String, jdbcType=VARCHAR},
+				#{ ketoneBody, javaType=String, jdbcType=VARCHAR},
+				#{ ery, javaType=String, jdbcType=VARCHAR},
+				#{ routineUrine, javaType=String, jdbcType=VARCHAR},
+				#{ serumAlt, javaType=String, jdbcType=VARCHAR},
+				#{ aspertateAmi, javaType=String, jdbcType=VARCHAR},
+				#{ albumin, javaType=String, jdbcType=VARCHAR},
+				#{ totalBilirubin, javaType=String, jdbcType=VARCHAR},
+				#{ combiningBilirubin, javaType=String, jdbcType=VARCHAR},
+				#{ serumCreatinine, javaType=String, jdbcType=VARCHAR},
+				#{ vaginalDischarge, javaType=String, jdbcType=VARCHAR},
+				#{ bloodUreaNitrogen, javaType=String, jdbcType=VARCHAR},
+				#{ otherSecretion, javaType=String, jdbcType=VARCHAR},
+				#{ cleanliness, javaType=String, jdbcType=VARCHAR},
+				#{ antigenHepatitis, javaType=String, jdbcType=VARCHAR},
+				#{ hepatitisAntibody, javaType=String, jdbcType=VARCHAR},
+				#{ coreAntibody, javaType=String, jdbcType=VARCHAR},
+				#{ eantibody, javaType=String, jdbcType=VARCHAR},
+				#{ eantigen, javaType=String, jdbcType=VARCHAR},
+				#{ syphilisSerum, javaType=String, jdbcType=VARCHAR},
+				#{ hivAntibodies, javaType=String, jdbcType=VARCHAR},
+				#{ chest, javaType=String, jdbcType=VARCHAR},
+				#{ note, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.premarital.po.LaboratorySpecialInsInfoPO" >
+    update LABORATORY_SPECIAL_INS_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				HEMOGLOBIN = #{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				WHITE_CELL_COUNT = #{ whiteCellCount, javaType=String, jdbcType=VARCHAR},
+				PLATELET = #{ platelet, javaType=String, jdbcType=VARCHAR},
+				ROUTINE_BLOOD = #{ routineBlood, javaType=String, jdbcType=VARCHAR},
+				URINE_PROTEIN = #{ urineProtein, javaType=String, jdbcType=VARCHAR},
+				PH = #{ ph, javaType=String, jdbcType=VARCHAR},
+				WHITE_CELL = #{ whiteCell, javaType=String, jdbcType=VARCHAR},
+				URINE_SUGAR = #{ urineSugar, javaType=String, jdbcType=VARCHAR},
+				KETONE_BODY = #{ ketoneBody, javaType=String, jdbcType=VARCHAR},
+				ERY = #{ ery, javaType=String, jdbcType=VARCHAR},
+				ROUTINE_URINE = #{ routineUrine, javaType=String, jdbcType=VARCHAR},
+				SERUM_ALT = #{ serumAlt, javaType=String, jdbcType=VARCHAR},
+				ASPERTATE_AMI = #{ aspertateAmi, javaType=String, jdbcType=VARCHAR},
+				ALBUMIN = #{ albumin, javaType=String, jdbcType=VARCHAR},
+				TOTAL_BILIRUBIN = #{ totalBilirubin, javaType=String, jdbcType=VARCHAR},
+				COMBINING_BILIRUBIN = #{ combiningBilirubin, javaType=String, jdbcType=VARCHAR},
+				SERUM_CREATININE = #{ serumCreatinine, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_DISCHARGE = #{ vaginalDischarge, javaType=String, jdbcType=VARCHAR},
+				BLOOD_UREA_NITROGEN = #{ bloodUreaNitrogen, javaType=String, jdbcType=VARCHAR},
+				OTHER_SECRETION = #{ otherSecretion, javaType=String, jdbcType=VARCHAR},
+				CLEANLINESS = #{ cleanliness, javaType=String, jdbcType=VARCHAR},
+				ANTIGEN_HEPATITIS = #{ antigenHepatitis, javaType=String, jdbcType=VARCHAR},
+				HEPATITIS_ANTIBODY = #{ hepatitisAntibody, javaType=String, jdbcType=VARCHAR},
+				CORE_ANTIBODY = #{ coreAntibody, javaType=String, jdbcType=VARCHAR},
+				E_ANTIBODY = #{ eantibody, javaType=String, jdbcType=VARCHAR},
+				E_ANTIGEN = #{ eantigen, javaType=String, jdbcType=VARCHAR},
+				SYPHILIS_SERUM = #{ syphilisSerum, javaType=String, jdbcType=VARCHAR},
+				HIV_ANTIBODIES = #{ hivAntibodies, javaType=String, jdbcType=VARCHAR},
+				CHEST = #{ chest, javaType=String, jdbcType=VARCHAR},
+				NOTE = #{ note, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+<update id="edit" parameterType="com.threefiveninetong.mchh.premarital.po.LaboratorySpecialInsInfoPO" >
+    update LABORATORY_SPECIAL_INS_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				HEMOGLOBIN = #{ hemoglobin, javaType=String, jdbcType=VARCHAR},
+				WHITE_CELL_COUNT = #{ whiteCellCount, javaType=String, jdbcType=VARCHAR},
+				PLATELET = #{ platelet, javaType=String, jdbcType=VARCHAR},
+				ROUTINE_BLOOD = #{ routineBlood, javaType=String, jdbcType=VARCHAR},
+				URINE_PROTEIN = #{ urineProtein, javaType=String, jdbcType=VARCHAR},
+				PH = #{ ph, javaType=String, jdbcType=VARCHAR},
+				WHITE_CELL = #{ whiteCell, javaType=String, jdbcType=VARCHAR},
+				URINE_SUGAR = #{ urineSugar, javaType=String, jdbcType=VARCHAR},
+				KETONE_BODY = #{ ketoneBody, javaType=String, jdbcType=VARCHAR},
+				ERY = #{ ery, javaType=String, jdbcType=VARCHAR},
+				ROUTINE_URINE = #{ routineUrine, javaType=String, jdbcType=VARCHAR},
+				SERUM_ALT = #{ serumAlt, javaType=String, jdbcType=VARCHAR},
+				ASPERTATE_AMI = #{ aspertateAmi, javaType=String, jdbcType=VARCHAR},
+				ALBUMIN = #{ albumin, javaType=String, jdbcType=VARCHAR},
+				TOTAL_BILIRUBIN = #{ totalBilirubin, javaType=String, jdbcType=VARCHAR},
+				COMBINING_BILIRUBIN = #{ combiningBilirubin, javaType=String, jdbcType=VARCHAR},
+				SERUM_CREATININE = #{ serumCreatinine, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_DISCHARGE = #{ vaginalDischarge, javaType=String, jdbcType=VARCHAR},
+				BLOOD_UREA_NITROGEN = #{ bloodUreaNitrogen, javaType=String, jdbcType=VARCHAR},
+				OTHER_SECRETION = #{ otherSecretion, javaType=String, jdbcType=VARCHAR},
+				CLEANLINESS = #{ cleanliness, javaType=String, jdbcType=VARCHAR},
+				ANTIGEN_HEPATITIS = #{ antigenHepatitis, javaType=String, jdbcType=VARCHAR},
+				HEPATITIS_ANTIBODY = #{ hepatitisAntibody, javaType=String, jdbcType=VARCHAR},
+				CORE_ANTIBODY = #{ coreAntibody, javaType=String, jdbcType=VARCHAR},
+				E_ANTIBODY = #{ eantibody, javaType=String, jdbcType=VARCHAR},
+				E_ANTIGEN = #{ eantigen, javaType=String, jdbcType=VARCHAR},
+				SYPHILIS_SERUM = #{ syphilisSerum, javaType=String, jdbcType=VARCHAR},
+				HIV_ANTIBODIES = #{ hivAntibodies, javaType=String, jdbcType=VARCHAR},
+				CHEST = #{ chest, javaType=String, jdbcType=VARCHAR},
+				NOTE = #{ note, javaType=String, jdbcType=VARCHAR}
+	    where 
+			MARRIAGE_TA_ID = #{ marriageTaId}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MARRIAGE_TA_ID,HEMOGLOBIN,WHITE_CELL_COUNT,PLATELET,ROUTINE_BLOOD,URINE_PROTEIN,PH,WHITE_CELL,URINE_SUGAR,KETONE_BODY,ERY,ROUTINE_URINE,SERUM_ALT,ASPERTATE_AMI,ALBUMIN,TOTAL_BILIRUBIN,COMBINING_BILIRUBIN,SERUM_CREATININE,VAGINAL_DISCHARGE,BLOOD_UREA_NITROGEN,OTHER_SECRETION,CLEANLINESS,ANTIGEN_HEPATITIS,HEPATITIS_ANTIBODY,CORE_ANTIBODY,E_ANTIBODY,E_ANTIGEN,SYPHILIS_SERUM,HIV_ANTIBODIES,CHEST,NOTE
+    from LABORATORY_SPECIAL_INS_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from LABORATORY_SPECIAL_INS_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

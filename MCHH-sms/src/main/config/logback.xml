@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="logBasePath" value="${catalina.home}/logs/" />  
+	<!--/app/sms/applicationSever/sms--> 
+	<!--${catalina.home}/logs/SMS--> 
+	<!-- D:/logs/SMS -->
+	<!-- 日志输出到屏幕  -->
+    <!-- TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF -->	
+    
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<encoder>
+		<!-- %-4relative [%thread] %-5level -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="com.threefiveninetong.mchh.task.SmsTask" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/SmsTask.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+		
+	<appender name="com.threefiveninetong.mchh.task.support.InitSmsTaskSupprot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/InitSmsTaskSupprot.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="com.threefiveninetong.mchh.task.support.BalanceSmsTaskSupprot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/BalanceSmsTaskSupprot.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="com.threefiveninetong.mchh.task.support.SendSmsTaskSupprot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/SendSmsTaskSupprot.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="com.threefiveninetong.mchh.task.support.DownSmsTaskSupprot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/DownSmsTaskSupprot.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+
+	<appender name="com.threefiveninetong.mchh.send.support.YiMeiClient" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/yimei/YiMeiClient.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="com.threefiveninetong.mchh.send.service.YimeiServiceImpl" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/yimei/YimeiServiceImpl.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+<!-- 
+
+	<appender name="com.threefiveninetong.mchh.send.support.DevsourceClient" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/devsource/DevsourceClient.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="com.threefiveninetong.mchh.send.service.DevsourceServiceImpl" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/devsource/DevsourceServiceImpl.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	<appender name="com.threefiveninetong.mchh.send.support.ChunLinClient" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/chunlinsending.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  - %msg %n </pattern>
+		</encoder>
+	</appender>
+
+	<appender name=" com.threefiveninetong.mchh.send.support.GuoDuDeliverMsg" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/guodo/guoduodown.log</fileNamePattern>
+		<maxHistory>3</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  - %msg %n </pattern>
+		</encoder>
+	</appender>
+	<appender name="com.threefiveninetong.mchh.send.service.GuoDuServiceImpl" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/guodo/guoduosending.log</fileNamePattern>
+		<maxHistory>3</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender> 
+
+	<appender name="com.threefiveninetong.mchh.send.service.RongDaServiceImpl" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/rongda/sending.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="JuXinTongServiceImpl" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/juxintong/sending.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="JuXinTongClient" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/juxintong/downstate.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	
+	
+	<appender name="com.threefiveninetong.mchh.send.service.ManDaoServiceImpl" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${logBasePath}/%d{yyyy-MM-dd}/mandao/sending.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+-->
+	
+	<!-- 日志输出  -->
+	<!-- 这样可以使该包下的日志级别为info，additivity="false"禁止monitor里的内容向上传递，否则会同时显示在默认的日志中。 --> 
+	<!-- appender-ref属性，用来指定记录到哪个日志文件中。 --> 
+	<logger name="org.apache.ibatis" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="com.googlecode.ibaguice" level="INFO" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<!-- sql日志 -->
+	<logger name="java.sql" level="INFO" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<!-- spring日志 -->
+	<logger name="org.springframework" level="ERROR" additivity="false">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+	
+	<logger name="com.threefiveninetong.mchh.task.SmsTask" level="INFO" additivity="true">
+		<appender-ref ref="com.threefiveninetong.mchh.task.SmsTask"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.task.support.InitSmsTaskSupprot" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.task.support.InitSmsTaskSupprot"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.task.support.BalanceSmsTaskSupprot" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.task.support.BalanceSmsTaskSupprot"/>
+	</logger>
+		<logger name="com.threefiveninetong.mchh.task.support.SendSmsTaskSupprot" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.task.support.SendSmsTaskSupprot"/>
+	</logger>
+		<logger name="com.threefiveninetong.mchh.task.support.DownSmsTaskSupprot" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.task.support.DownSmsTaskSupprot"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.support.YiMeiClient" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.support.YiMeiClient"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.service.YimeiServiceImpl" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.service.YimeiServiceImpl"/>
+	</logger>
+	<!--
+	<logger name="com.threefiveninetong.mchh.send.support.DevsourceClient" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.support.DevsourceClient"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.service.DevsourceServiceImpl" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.service.DevsourceServiceImpl"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.support.ChunLinClient" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.support.ChunLinClient"/>
+	</logger>	
+	
+	 <logger name="com.threefiveninetong.mchh.send.service.GuoDuServiceImpl" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.service.GuoDuServiceImpl"/>
+	</logger>
+		<logger name="com.threefiveninetong.mchh.send.support.GuoDuDeliverMsg" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.support.GuoDuDeliverMsg"/>
+	</logger>
+	
+	<logger name="com.threefiveninetong.mchh.send.service.RongDaServiceImpl" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.service.RongDaServiceImpl"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.service.JuXinTongServiceImpl" level="INFO" additivity="false">
+		<appender-ref ref="JuXinTongServiceImpl"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.support.JuXinTongClient" level="INFO" additivity="false">
+		<appender-ref ref="JuXinTongClient"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.send.service.ManDaoServiceImpl" level="INFO" additivity="false">
+		<appender-ref ref="com.threefiveninetong.mchh.send.service.ManDaoServiceImpl"/>
+	</logger>
+	 -->
+	 
+	<!-- ******************************************* -->
+	
+	<root level="INFO">             
+    	<appender-ref ref="STDOUT" />
+    </root>
+ 
+</configuration>

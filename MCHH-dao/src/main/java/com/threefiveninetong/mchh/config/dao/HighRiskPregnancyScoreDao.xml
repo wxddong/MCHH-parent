@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.HighRiskPregnancyScoreDao" >
+	
+	<select id="selectAll" resultMap="BaseResultMap" >
+	    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+	    from HIGH_RISK_PREGNANCY_SCORE
+	    where type = '0'
+  	</select>
+	
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.HighRiskPregnancyScorePO" >
+	<result column="ID" property="id" />
+	<result column="NAME" property="name" />
+	<result column="SCORE" property="score" />
+	<result column="STATUS" property="status" />
+	<result column="REMARK" property="remark" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="TYPE" property="type" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE
+    where
+			ID = #{ id}
+	  </select>
+	  
+
+ <select id="getHighRiskPregnancyScorePOByname" resultMap="BaseResultMap" parameterType="String" >
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE
+    where 	NAME = #{ name}
+	and 	TYPE='0'
+	order by CREAT_TIME
+	limit 1
+</select>
+
+
+ <select id="findHighRiskPregnancyScorePOByname" resultMap="BaseResultMap" parameterType="String" >
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE
+    where 	NAME = #{ name}
+	and 	TYPE='1'
+	order by CREAT_TIME
+	limit 1
+</select>	  
+
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE
+    where TYPE='0'
+  </select>
+  
+  
+  <select id="findAllBaby" resultMap="BaseResultMap" >
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE
+    where TYPE='1'
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from HIGH_RISK_PREGNANCY_SCORE
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.HighRiskPregnancyScorePO" >
+    insert into HIGH_RISK_PREGNANCY_SCORE (ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ score, javaType=String, jdbcType=VARCHAR},
+				#{ status, javaType=String, jdbcType=VARCHAR},
+				#{ remark, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ type, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.HighRiskPregnancyScorePO" >
+    update HIGH_RISK_PREGNANCY_SCORE
+    set
+			NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				SCORE = #{ score, javaType=String, jdbcType=VARCHAR},
+				STATUS = #{ status, javaType=String, jdbcType=VARCHAR},
+				REMARK = #{ remark, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				TYPE =#{ type, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE where 1=1
+    and TYPE='0'
+    <if test="name !=null and name!=''">
+    	and NAME like '%${name}%'
+    </if>
+    <if test="score !=null and score!=''">
+    	and SCORE=#{score}
+    </if>
+    <if test="status !=null and status !=''">
+    	and STATUS=#{status}
+    </if>
+    
+  </select>
+  
+  
+  <select id="listForPageBaby" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,NAME,SCORE,STATUS,REMARK,CREAT_TIME,UPDATE_TIME,TYPE
+    from HIGH_RISK_PREGNANCY_SCORE where 1=1
+    and TYPE='1'
+    <if test="name !=null and name!=''">
+    	and NAME like '%${name}%'
+    </if>
+    <if test="score !=null and score!=''">
+    	and SCORE=#{score}
+    </if>
+    <if test="status !=null and status !=''">
+    	and STATUS=#{status}
+    </if>
+    
+  </select>
+
+
+<delete id="deletes">
+		delete from HIGH_RISK_PREGNANCY_SCORE
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

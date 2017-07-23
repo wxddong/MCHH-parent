@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppParentingThreeYearRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppParentingThreeYearRecordPO" >
+	<result column="ID" property="id" />
+	<result column="PAR_ID" property="parId" />
+	<result column="KINDERGARTEN" property="kindergarten" />
+	<result column="CHEWING_HABIT" property="chewingHabit" />
+	<result column="SLEEP_BRUSH_TEETH" property="sleepBrushTeeth" />
+	<result column="MEAL_WASH_HAND" property="mealWashHand" />
+	<result column="SQUINTING" property="squinting" />
+	<result column="OWN_NAME" property="ownName" />
+	<result column="PRETEND_PLAY" property="pretendPlay" />
+	<result column="IMITATE_DRAW_CIRCLE" property="imitateDrawCircle" />
+	<result column="DOUBLE_JUMP" property="doubleJump" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PAR_ID,KINDERGARTEN,CHEWING_HABIT,SLEEP_BRUSH_TEETH,MEAL_WASH_HAND,SQUINTING,OWN_NAME,PRETEND_PLAY,IMITATE_DRAW_CIRCLE,DOUBLE_JUMP,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_THREE_YEAR_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PAR_ID,KINDERGARTEN,CHEWING_HABIT,SLEEP_BRUSH_TEETH,MEAL_WASH_HAND,SQUINTING,OWN_NAME,PRETEND_PLAY,IMITATE_DRAW_CIRCLE,DOUBLE_JUMP,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_THREE_YEAR_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PARENTING_THREE_YEAR_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingThreeYearRecordPO" >
+    insert into APP_PARENTING_THREE_YEAR_RECORD (ID,PAR_ID,KINDERGARTEN,CHEWING_HABIT,SLEEP_BRUSH_TEETH,MEAL_WASH_HAND,SQUINTING,OWN_NAME,PRETEND_PLAY,IMITATE_DRAW_CIRCLE,DOUBLE_JUMP,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ parId, javaType=String, jdbcType=VARCHAR},
+				#{ kindergarten, javaType=String, jdbcType=VARCHAR},
+				#{ chewingHabit, javaType=String, jdbcType=VARCHAR},
+				#{ sleepBrushTeeth, javaType=String, jdbcType=VARCHAR},
+				#{ mealWashHand, javaType=String, jdbcType=VARCHAR},
+				#{ squinting, javaType=String, jdbcType=VARCHAR},
+				#{ ownName, javaType=String, jdbcType=VARCHAR},
+				#{ pretendPlay, javaType=String, jdbcType=VARCHAR},
+				#{ imitateDrawCircle, javaType=String, jdbcType=VARCHAR},
+				#{ doubleJump, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingThreeYearRecordPO" >
+    update APP_PARENTING_THREE_YEAR_RECORD
+    set
+			PAR_ID = #{ parId, javaType=String, jdbcType=VARCHAR},
+				KINDERGARTEN = #{ kindergarten, javaType=String, jdbcType=VARCHAR},
+				CHEWING_HABIT = #{ chewingHabit, javaType=String, jdbcType=VARCHAR},
+				SLEEP_BRUSH_TEETH = #{ sleepBrushTeeth, javaType=String, jdbcType=VARCHAR},
+				MEAL_WASH_HAND = #{ mealWashHand, javaType=String, jdbcType=VARCHAR},
+				SQUINTING = #{ squinting, javaType=String, jdbcType=VARCHAR},
+				OWN_NAME = #{ ownName, javaType=String, jdbcType=VARCHAR},
+				PRETEND_PLAY = #{ pretendPlay, javaType=String, jdbcType=VARCHAR},
+				IMITATE_DRAW_CIRCLE = #{ imitateDrawCircle, javaType=String, jdbcType=VARCHAR},
+				DOUBLE_JUMP = #{ doubleJump, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,PAR_ID,KINDERGARTEN,CHEWING_HABIT,SLEEP_BRUSH_TEETH,MEAL_WASH_HAND,SQUINTING,OWN_NAME,PRETEND_PLAY,IMITATE_DRAW_CIRCLE,DOUBLE_JUMP,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_THREE_YEAR_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PARENTING_THREE_YEAR_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppParentingThreeYearRecordListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,PAR_ID,KINDERGARTEN,CHEWING_HABIT,SLEEP_BRUSH_TEETH,MEAL_WASH_HAND,SQUINTING,OWN_NAME,PRETEND_PLAY,IMITATE_DRAW_CIRCLE,DOUBLE_JUMP,CREATE_TIME,UPDATE_TIME
+	    from APP_PARENTING_THREE_YEAR_RECORD
+	    where 1=1
+	    <if test="parId != null and parId != ''">
+	    	and PAR_ID = #{parId}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.PopulationDataDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.PopulationDataPO" >
+	<result column="ID" property="id" />
+	<result column="COUNTY_ID" property="countyId" />
+	<result column="TOW_ID" property="towId" />
+	<result column="VILLAGE_ID" property="villageId" />
+	<result column="MARRY_NUM" property="marryNum" />
+	<result column="ISVALID" property="isvalid" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="STATISTICAL_DATE" property="statisticalDate" />
+	<result column="STATISTICAL_DATE_END" property="statisticalDateEnd" />
+  </resultMap>
+  
+  
+  
+  <resultMap id="DistictResultMap" type="com.threefiveninetong.mchh.config.po.PopulationDataPO" >
+	<result column="ID" property="id" />
+	<result column="disName" property="countyId" />
+	<result column="TOW_ID" property="towId" />
+	<result column="VILLAGE_ID" property="villageId" />
+	<result column="MARRY_NUM" property="marryNum" />
+	<result column="ISVALID" property="isvalid" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="STATISTICAL_DATE" property="statisticalDate" />
+	<result column="STATISTICAL_DATE_END" property="statisticalDateEnd" />
+  </resultMap>
+  
+  
+  
+  <resultMap id="towResultMap" type="com.threefiveninetong.mchh.config.po.PopulationDataPO" >
+	<result column="ID" property="id" />
+	<result column="NAME" property="countyId" />
+	<result column="TOW_ID" property="towId" />
+	<result column="VILLAGE_ID" property="villageId" />
+	<result column="MARRY_NUM" property="marryNum" />
+	<result column="ISVALID" property="isvalid" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="STATISTICAL_DATE" property="statisticalDate" />
+	<result column="STATISTICAL_DATE_END" property="statisticalDateEnd" />
+  </resultMap>
+  
+  <select id="findPopulation" resultMap="BaseResultMap" parameterType="String" >
+     select pop.ID,pop.COUNTY_ID,pop.TOW_ID,pop.VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+	    pop.STATISTICAL_DATE_END
+	 from POPULATION_DATA pop 
+    where
+			ID = #{ id}
+			
+  </select>
+  
+  <!--查询县  -->
+  <select id="findCountry" resultMap="DistictResultMap" parameterType="String" >
+     select pop.ID,pop.COUNTY_ID,pop.TOW_ID,pop.VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+	    pop.STATISTICAL_DATE_END,dis.NAME as disName
+	    from POPULATION_DATA pop left join DISTRICT_AND_COUNTY_INFO dis
+	    on pop.COUNTY_ID=dis.ID
+    where
+			pop.ID = #{ id}
+			
+	  </select>
+	  
+	  <!--查询乡  -->
+	  <select id="findtow" resultMap="towResultMap" parameterType="String" >
+     select * from (select pop.ID,CONCAT(dis.NAME,',',tow.NAME) as NAME,pop.COUNTY_ID as COUNTY_ID,pop.TOW_ID as TOW_ID,pop.VILLAGE_ID as VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+    	pop.STATISTICAL_DATE_END
+    	from POPULATION_DATA pop 
+		left join DISTRICT_AND_COUNTY_INFO dis
+		on pop.COUNTY_ID= dis.ID
+		left join TOWNSHIP_INFO tow
+    	on pop.TOW_ID=tow.ID
+    	
+         )ssss
+    where
+			ID = #{ id}
+			
+	  </select>
+	  
+	  
+	  
+	  <!--查询村  -->
+	  <select id="findVill" resultMap="towResultMap" parameterType="String" >
+     select * from (select pop.ID,CONCAT(dis.NAME,',',tow.NAME,',',vill.NAME) as NAME,pop.COUNTY_ID as COUNTY_ID,pop.TOW_ID as TOW_ID,pop.VILLAGE_ID as VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+    	pop.STATISTICAL_DATE_END
+    	from POPULATION_DATA pop 
+		left join DISTRICT_AND_COUNTY_INFO dis
+		on pop.COUNTY_ID= dis.ID
+		left join TOWNSHIP_INFO tow
+    	on pop.TOW_ID=tow.ID
+    	left join VILLAGE_INFO vill
+    	on pop.VILLAGE_ID = vill.ID
+         )ssss
+    where
+			ID = #{ id}
+			
+	</select>
+  
+  <select id="findAll" resultMap="DistictResultMap" >
+     select pop.ID,pop.COUNTY_ID,pop.TOW_ID,pop.VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+	    pop.STATISTICAL_DATE_END,dis.NAME as disName
+	    from POPULATION_DATA pop left join DISTRICT_AND_COUNTY_INFO dis
+	    on pop.COUNTY_ID=dis.ID
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from POPULATION_DATA
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.PopulationDataPO" >
+    insert into POPULATION_DATA (ID,COUNTY_ID,TOW_ID,VILLAGE_ID,MARRY_NUM,ISVALID,CREAT_TIME,UPDATE_TIME,STATISTICAL_DATE,STATISTICAL_DATE_END)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ countyId, javaType=String, jdbcType=VARCHAR},
+				#{ towId, javaType=String, jdbcType=VARCHAR},
+				#{ villageId, javaType=String, jdbcType=VARCHAR},
+				#{ marryNum, javaType=String, jdbcType=VARCHAR},
+				#{ isvalid, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ statisticalDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ statisticalDateEnd, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.PopulationDataPO" >
+    update POPULATION_DATA
+    set
+			COUNTY_ID = #{ countyId, javaType=String, jdbcType=VARCHAR},
+				TOW_ID = #{ towId, javaType=String, jdbcType=VARCHAR},
+				VILLAGE_ID = #{ villageId, javaType=String, jdbcType=VARCHAR},
+				MARRY_NUM = #{ marryNum, javaType=String, jdbcType=VARCHAR},
+				ISVALID = #{ isvalid, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				STATISTICAL_DATE = #{ statisticalDate, javaType=Date, jdbcType=TIMESTAMP},
+	    		STATISTICAL_DATE_END=#{statisticalDateEnd,javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+   
+   
+   <!--查询县  -->
+	 <select id="listForPage" resultMap="DistictResultMap"  parameterType="hashmap">
+	    select pop.ID,pop.COUNTY_ID,pop.TOW_ID,pop.VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+	    pop.STATISTICAL_DATE_END,dis.NAME as disName
+	    from POPULATION_DATA pop left join DISTRICT_AND_COUNTY_INFO dis
+	    on pop.COUNTY_ID=dis.ID
+	     where 1=1
+    <if test=" countyId !=null and countyId !=''">
+     and pop.COUNTY_ID=#{countyId}
+    </if>
+    
+     and (pop.TOW_ID is NULL or pop.TOW_ID='')
+    
+   
+     and (pop.VILLAGE_ID is null or pop.VILLAGE_ID='')
+    
+  </select>
+  
+  
+  
+  <!-- 查询乡 -->
+  <select id="DistictlistForPage" resultMap="towResultMap"  parameterType="hashmap">
+	select * from (select pop.ID,CONCAT(dis.NAME,',',tow.NAME) as NAME,pop.COUNTY_ID as COUNTY_ID,pop.TOW_ID as TOW_ID,pop.VILLAGE_ID as VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+    	pop.STATISTICAL_DATE_END
+    	from POPULATION_DATA pop 
+		left join DISTRICT_AND_COUNTY_INFO dis
+		on pop.COUNTY_ID= dis.ID
+		left join TOWNSHIP_INFO tow
+    	on pop.TOW_ID=tow.ID
+    	
+         )ssss
+    where 1=1
+    <if test=" countyId !=null and countyId !=''">
+     and ssss.COUNTY_ID=#{countyId}
+    </if>
+    <if test=" towId !=null and towId !=''">
+     and ssss.TOW_ID=#{towId}
+    </if>
+    <if test=" villageId !=null and villageId !=''">
+     and ssss.VILLAGE_ID=#{villageId}
+    </if>
+  </select>
+  
+  <!-- 查询村 -->
+  <select id="villlistForPage" resultMap="towResultMap"  parameterType="hashmap">
+	select * from (select pop.ID,CONCAT(dis.NAME,',',tow.NAME,',',vill.NAME) as NAME,pop.COUNTY_ID as COUNTY_ID,pop.TOW_ID as TOW_ID,pop.VILLAGE_ID as VILLAGE_ID,pop.MARRY_NUM,pop.ISVALID,pop.CREAT_TIME,pop.UPDATE_TIME,pop.STATISTICAL_DATE,
+    	pop.STATISTICAL_DATE_END
+    	from POPULATION_DATA pop 
+		left join DISTRICT_AND_COUNTY_INFO dis
+		on pop.COUNTY_ID= dis.ID
+		left join TOWNSHIP_INFO tow
+    	on pop.TOW_ID=tow.ID
+    	left join VILLAGE_INFO vill
+    	on pop.VILLAGE_ID = vill.ID
+         )ssss
+    where 1=1
+    <if test=" countyId !=null and countyId !=''">
+     and ssss.COUNTY_ID=#{countyId}
+    </if>
+    <if test=" towId !=null and towId !=''">
+     and ssss.TOW_ID=#{towId}
+    </if>
+    <if test=" villageId !=null and villageId !=''">
+     and ssss.VILLAGE_ID=#{villageId}
+    </if>
+  </select>
+
+
+<delete id="deletes">
+		delete from POPULATION_DATA
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+
+
+</mapper>

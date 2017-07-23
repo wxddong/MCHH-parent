@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.childCare.dao.ChildrenArchivesInfoDao" >
+	
+	<update id="delArchivesById" parameterType="String">
+		update CHILDREN_ARCHIVES_INFO
+    	set
+			DELTET_SIGN = '0'
+			where id = #{archivesId, javaType=String, jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getCountCode" resultType="int" parameterType="String">
+	    select count(*)
+	    from CHILDREN_ARCHIVES_INFO
+	    where ARCHIVES_CODE like #{code}
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.childCare.po.ChildrenArchivesInfoPO" >
+	<result column="ID" property="id" />
+	<result column="ARCHIVES_CODE" property="archivesCode" />
+	<result column="HOSPITAL_ID" property="hospitalId" />
+	<result column="DOCTOR_ID" property="doctorId" />
+	<result column="NAME" property="name" />
+	<result column="SEX" property="sex" />
+	<result column="BIRTHDAY" property="birthday" />
+	<result column="babyBirthday" property="babyCreate" />
+	<result column="ID_NO" property="idNo" />
+	<result column="GESTATIONAL_WEEK" property="gestationalWeek" />
+	<result column="FETUS_NUM" property="fetusNum" />
+	<result column="WHICH_FETUS" property="whichFetus" />
+	<result column="WHICH_BIRTH" property="whichBirth" />
+	<result column="DELIVERY_TYPE" property="deliveryType" />
+	<result column="BIRTH_CONDITION" property="birthCondition" />
+	<result column="CONDITION_REMARK" property="conditionRemark" />
+	<result column="WEIGHT" property="weight" />
+	<result column="HEIGHT" property="height" />
+	<result column="ASPHYXIA" property="asphyxia" />
+	<result column="APGAR_SCORE" property="apgarScore" />
+	<result column="APGAR_REMARK" property="apgarRemark" />
+	<result column="NEWBORN_DISEASE" property="newbornDisease" />
+	<result column="DISEASE_REMARK" property="diseaseRemark" />
+	<result column="PREGNANCY_SICKNESS" property="pregnancySickness" />
+	<result column="SICKNESS_REMARK" property="sicknessRemark" />
+	<result column="ANOMALY" property="anomaly" />
+	<result column="ANOMALY_REMARK" property="anomalyRemark" />
+	<result column="INSTITUTIONS" property="institutions" />
+	<result column="INSTITUTIONS_REMARK" property="institutionsRemark" />
+	<result column="DISCHARGE_DATE" property="dischargeDate" />
+	<result column="ACC_PROVINCE_ID" property="accProvinceId" />
+	<result column="ACC_CITY_ID" property="accCityId" />
+	<result column="ACC_COUNTY_ID" property="accCountyId" />
+	<result column="ACC_TOWNSHIP_ID" property="accTownshipId" />
+	<result column="ACC_VILLAGE_ID" property="accVillageId" />
+	<result column="ACC_ADDRESS" property="accAddress" />
+	<result column="HOME_PROVINCE_ID" property="homeProvinceId" />
+	<result column="HOME_CITY_ID" property="homeCityId" />
+	<result column="HOME_COUNTY_ID" property="homeCountyId" />
+	<result column="HOME_TOWNSHIP_ID" property="homeTownshipId" />
+	<result column="HOME_VILLAGE_ID" property="homeVillageId" />
+	<result column="HOME_ADDRESS" property="homeAddress" />
+	<result column="MOM_NAME" property="momName" />
+	<result column="MOM_EDUCATION" property="momEducation" />
+	<result column="MOM_OCCUPATION" property="momOccupation" />
+	<result column="MOM_WORK_UNIT" property="momWorkUnit" />
+	<result column="MOM_ID_NO" property="momIdNo" />
+	<result column="MOM_BIRTHDAY" property="momBirthday" />
+	<result column="MOM_TELE" property="momTele" />
+	<result column="MOM_HEALTH" property="momHealth" />
+	<result column="MOM_CHRONIC_REMARK" property="momChronicRemark" />
+	<result column="MOM_INFECTIOUS_REMARK" property="momInfectiousRemark" />
+	<result column="MOM_FAM_HISTORY" property="momFamHistory" />
+	<result column="MOM_CONGENITAL_REMARK" property="momCongenitalRemark" />
+	<result column="MOM_HEREDITARY_REMARK" property="momHereditaryRemark" />
+	<result column="DAD_NAME" property="dadName" />
+	<result column="DAD_EDUCATION" property="dadEducation" />
+	<result column="DAD_OCCUPATION" property="dadOccupation" />
+	<result column="DAD_WORK_UNIT" property="dadWorkUnit" />
+	<result column="DAD_ID_NO" property="dadIdNo" />
+	<result column="DAD_BIRTHDAY" property="dadBirthday" />
+	<result column="DAD_TELE" property="dadTele" />
+	<result column="GRANT_SIGN" property="grantSign" />
+	<result column="BAB_CHRONIC_REMARK" property="babChronicRemark" />
+	<result column="BAB_INFECTIOUS_REMARK" property="babInfectiousRemark" />
+	<result column="BAB_HEALTH" property="babHealth" />
+	<result column="BAB_CONGENITAL_REMARK" property="babCongenitalRemark" />
+	<result column="BAB_HEREDITARY_REMARK" property="babHereditaryRemark" />
+	<result column="BAB_FAM_HISTORY" property="babFamHistory" />
+	<result column="DELTET_SIGN" property="deltetSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="archDoctor" property="operatorPO.realName" />
+	<result column="hospatil" property="departmentPO.name" />
+	<result column="exaId" property="childrenHealthExaInfoPO.id"/>
+	<result column="exaDoctId" property="childrenHealthExaInfoPO.hospitalId"/>
+	<result column="exaDoctor" property="childrenHealthExaInfoPO.operatorPO.realName"/>
+	<result column="FOLLOWING_DATE" property="childrenHealthExaInfoPO.childrenReferralInfoPO.followingDate"/>
+	<result column="exaEdit" property="childrenHealthExaInfoPO.editStatus"/>
+	<result column="GUIDANCE" property="childrenHealthExaInfoPO.guidance"/>
+	<result column="exaCreat" property="childrenHealthExaInfoPO.creatTime"/>
+	<result column="exaUpdate" property="childrenHealthExaInfoPO.updateTime"/>
+	<result column="NORMAL_SIGN" property="childrenHealthExaInfoPO.normalSign"/>
+	<result column="STAGE_SIGN" property="childrenHealthExaInfoPO.stageSign"/>
+	<result column="lastId" property="childrenLastStatusInfoPO.id"/>
+	<result column="PREGNANT_STATE" property="childrenLastStatusInfoPO.pregnantState"/>
+	<result column="CLOSING_REASON" property="childrenLastStatusInfoPO.closingReason"/>
+	<result column="CLOSING_DATE" property="childrenLastStatusInfoPO.closingDate"/>
+	<result column="RISK_SIGN" property="childrenLastStatusInfoPO.riskSign"/>
+	<result column="REFERRAL_SIGN" property="childrenLastStatusInfoPO.referralSign"/>
+	<result column="OUT_HOSPITAL_ID" property="childrenLastStatusInfoPO.outHospitalId"/>
+	<result column="IN_HOSPITAL_ID" property="childrenLastStatusInfoPO.inhospitalId"/>
+	<result column="REFERRAL_TIME" property="childrenLastStatusInfoPO.referralTime"/>
+	<result column="SCREENING_DATE" property="childrenLastStatusInfoPO.screeningDate"/>
+	<result column="lastGrantSign" property="childrenLastStatusInfoPO.grantSign"/>
+	<result column="lastCreat" property="childrenLastStatusInfoPO.creatTime"/>
+	<result column="lastUpdate" property="childrenLastStatusInfoPO.updateTime"/>
+  </resultMap>
+  
+  <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+	    SELECT arch.*,arch.BIRTHDAY AS "babyBirthday",
+				exa.ID AS "exaId",exa.HOSPITAL_ID AS "exaDoctId",exa.EDIT_STATUS AS "exaEdit",exa.GUIDANCE,exa.CREAT_TIME AS "exaCreat",
+				exa.UPDATE_TIME AS "exaUpdate",exa.NORMAL_SIGN ,exa.STAGE_SIGN,
+				last.ID AS "lastId",last.PREGNANT_STATE,last.CLOSING_REASON,last.CLOSING_DATE,last.RISK_SIGN,last.REFERRAL_SIGN,
+				last.OUT_HOSPITAL_ID,last.IN_HOSPITAL_ID,last.REFERRAL_TIME,last.SCREENING_DATE,last.GRANT_SIGN AS "lastGrantSign",
+				last.CREAT_TIME AS "lastCreat",last.UPDATE_TIME AS "lastUpdate",
+				archd.REAL_NAME AS "archDoctor",archde.`NAME` AS "hospatil", exad.REAL_NAME AS "exaDoctor",ref.FOLLOWING_DATE
+		FROM children_archives_info arch
+		LEFT JOIN (select exa.* 
+				  from children_health_exa_info exa,
+					  (select exa.ARCHIVES_ID, max(exa.CREAT_TIME) CREAT_TIME 
+					  from children_health_exa_info exa 
+					  group by exa.ARCHIVES_ID ) exaTemp
+				  where exa.ARCHIVES_ID=exaTemp.ARCHIVES_ID
+				  and exa.CREAT_TIME=exaTemp.CREAT_TIME 
+				  ) exa
+		ON arch.ID = exa.ARCHIVES_ID
+		LEFT JOIN children_last_status_info last
+		ON arch.ID = last.ARCHIVES_ID
+		left JOIN sys_operator archd
+		ON archd.ID = arch.DOCTOR_ID
+		LEFT JOIN sys_department archde
+		ON archde.ID = arch.HOSPITAL_ID
+		LEFT JOIN sys_operator exad
+		ON exa.HOSPITAL_ID = exad.ID
+		LEFT JOIN children_referral_info ref
+		ON exa.ID = ref.HEALTH_EXA_ID
+		WHERE arch.DELTET_SIGN = "1"
+		GROUP BY last.UPDATE_TIME DESC
+  </select>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,BIRTHDAY,ID_NO,GESTATIONAL_WEEK,FETUS_NUM,WHICH_FETUS,WHICH_BIRTH,DELIVERY_TYPE,BIRTH_CONDITION,CONDITION_REMARK,WEIGHT,HEIGHT,ASPHYXIA,APGAR_SCORE,APGAR_REMARK,NEWBORN_DISEASE,DISEASE_REMARK,PREGNANCY_SICKNESS,SICKNESS_REMARK,ANOMALY,ANOMALY_REMARK,INSTITUTIONS,INSTITUTIONS_REMARK,DISCHARGE_DATE,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,MOM_NAME,MOM_EDUCATION,MOM_OCCUPATION,MOM_WORK_UNIT,MOM_ID_NO,MOM_BIRTHDAY,MOM_TELE,MOM_HEALTH,MOM_CHRONIC_REMARK,MOM_INFECTIOUS_REMARK,MOM_FAM_HISTORY,MOM_CONGENITAL_REMARK,MOM_HEREDITARY_REMARK,DAD_NAME,DAD_EDUCATION,DAD_OCCUPATION,DAD_WORK_UNIT,DAD_ID_NO,DAD_BIRTHDAY,DAD_TELE,GRANT_SIGN,BAB_CHRONIC_REMARK,BAB_INFECTIOUS_REMARK,BAB_HEALTH,BAB_CONGENITAL_REMARK,BAB_HEREDITARY_REMARK,BAB_FAM_HISTORY,DELTET_SIGN,CREAT_TIME,UPDATE_TIME
+    from CHILDREN_ARCHIVES_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,BIRTHDAY,ID_NO,GESTATIONAL_WEEK,FETUS_NUM,WHICH_FETUS,WHICH_BIRTH,DELIVERY_TYPE,BIRTH_CONDITION,CONDITION_REMARK,WEIGHT,HEIGHT,ASPHYXIA,APGAR_SCORE,APGAR_REMARK,NEWBORN_DISEASE,DISEASE_REMARK,PREGNANCY_SICKNESS,SICKNESS_REMARK,ANOMALY,ANOMALY_REMARK,INSTITUTIONS,INSTITUTIONS_REMARK,DISCHARGE_DATE,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,MOM_NAME,MOM_EDUCATION,MOM_OCCUPATION,MOM_WORK_UNIT,MOM_ID_NO,MOM_BIRTHDAY,MOM_TELE,MOM_HEALTH,MOM_CHRONIC_REMARK,MOM_INFECTIOUS_REMARK,MOM_FAM_HISTORY,MOM_CONGENITAL_REMARK,MOM_HEREDITARY_REMARK,DAD_NAME,DAD_EDUCATION,DAD_OCCUPATION,DAD_WORK_UNIT,DAD_ID_NO,DAD_BIRTHDAY,DAD_TELE,GRANT_SIGN,BAB_CHRONIC_REMARK,BAB_INFECTIOUS_REMARK,BAB_HEALTH,BAB_CONGENITAL_REMARK,BAB_HEREDITARY_REMARK,BAB_FAM_HISTORY,DELTET_SIGN,CREAT_TIME,UPDATE_TIME
+    from CHILDREN_ARCHIVES_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CHILDREN_ARCHIVES_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenArchivesInfoPO" >
+    insert into CHILDREN_ARCHIVES_INFO (ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,BIRTHDAY,ID_NO,GESTATIONAL_WEEK,FETUS_NUM,WHICH_FETUS,WHICH_BIRTH,DELIVERY_TYPE,BIRTH_CONDITION,CONDITION_REMARK,WEIGHT,HEIGHT,ASPHYXIA,APGAR_SCORE,APGAR_REMARK,NEWBORN_DISEASE,DISEASE_REMARK,PREGNANCY_SICKNESS,SICKNESS_REMARK,ANOMALY,ANOMALY_REMARK,INSTITUTIONS,INSTITUTIONS_REMARK,DISCHARGE_DATE,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,MOM_NAME,MOM_EDUCATION,MOM_OCCUPATION,MOM_WORK_UNIT,MOM_ID_NO,MOM_BIRTHDAY,MOM_TELE,MOM_HEALTH,MOM_CHRONIC_REMARK,MOM_INFECTIOUS_REMARK,MOM_FAM_HISTORY,MOM_CONGENITAL_REMARK,MOM_HEREDITARY_REMARK,DAD_NAME,DAD_EDUCATION,DAD_OCCUPATION,DAD_WORK_UNIT,DAD_ID_NO,DAD_BIRTHDAY,DAD_TELE,GRANT_SIGN,BAB_CHRONIC_REMARK,BAB_INFECTIOUS_REMARK,BAB_HEALTH,BAB_CONGENITAL_REMARK,BAB_HEREDITARY_REMARK,BAB_FAM_HISTORY,DELTET_SIGN,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ archivesCode, javaType=String, jdbcType=VARCHAR},
+				#{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				#{ doctorId, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ sex, javaType=String, jdbcType=VARCHAR},
+				#{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				#{ idNo, javaType=String, jdbcType=VARCHAR},
+				#{ gestationalWeek, javaType=String, jdbcType=VARCHAR},
+				#{ fetusNum, javaType=String, jdbcType=VARCHAR},
+				#{ whichFetus, javaType=String, jdbcType=VARCHAR},
+				#{ whichBirth, javaType=String, jdbcType=VARCHAR},
+				#{ deliveryType, javaType=String, jdbcType=VARCHAR},
+				#{ birthCondition, javaType=String, jdbcType=VARCHAR},
+				#{ conditionRemark, javaType=String, jdbcType=VARCHAR},
+				#{ weight, javaType=String, jdbcType=VARCHAR},
+				#{ height, javaType=String, jdbcType=VARCHAR},
+				#{ asphyxia, javaType=String, jdbcType=VARCHAR},
+				#{ apgarScore, javaType=String, jdbcType=VARCHAR},
+				#{ apgarRemark, javaType=String, jdbcType=VARCHAR},
+				#{ newbornDisease, javaType=String, jdbcType=VARCHAR},
+				#{ diseaseRemark, javaType=String, jdbcType=VARCHAR},
+				#{ pregnancySickness, javaType=String, jdbcType=VARCHAR},
+				#{ sicknessRemark, javaType=String, jdbcType=VARCHAR},
+				#{ anomaly, javaType=String, jdbcType=VARCHAR},
+				#{ anomalyRemark, javaType=String, jdbcType=VARCHAR},
+				#{ institutions, javaType=String, jdbcType=VARCHAR},
+				#{ institutionsRemark, javaType=String, jdbcType=VARCHAR},
+				#{ dischargeDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+				#{ accCityId, javaType=String, jdbcType=VARCHAR},
+				#{ accCountyId, javaType=String, jdbcType=VARCHAR},
+				#{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+				#{ accVillageId, javaType=String, jdbcType=VARCHAR},
+				#{ accAddress, javaType=String, jdbcType=VARCHAR},
+				#{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+				#{ homeCityId, javaType=String, jdbcType=VARCHAR},
+				#{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+				#{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+				#{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+				#{ homeAddress, javaType=String, jdbcType=VARCHAR},
+				#{ momName, javaType=String, jdbcType=VARCHAR},
+				#{ momEducation, javaType=String, jdbcType=VARCHAR},
+				#{ momOccupation, javaType=String, jdbcType=VARCHAR},
+				#{ momWorkUnit, javaType=String, jdbcType=VARCHAR},
+				#{ momIdNo, javaType=String, jdbcType=VARCHAR},
+				#{ momBirthday, javaType=Date, jdbcType=TIMESTAMP},
+				#{ momTele, javaType=String, jdbcType=VARCHAR},
+				#{ momHealth, javaType=String, jdbcType=VARCHAR},
+				#{ momChronicRemark, javaType=String, jdbcType=VARCHAR},
+				#{ momInfectiousRemark, javaType=String, jdbcType=VARCHAR},
+				#{ momFamHistory, javaType=String, jdbcType=VARCHAR},
+				#{ momCongenitalRemark, javaType=String, jdbcType=VARCHAR},
+				#{ momHereditaryRemark, javaType=String, jdbcType=VARCHAR},
+				#{ dadName, javaType=String, jdbcType=VARCHAR},
+				#{ dadEducation, javaType=String, jdbcType=VARCHAR},
+				#{ dadOccupation, javaType=String, jdbcType=VARCHAR},
+				#{ dadWorkUnit, javaType=String, jdbcType=VARCHAR},
+				#{ dadIdNo, javaType=String, jdbcType=VARCHAR},
+				#{ dadBirthday, javaType=Date, jdbcType=TIMESTAMP},
+				#{ dadTele, javaType=String, jdbcType=VARCHAR},
+				#{ grantSign, javaType=String, jdbcType=VARCHAR},
+				#{ babChronicRemark, javaType=String, jdbcType=VARCHAR},
+				#{ babInfectiousRemark, javaType=String, jdbcType=VARCHAR},
+				#{ babHealth, javaType=String, jdbcType=VARCHAR},
+				#{ babCongenitalRemark, javaType=String, jdbcType=VARCHAR},
+				#{ babHereditaryRemark, javaType=String, jdbcType=VARCHAR},
+				#{ babFamHistory, javaType=String, jdbcType=VARCHAR},
+				#{ deltetSign, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.childCare.po.ChildrenArchivesInfoPO" >
+    update CHILDREN_ARCHIVES_INFO
+    set
+			NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+			SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+			ID_NO = #{ idNo, javaType=String, jdbcType=VARCHAR},
+			GESTATIONAL_WEEK = #{ gestationalWeek, javaType=String, jdbcType=VARCHAR},
+			FETUS_NUM = #{ fetusNum, javaType=String, jdbcType=VARCHAR},
+			WHICH_FETUS = #{ whichFetus, javaType=String, jdbcType=VARCHAR},
+			WHICH_BIRTH = #{ whichBirth, javaType=String, jdbcType=VARCHAR},
+			DELIVERY_TYPE = #{ deliveryType, javaType=String, jdbcType=VARCHAR},
+			BIRTH_CONDITION = #{ birthCondition, javaType=String, jdbcType=VARCHAR},
+			CONDITION_REMARK = #{ conditionRemark, javaType=String, jdbcType=VARCHAR},
+			WEIGHT = #{ weight, javaType=String, jdbcType=VARCHAR},
+			HEIGHT = #{ height, javaType=String, jdbcType=VARCHAR},
+			ASPHYXIA = #{ asphyxia, javaType=String, jdbcType=VARCHAR},
+			APGAR_SCORE = #{ apgarScore, javaType=String, jdbcType=VARCHAR},
+			APGAR_REMARK = #{ apgarRemark, javaType=String, jdbcType=VARCHAR},
+			NEWBORN_DISEASE = #{ newbornDisease, javaType=String, jdbcType=VARCHAR},
+			DISEASE_REMARK = #{ diseaseRemark, javaType=String, jdbcType=VARCHAR},
+			PREGNANCY_SICKNESS = #{ pregnancySickness, javaType=String, jdbcType=VARCHAR},
+			SICKNESS_REMARK = #{ sicknessRemark, javaType=String, jdbcType=VARCHAR},
+			ANOMALY = #{ anomaly, javaType=String, jdbcType=VARCHAR},
+			ANOMALY_REMARK = #{ anomalyRemark, javaType=String, jdbcType=VARCHAR},
+			INSTITUTIONS = #{ institutions, javaType=String, jdbcType=VARCHAR},
+			INSTITUTIONS_REMARK = #{ institutionsRemark, javaType=String, jdbcType=VARCHAR},
+			DISCHARGE_DATE = #{ dischargeDate, javaType=Date, jdbcType=TIMESTAMP},
+			ACC_PROVINCE_ID = #{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+			ACC_CITY_ID = #{ accCityId, javaType=String, jdbcType=VARCHAR},
+			ACC_COUNTY_ID = #{ accCountyId, javaType=String, jdbcType=VARCHAR},
+			ACC_TOWNSHIP_ID = #{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+			ACC_VILLAGE_ID = #{ accVillageId, javaType=String, jdbcType=VARCHAR},
+			ACC_ADDRESS = #{ accAddress, javaType=String, jdbcType=VARCHAR},
+			HOME_PROVINCE_ID = #{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+			HOME_CITY_ID = #{ homeCityId, javaType=String, jdbcType=VARCHAR},
+			HOME_COUNTY_ID = #{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+			HOME_TOWNSHIP_ID = #{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+			HOME_VILLAGE_ID = #{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+			HOME_ADDRESS = #{ homeAddress, javaType=String, jdbcType=VARCHAR},
+			MOM_NAME = #{ momName, javaType=String, jdbcType=VARCHAR},
+			MOM_EDUCATION = #{ momEducation, javaType=String, jdbcType=VARCHAR},
+			MOM_OCCUPATION = #{ momOccupation, javaType=String, jdbcType=VARCHAR},
+			MOM_WORK_UNIT = #{ momWorkUnit, javaType=String, jdbcType=VARCHAR},
+			MOM_ID_NO = #{ momIdNo, javaType=String, jdbcType=VARCHAR},
+			MOM_TELE = #{ momTele, javaType=String, jdbcType=VARCHAR},
+			MOM_HEALTH = #{ momHealth, javaType=String, jdbcType=VARCHAR},
+			MOM_CHRONIC_REMARK = #{ momChronicRemark, javaType=String, jdbcType=VARCHAR},
+			MOM_INFECTIOUS_REMARK = #{ momInfectiousRemark, javaType=String, jdbcType=VARCHAR},
+			MOM_FAM_HISTORY = #{ momFamHistory, javaType=String, jdbcType=VARCHAR},
+			MOM_CONGENITAL_REMARK = #{ momCongenitalRemark, javaType=String, jdbcType=VARCHAR},
+			MOM_HEREDITARY_REMARK = #{ momHereditaryRemark, javaType=String, jdbcType=VARCHAR},
+			DAD_NAME = #{ dadName, javaType=String, jdbcType=VARCHAR},
+			DAD_EDUCATION = #{ dadEducation, javaType=String, jdbcType=VARCHAR},
+			DAD_OCCUPATION = #{ dadOccupation, javaType=String, jdbcType=VARCHAR},
+			DAD_WORK_UNIT = #{ dadWorkUnit, javaType=String, jdbcType=VARCHAR},
+			DAD_ID_NO = #{ dadIdNo, javaType=String, jdbcType=VARCHAR},
+			DAD_TELE = #{ dadTele, javaType=String, jdbcType=VARCHAR},
+			GRANT_SIGN = #{ grantSign, javaType=String, jdbcType=VARCHAR},
+			BAB_CHRONIC_REMARK = #{ babChronicRemark, javaType=String, jdbcType=VARCHAR},
+			BAB_INFECTIOUS_REMARK = #{ babInfectiousRemark, javaType=String, jdbcType=VARCHAR},
+			BAB_HEALTH = #{ babHealth, javaType=String, jdbcType=VARCHAR},
+			BAB_CONGENITAL_REMARK = #{ babCongenitalRemark, javaType=String, jdbcType=VARCHAR},
+			BAB_HEREDITARY_REMARK = #{ babHereditaryRemark, javaType=String, jdbcType=VARCHAR},
+			BAB_FAM_HISTORY = #{ babFamHistory, javaType=String, jdbcType=VARCHAR},
+			CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+			UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+<delete id="deletes">
+		delete from CHILDREN_ARCHIVES_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

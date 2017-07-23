@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPremarital.dao.AppPreparationBasicInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPremarital.po.AppPreparationBasicInfoPO" >
+	<result column="ID" property="id" />
+	<result column="MBR_ID" property="mbrId" />
+	<result column="LAST_MENSES" property="lastMenses" />
+	<result column="PERIOD" property="period" />
+	<result column="MENSTRUAL_CYCLE" property="menstrualCycle" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="STATUS" property="status" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MBR_ID,LAST_MENSES,PERIOD,MENSTRUAL_CYCLE,CREATE_TIME,UPDATE_TIME,STATUS
+    from APP_PREPARATION_BASIC_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MBR_ID,LAST_MENSES,PERIOD,MENSTRUAL_CYCLE,CREATE_TIME,UPDATE_TIME,STATUS
+    from APP_PREPARATION_BASIC_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PREPARATION_BASIC_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPremarital.po.AppPreparationBasicInfoPO" >
+    insert into APP_PREPARATION_BASIC_INFO (ID,MBR_ID,LAST_MENSES,PERIOD,MENSTRUAL_CYCLE,CREATE_TIME,UPDATE_TIME,STATUS)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ mbrId, javaType=String, jdbcType=VARCHAR},
+				#{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				#{ period, javaType=String, jdbcType=VARCHAR},
+				#{ menstrualCycle, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ status, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPremarital.po.AppPreparationBasicInfoPO" >
+    update APP_PREPARATION_BASIC_INFO
+    set
+			MBR_ID = #{ mbrId, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				PERIOD = #{ period, javaType=String, jdbcType=VARCHAR},
+				MENSTRUAL_CYCLE = #{ menstrualCycle, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				STATUS = #{ status, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MBR_ID,LAST_MENSES,PERIOD,MENSTRUAL_CYCLE,CREATE_TIME,UPDATE_TIME,STATUS
+    from APP_PREPARATION_BASIC_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PREPARATION_BASIC_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppPreparationBasicListByConditon" resultMap="BaseResultMap"  parameterType="hashmap">
+	    Select ID,MBR_ID,LAST_MENSES,PERIOD,MENSTRUAL_CYCLE,CREATE_TIME,UPDATE_TIME,STATUS
+	    From APP_PREPARATION_BASIC_INFO
+	    Where 1=1
+	    <if test="status != null and status !=''">
+	    	and STATUS = #{status}
+	    </if>
+	    <if test="mbrId != null and mbrId != ''">
+	    	and MBR_ID = #{mbrId}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

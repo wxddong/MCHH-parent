@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.highriskmaternalmanage.dao.HighRiskMaternalManageDao" >
+  
+  <select id="listForPage" resultMap="ListResultMap"  parameterType="hashmap">
+  
+	    SELECT w.archivesId archivesId,w.archivesCode archivesCode,w.creatTime creatTime,w.departmentId,
+	    	   w.birthArchivesId birthArchivesId ,so.REAL_NAME doctorName,w.referralTime,
+			   w.`name` name,w.birthday birthday,w.lastMenses,w.predictDate,hi.LAPSE_TO lapseToNo,
+			   IFNULL(hi.SCORE,0) score,hrt.HIGH_RISK highRisk,s1.`NAME` inHospitalName,s2.`NAME` outHospitalName,
+			   w.preExaId preExaId ,w.checkDate checkDate,ca.BIRTH_DATE birthDate,w.screeningDate,
+			   ci.CHILDBIRTH_PLACE childbirthPlace,oo.DELIVERY_TYPE deliveryType,hi.DIA_RESULT diaResult,
+			   pr.`NAME` provinceName,city.`NAME` cityName,dac.`NAME` countyName,ti.`NAME` townshipName,
+			   vi.`NAME` villageName,w.detailAddress,w.telephone,w.idNo
+		from (
+				SELECT a.id archivesId ,a.ARCHIVES_CODE archivesCode,a.CREAT_TIME creatTime,
+					   b.id birthArchivesId,a.name name,a.BIRTHDAY birthday,p.DOCTOR_ID doctorId,
+					   a.HOME_PROVINCE_ID provinceId,a.HOME_CITY_ID cityId,a.HOME_COUNTY_ID countyId,
+					   a.HOME_TOWNSHIP_ID townshipId,a.HOME_VILLAGE_ID villageId,b.REFERRAL_TIME referralTime,
+					   b.LAST_MENSES lastMenses,b.PREDICT_DATE predictDate,b.IN_HOSPITAL_ID inHospitalId,
+					   b.OUT_HOSPITAL_ID outHospitalId,p.ID preExaId,p.CREAT_TIME checkDate,b.SCREENING_DATE screeningDate,
+					   a.HOME_ADDRESS detailAddress,a.TELEPHONE telephone,a.ID_NO idNo,b.HOSPITAL_ID departmentId,
+					   b.PREGNANT_STATE,b.CLOSING_REASON
+	
+				FROM  `birth_archives_info` b
+	
+				left outer join archives_info a
+				on a.id = b.ARCHIVES_ID
+	
+				left outer join PRENATAL_EXA_INFO p
+				on p.BIRTH_ARCHIVES_ID = b.id
+	
+				right join (
+							select p.BIRTH_ARCHIVES_ID, max(p.CREAT_TIME) CREAT_TIME from PRENATAL_EXA_INFO p where p.EDIT_STATUS='1' group by p.BIRTH_ARCHIVES_ID 
+							) exaTemp
+				on p.BIRTH_ARCHIVES_ID=exaTemp.BIRTH_ARCHIVES_ID and p.CREAT_TIME=exaTemp.CREAT_TIME 
+	
+	
+				where b.RISK_SIGN=1 and a.DELTET_SIGN = 1 and b.DELTET_SIGN = 1
+				) w 
+	
+	
+		left outer join HIGH_RISK_INFO hi
+		on hi.EXAMINATION_ID = w.preExaId
+	
+		left outer join (select hrt.HIGH_RISK_ID,GROUP_CONCAT(HIGH_RISK) HIGH_RISK from  high_risk_term hrt where hrt.CORRECT=0 GROUP BY hrt.HIGH_RISK_ID ) hrt
+		on hrt.HIGH_RISK_ID = hi.ID 
+				
+		left outer join sys_department s1
+		on w.inHospitalId = s1.ID
+	
+		left outer join sys_department s2
+		on w.outHospitalId = s2.ID
+	 
+	
+		left outer join (SELECT cai.ID ,cai.BIRTH_ARCHIVES_ID,cai.BIRTH_DATE from childbirth_basic_info cai WHERE cai.EDIT_STATUS=1) ca
+		ON ca.BIRTH_ARCHIVES_ID = w.birthArchivesId
+	
+		left outer join CHILDBIRTH_INFO ci
+		on ci.BASIC_ID = ca.ID
+	
+		left outer join (select cb.CHILDBIRTH_ID ,cb.DELIVERY_TYPE from CHILDBIRTH_BABY_INFO cb group by cb.CHILDBIRTH_ID) oo
+		on oo.CHILDBIRTH_ID = ci.ID
+	
+		left outer join PROVINCE_INFO pr 
+		on w.provinceId = pr.ID
+	
+		left outer join CITY_INFO city 
+		on w.cityId = city.ID
+	
+		left outer join district_and_county_info dac
+		on w.countyId = dac.ID
+	
+		left outer join township_info ti 
+		on w.townshipId = ti.ID
+	
+		left outer join village_info vi
+		on w.villageId = vi.ID
+	
+		left outer join sys_operator so 
+		on w.doctorId = so.ID
+		
+		where 1 = 1
+		<if test="archivesCode!=null and archivesCode!=''">
+			and w.archivesCode = #{archivesCode}
+		</if>
+		<if test="name!=null and name!=''">
+			and w.name like '%${name}%'
+		</if>
+		<if test="idNo!=null and idNo!=''">
+			and w.idNo = #{idNo}
+		</if>
+		<if test="departmentId!=null and departmentId!=''">
+			and w.departmentId = #{departmentId}
+		</if>
+		
+		<if test="zero!=null and zero!=''">
+			and SCORE IS NULL OR hi.SCORE = 0
+		</if>
+		
+		<if test="five!=null and five!=''">
+			and hi.SCORE = 5
+		</if>
+		<if test="tenToFiveteen!=null and tenToFiveteen!=''">
+			and hi.SCORE BETWEEN 10 AND 15
+		</if>
+		<if test="G20!=null and G20!=''">
+			and hi.SCORE > 20
+		</if>
+		<if test="exceptDateStare!=null and exceptDateStare!='' and exceptDateEnd!=null and exceptDateEnd!=''">
+			AND w.predictDate BETWEEN DATE(#{exceptDateStare}) AND DATE(#{exceptDateEnd})
+		</if>
+		<if test="checkDateStare!=null and checkDateStare!='' and checkDateEnd!=null and checkDateEnd!=''">
+			AND w.checkDate BETWEEN DATE(#{checkDateStare}) AND DATE(#{checkDateEnd})
+		</if>
+		<if test="referralTimeStare!=null and referralTimeStare!='' and referralTimeEnd!=null and referralTimeEnd!=''">
+			AND w.referralTime BETWEEN DATE(#{referralTimeStare}) AND DATE(#{referralTimeEnd})
+		</if>
+		<if test="highRisk!=null and highRisk!=''">
+			AND hrt.HIGH_RISK LIKE '%${highRisk}%'
+		</if>
+		<if test="m!=null and m!=''">
+			AND hrt.HIGH_RISK NOT LIKE '%高血压%'  AND hrt.HIGH_RISK NOT LIKE '%糖尿病%'  AND hrt.HIGH_RISK NOT LIKE '%贫血%' 
+		</if>
+		
+		<if test="isClose!=null and isClose!=''">
+			AND w.PREGNANT_STATE = #{isClose}
+			<if test="closeReason!=null and closeReason!=''">
+				AND w.CLOSING_REASON = #{closeReason}
+			</if>
+		</if>
+		
+		<if test="statueAll!=null and statueAll!=''">
+			AND w.PREGNANT_STATE != #{statueAll}
+		</if>
+		
+		<if test="statue!=null and statue!=''">
+			AND w.PREGNANT_STATE = #{statue}
+		</if>
+		<if test="lapseTo!=null and lapseTo!=''">
+			AND hi.LAPSE_TO = #{lapseTo}
+		</if>
+		<if test="doctorId!=null and doctorId!=''">
+			AND  w.doctorId = #{doctorId}
+		</if>
+		<if test="inHosital!=null and inHosital!=''">
+			AND  w.inHospitalId = #{thisHospitalId}
+		</if>
+		<if test="thisHosital!=null and thisHosital!=''">
+			AND  w.departmentId != #{thisHospitalId}
+		</if>
+		<if test="outHosital!=null and outHosital!=''">
+			AND  w.outHospitalId = #{thisHospitalId}
+		</if>
+		
+		
+  </select>
+	
+  <resultMap id="ListResultMap" type="com.threefiveninetong.mchh.highriskmaternalmanage.po.HighRiskMaternalManagePO" >
+  
+		<result column="archivesId" property="archivesId" />
+		<result column="archivesCode" property="archivesCode" />
+		<result column="creatTime" property="creatTime" />
+		<result column="birthArchivesId" property="birthArchivesId" />
+		<result column="doctorName" property="doctorName" />
+		<result column="name" property="name" />
+		<result column="birthday" property="birthday" />
+		<result column="lastMenses" property="lastMenses" />
+		<result column="predictDate" property="predictDate" />
+		<result column="lapseToNo" property="lapseToNo" />
+		<result column="score" property="score" />
+		<result column="inHospitalName" property="inHospitalName" />
+		<result column="outHospitalName" property="outHospitalName" />
+		<result column="preExaId" property="preExaId" />
+		<result column="checkDate" property="checkDate" />
+		<result column="highRisk" property="highRisk" />
+		<result column="birthDate" property="birthDate" />
+		<result column="childbirthPlace" property="childbirthPlace" />
+		<result column="deliveryType" property="deliveryType" />
+		<result column="diaResult" property="diaResult" />
+		<result column="provinceName" property="provinceName" />
+		<result column="cityName" property="cityName" />
+		<result column="countyName" property="countyName" />
+		<result column="townshipName" property="townshipName" />
+		<result column="villageName" property="villageName" />
+		<result column="detailAddress" property="detailAddress" />
+		<result column="telephone" property="telephone" />
+		<result column="screeningDate" property="screeningDate" />
+		
+  </resultMap>
+  
+  
+    <select id="getIncreaseNumToday" resultType="int"  parameterType="string">
+   		select COUNT(b.ID) 
+		from birth_archives_info b
+		LEFT JOIN archives_info a
+		ON a.ID = b.ARCHIVES_ID
+		WHERE STR_TO_DATE(b.CREAT_TIME,'%Y-%m-%d') = STR_TO_DATE(NOW(),'%Y-%m-%d') AND a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 
+		AND b.HOSPITAL_ID = #{depId}
+  	</select>
+  	
+  	
+  	<select id="getInNumToday" resultType="int"  parameterType="string">
+		SELECT COUNT(b.ID) 
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		ON a.ID = b.ARCHIVES_ID
+		WHERE  b.CREAT_TIME = NOW() AND a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 
+		AND b.IN_HOSPITAL_ID = #{depId}
+  	</select>
+  	
+  	<select id="getOutNumToday" resultType="int"  parameterType="string">
+		SELECT COUNT(b.ID)
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		ON a.ID = b.ARCHIVES_ID
+		WHERE  b.CREAT_TIME  = NOW() AND a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 
+		AND b.OUT_HOSPITAL_ID = #{depId}
+  	</select>
+  	
+  	<select id="getTotalNum" resultType="int"  parameterType="string">
+		SELECT COUNT(b.ID) 
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		ON a.ID = b.ARCHIVES_ID
+		WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1  
+		AND b.HOSPITAL_ID = #{depId}
+  	</select>
+  	
+  	<select id="getAllPeopleNum" resultType="String"  parameterType="string">
+		
+  		SELECT CASE sd.`LEVEL`  WHEN 0 THEN (SELECT p.MARRY_NUM FROM population_data p WHERE p.COUNTY_ID = sd.ID AND p.ISVALID=1 ORDER BY p.STATISTICAL_DATE_END DESC LIMIT 1)
+													WHEN 1 THEN (SELECT p.MARRY_NUM FROM population_data p WHERE p.TOW_ID = sd.ID AND p.ISVALID=1 ORDER BY p.STATISTICAL_DATE_END DESC LIMIT 1)
+													WHEN 2 THEN (SELECT p.MARRY_NUM FROM population_data p WHERE p.VILLAGE_ID = sd.ID AND p.ISVALID=1 ORDER BY p.STATISTICAL_DATE_END DESC LIMIT 1)
+													END  populationNum
+		FROM sys_department sd
+		WHERE sd.ID = #{depId}
+  	</select>
+  	
+  	
+  	
+
+</mapper>

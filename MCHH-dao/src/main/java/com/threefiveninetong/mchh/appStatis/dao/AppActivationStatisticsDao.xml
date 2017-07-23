@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appStatis.dao.AppActivationStatisticsDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appStatis.po.AppActivationStatisticsPO" >
+	<result column="ID" property="id" />
+	<result column="CHANNEL_NO" property="channelNo" />
+	<result column="CREATE_DATE" property="createDate" />
+	<result column="ACTIVATION_NUMBER" property="activationNumber" />
+	<result column="REGISTER_NUMBER" property="registerNumber" />
+	<result column="ACTIVATION_COUNT" property="activationCount" />
+	<result column="REGISTER_COUNT" property="registerCount" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,CHANNEL_NO,CREATE_DATE,ACTIVATION_NUMBER,REGISTER_NUMBER,ACTIVATION_COUNT,REGISTER_COUNT
+    from APP_ACTIVATION_STATISTICS
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,CHANNEL_NO,CREATE_DATE,ACTIVATION_NUMBER,REGISTER_NUMBER,ACTIVATION_COUNT,REGISTER_COUNT
+    from APP_ACTIVATION_STATISTICS
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_ACTIVATION_STATISTICS
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appStatis.po.AppActivationStatisticsPO" >
+    insert into APP_ACTIVATION_STATISTICS (ID,CHANNEL_NO,CREATE_DATE,ACTIVATION_NUMBER,REGISTER_NUMBER,ACTIVATION_COUNT,REGISTER_COUNT)
+    values (
+			#{ id, javaType=int, jdbcType=INTEGER},
+				#{ channelNo, javaType=String, jdbcType=VARCHAR},
+				#{ createDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ activationNumber, javaType=int, jdbcType=INTEGER},
+				#{ registerNumber, javaType=int, jdbcType=INTEGER},
+				#{ activationCount, javaType=int, jdbcType=INTEGER},
+				#{ registerCount, javaType=int, jdbcType=INTEGER}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appStatis.po.AppActivationStatisticsPO" >
+    update APP_ACTIVATION_STATISTICS
+    set
+			CHANNEL_NO = #{ channelNo, javaType=String, jdbcType=VARCHAR},
+				CREATE_DATE = #{ createDate, javaType=Date, jdbcType=TIMESTAMP},
+				ACTIVATION_NUMBER = #{ activationNumber, javaType=int, jdbcType=INTEGER},
+				REGISTER_NUMBER = #{ registerNumber, javaType=int, jdbcType=INTEGER},
+				ACTIVATION_COUNT = #{ activationCount, javaType=int, jdbcType=INTEGER},
+				REGISTER_COUNT = #{ registerCount, javaType=int, jdbcType=INTEGER}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,CHANNEL_NO,CREATE_DATE,ACTIVATION_NUMBER,REGISTER_NUMBER,ACTIVATION_COUNT,REGISTER_COUNT
+    from APP_ACTIVATION_STATISTICS
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_ACTIVATION_STATISTICS
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

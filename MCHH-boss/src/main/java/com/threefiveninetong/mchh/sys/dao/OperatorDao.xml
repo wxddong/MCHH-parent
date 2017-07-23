@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sys.dao.OperatorDao">
+	
+	<select id="getOperatorById" resultType="com.threefiveninetong.mchh.sys.po.OperatorPO">
+	
+		SELECT s.id, REAL_NAME as "realName", DEP_ID as "dePId", d.NAME as "department"
+		FROM sys_operator s
+		LEFT JOIN sys_department d
+		ON s.DEP_id = d.id
+		WHERE s.id = #{doctorId}
+	
+	</select>
+
+	<select id="getOperatorAndDeptName" resultType="com.threefiveninetong.mchh.sys.po.OperatorPO">
+	
+		SELECT REAL_NAME as "realName", DEP_ID as "dePId", d.NAME as "department"
+		FROM sys_operator s
+		LEFT JOIN sys_department d
+		ON s.DEP_id = d.id
+		WHERE LOGIN_NAME = #{loginName};
+	
+	</select>
+
+	<resultMap id="Operator" type="com.threefiveninetong.mchh.sys.po.OperatorPO">
+		<result column="ID" property="id" />
+		<result column="LOGIN_NAME" property="loginName" />
+		<result column="PASSWORD" property="password" />
+		<result column="REAL_NAME" property="realName" />
+		<result column="FLAG" property="flag" />
+		<result column="PHONE" property="phone" />
+		<result column="MOBILE" property="mobile" />
+		<result column="EMAIL" property="email" />
+		<result column="ADDRESS" property="address" />
+		<result column="REMARK" property="remark" />
+		<result column="LAST_LOGIN" property="lastLogin" />
+		<result column="LAST_PWD" property="lastPwd" />
+		<result column="CONF" property="conf" />
+		<result column="DEP_ID" property="depId" />
+	</resultMap>
+
+	<sql id="BaseColumns0">
+		o.ID,o.LOGIN_NAME,o.PASSWORD,o.REAL_NAME,o.FLAG,o.PHONE,o.MOBILE,o.EMAIL,o.ADDRESS,o.REMARK,o.LAST_LOGIN,o.LAST_PWD,o.CONF,o.DEP_ID
+	</sql>
+	<sql id="BaseColumns">
+		ID,LOGIN_NAME,PASSWORD,REAL_NAME,FLAG,PHONE,MOBILE,EMAIL,ADDRESS,REMARK,LAST_LOGIN,LAST_PWD,CONF,DEP_ID
+	</sql>
+
+	<select id="listOperatorForPage" resultMap="Operator" parameterType="hashmap">
+		select
+		<include refid="BaseColumns0" />
+		,d.name department
+		from sys_operator o
+		left join sys_department d on d.id = o.dep_id
+		where 1=1 and o.id != '1'
+		<if test="flag!=null and flag!=''">
+			and o.flag = #{flag}
+		    </if>
+		<if test="loginName!=null and loginName!=''">
+			and o.LOGIN_NAME = #{loginName} 
+		    </if>
+		<if test="realName!=null and realName!=''">
+			and o.REAL_NAME like CONCAT('%', #{realName}, '%')
+		</if>
+	</select>
+	
+	<select id="getOperator" resultMap="Operator" parameterType="hashmap">
+		select
+		<include refid="BaseColumns" />
+		from sys_operator
+		where 1=1
+		<if test="flag!=null">
+			and flag = #{flag}
+		    </if>
+		<if test="loginName!=null">
+			and LOGIN_NAME = #{loginName}
+		    </if>
+		<if test="password!=null">
+			and PASSWORD = #{password}
+		    </if>
+		<if test="id!=null and id!=''">
+			and id = #{id}
+		    </if>
+	</select>
+	<!-- 根据医生名字查询医生信息 -->
+	<select id="getOperatorByRealName" resultMap="Operator" parameterType="hashmap">
+		select
+		<include refid="BaseColumns" />
+		from sys_operator
+		where REAL_NAME = #{ realName}
+		
+	</select>
+	
+	<select id="findAll" resultMap="Operator">
+		select
+		<include refid="BaseColumns" />
+		from sys_operator
+	</select>
+	
+	<select id="getRealName" resultMap="Operator" parameterType="hashmap">
+		select
+		<include refid="BaseColumns" />
+		from sys_operator
+		where id = #{doctorId}
+	</select>
+
+	<delete id="delete">
+		delete from sys_operator
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	
+	<insert id="add" parameterType="com.threefiveninetong.mchh.sys.po.OperatorPO">
+		 insert into sys_operator (ID,LOGIN_NAME,PASSWORD,REAL_NAME,FLAG,PHONE,MOBILE,EMAIL,ADDRESS,REMARK,LAST_LOGIN,LAST_PWD,CONF,DEP_ID)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ loginName, javaType=String, jdbcType=VARCHAR},
+				#{ password, javaType=String, jdbcType=VARCHAR},
+				#{ realName, javaType=String, jdbcType=VARCHAR},
+				#{ flag, javaType=int, jdbcType=CHAR},
+				#{ phone, javaType=String, jdbcType=VARCHAR},
+				#{ mobile, javaType=String, jdbcType=VARCHAR},
+				#{ email, javaType=String, jdbcType=VARCHAR},
+				#{ address, javaType=String, jdbcType=VARCHAR},
+				#{ remark, javaType=String, jdbcType=VARCHAR},
+				#{ lastLogin, javaType=Date, jdbcType=TIMESTAMP},
+				#{ lastPwd, javaType=Date, jdbcType=TIMESTAMP},
+				#{ conf, javaType=String, jdbcType=VARCHAR},
+				#{ depId, javaType=String, jdbcType=VARCHAR}
+	    )
+	</insert>
+
+	<update id="update" parameterType="com.threefiveninetong.mchh.sys.po.OperatorPO">
+		update sys_operator
+       set
+			    LOGIN_NAME = #{ loginName, javaType=String, jdbcType=VARCHAR},
+				PASSWORD = #{ password, javaType=String, jdbcType=VARCHAR},
+				REAL_NAME = #{ realName, javaType=String, jdbcType=VARCHAR},
+				FLAG = #{ flag, javaType=int, jdbcType=CHAR},
+				PHONE = #{ phone, javaType=String, jdbcType=VARCHAR},
+				MOBILE = #{ mobile, javaType=String, jdbcType=VARCHAR},
+				EMAIL = #{ email, javaType=String, jdbcType=VARCHAR},
+				ADDRESS = #{ address, javaType=String, jdbcType=VARCHAR},
+				REMARK = #{ remark, javaType=String, jdbcType=VARCHAR},
+				LAST_LOGIN = #{ lastLogin, javaType=Date, jdbcType=TIMESTAMP},
+				LAST_PWD = #{ lastPwd, javaType=Date, jdbcType=TIMESTAMP},
+				CONF = #{ conf, javaType=String, jdbcType=VARCHAR},
+				DEP_ID = #{ depId, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+	  
+	<delete id="deleteOperatorRole">
+		delete from sys_operator_role
+		where operator_id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	<select id="batchOperatorRole" parameterType="java.util.List">
+			insert into sys_operator_role
+			(operator_id,role_id)
+			<foreach collection="list" item="item" index="index" 
+			 separator="union all">
+				select #{item.operatorId,javaType=String,jdbcType=VARCHAR},
+				       #{item.roleId,javaType=String, jdbcType=VARCHAR} from dual
+			</foreach>
+	</select>
+	
+	<select id="findDoctorName" resultMap="Operator" parameterType="hashmap">
+	  	select 
+	  	o.ID,o.REAL_NAME
+	  	from sys_department dep
+	  	left join sys_operator o on dep.ID = o.DEP_ID
+	  	where dep.ID = #{val}
+	  	
+	  </select>
+	  
+	  <select id="findDoctor" resultMap="Operator" parameterType="String">
+	  	select 
+	  	ID,REAL_NAME
+	  	from  sys_operator
+	  	where DEP_ID = #{depId}
+	  	
+	  </select>
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.MarriageRegistrationDataDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.MarriageRegistrationDataPO" >
+	<result column="ID" property="id" />
+	<result column="COUNTY_ID" property="countyId" />
+	<result column="Name" property="name" />
+	<result column="MARRY_NUM" property="marryNum" />
+	<result column="SOURCES" property="sources" />
+	<result column="STATISTICNOW" property="statisticnow" />
+	<result column="STATISTICAL_FUR" property="statisticfur" />
+	<result column="ISVALID" property="isvalid" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select dac.NAME,dac.CITY_ID,md.ID,md.COUNTY_ID,md.MARRY_NUM,md.SOURCES,md.STATISTICNOW,md.STATISTICAL_FUR,md.ISVALID,md.CREAT_TIME,md.UPDATE_TIME
+    from MARRIAGE_REGISTRATION_DATA md  left join DISTRICT_AND_COUNTY_INFO dac on md.COUNTY_ID=dac.ID
+    where
+			md.ID = #{ id}
+	  </select>
+
+
+	<select id="listForPage1" resultType="com.threefiveninetong.mchh.reportForm.po.PremaritalHealthCarePO" parameterType="hashmap" >
+	    select MARRY_NUM date1
+	    from MARRIAGE_REGISTRATION_DATA   
+	    where
+			COUNTY_ID = #{ countyId} AND ISVALID = '1'
+	  </select>
+	
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+   select dac.NAME,dac.CITY_ID,md.ID,md.COUNTY_ID,md.MARRY_NUM,md.SOURCES,md.STATISTICNOW,md.STATISTICAL_FUR,md.ISVALID,md.CREAT_TIME,md.UPDATE_TIME
+    from MARRIAGE_REGISTRATION_DATA md  left join DISTRICT_AND_COUNTY_INFO dac on md.COUNTY_ID=dac.ID group by dac.NAME
+  </select>
+
+  
+  <delete id="delete" parameterType="String" >
+    delete from MARRIAGE_REGISTRATION_DATA
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.MarriageRegistrationDataPO" >
+    insert into MARRIAGE_REGISTRATION_DATA (ID,COUNTY_ID,MARRY_NUM,SOURCES,STATISTICNOW,STATISTICAL_FUR,ISVALID,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ countyId, javaType=String, jdbcType=VARCHAR},
+				#{ marryNum, javaType=String, jdbcType=VARCHAR},
+				#{ sources, javaType=String, jdbcType=VARCHAR},
+				#{ statisticnow, javaType=Date, jdbcType=TIMESTAMP},
+				#{ statisticfur, javaType=Date, jdbcType=TIMESTAMP},
+				#{ isvalid, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.MarriageRegistrationDataPO" >
+    update MARRIAGE_REGISTRATION_DATA
+    set
+				COUNTY_ID = #{ countyId, javaType=String, jdbcType=VARCHAR},
+				MARRY_NUM = #{ marryNum, javaType=String, jdbcType=VARCHAR},
+				SOURCES = #{ sources, javaType=String, jdbcType=VARCHAR},
+				STATISTICNOW = #{ statisticnow, javaType=Date, jdbcType=TIMESTAMP},
+				STATISTICAL_FUR = #{ statisticfur, javaType=Date, jdbcType=TIMESTAMP},
+				ISVALID = #{ isvalid, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select dac.NAME as Name,dac.CITY_ID,md.ID,md.COUNTY_ID,md.MARRY_NUM,md.SOURCES,md.STATISTICNOW,md.STATISTICAL_FUR,md.ISVALID,md.CREAT_TIME,md.UPDATE_TIME
+    from MARRIAGE_REGISTRATION_DATA md  left join DISTRICT_AND_COUNTY_INFO dac on md.COUNTY_ID=dac.ID
+  	where 1=1
+    	<if test="name!=null and name!=''" >
+		and	dac.ID=#{name}
+		</if>
+		<if test="isvalid!=null and isvalid!=''">
+		and	md.ISVALID=#{isvalid}
+		</if>
+		<if test="statisticfur!=null and statisticfur!=''">
+		and	#{statisticfur}&gt;=md.STATISTICAL_FUR
+		</if>
+		<if test="statisticnow!=null and statisticnow!=''">
+		and	md.STATISTICNOW &gt;=#{statisticnow}
+		</if>
+  </select>
+
+
+<delete id="deletes">
+		delete from MARRIAGE_REGISTRATION_DATA
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}  
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

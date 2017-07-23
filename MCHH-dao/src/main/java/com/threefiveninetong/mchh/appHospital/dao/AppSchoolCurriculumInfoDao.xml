@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appHospital.dao.AppSchoolCurriculumInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appHospital.po.AppSchoolCurriculumInfoPO" >
+	<result column="ID" property="id" />
+	<result column="HOSPITAL_ID" property="hospitalId" />
+	<result column="START_DATE" property="startDate" />
+	<result column="START_TIME" property="startTime" />
+	<result column="END_TIME" property="endTime" />
+	<result column="TOPIC" property="topic" />
+	<result column="COURSE_CONTENT" property="courseContent" />
+	<result column="SPEAKER" property="speaker" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,HOSPITAL_ID,START_DATE,START_TIME,END_TIME,TOPIC,COURSE_CONTENT,SPEAKER,CREATE_TIME,UPDATE_TIME
+    from APP_SCHOOL_CURRICULUM_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,HOSPITAL_ID,START_DATE,START_TIME,END_TIME,TOPIC,COURSE_CONTENT,SPEAKER,CREATE_TIME,UPDATE_TIME
+    from APP_SCHOOL_CURRICULUM_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_SCHOOL_CURRICULUM_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appHospital.po.AppSchoolCurriculumInfoPO" >
+    insert into APP_SCHOOL_CURRICULUM_INFO (ID,HOSPITAL_ID,START_DATE,START_TIME,END_TIME,TOPIC,COURSE_CONTENT,SPEAKER,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				#{ startDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ startTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ endTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ topic, javaType=String, jdbcType=VARCHAR},
+				#{ courseContent, javaType=String, jdbcType=VARCHAR},
+				#{ speaker, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appHospital.po.AppSchoolCurriculumInfoPO" >
+    update APP_SCHOOL_CURRICULUM_INFO
+    set
+			HOSPITAL_ID = #{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				START_DATE = #{ startDate, javaType=Date, jdbcType=TIMESTAMP},
+				START_TIME = #{ startTime, javaType=Date, jdbcType=TIMESTAMP},
+				END_TIME = #{ endTime, javaType=Date, jdbcType=TIMESTAMP},
+				TOPIC = #{ topic, javaType=String, jdbcType=VARCHAR},
+				COURSE_CONTENT = #{ courseContent, javaType=String, jdbcType=VARCHAR},
+				SPEAKER = #{ speaker, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,HOSPITAL_ID,START_DATE,START_TIME,END_TIME,TOPIC,COURSE_CONTENT,SPEAKER,CREATE_TIME,UPDATE_TIME
+    from APP_SCHOOL_CURRICULUM_INFO
+  </select>
+
+ <select id="getAll" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,HOSPITAL_ID,START_DATE,START_TIME,END_TIME,TOPIC,COURSE_CONTENT,SPEAKER,CREATE_TIME,UPDATE_TIME
+    from APP_SCHOOL_CURRICULUM_INFO
+    where 1=1
+    <if test="topic!=null and topic!=''">
+		and TOPIC like #{topic}
+	</if>
+	<if test="txtBegin!=null and txtBegin!=''">
+		and CREATE_TIME >= STR_TO_DATE(#{txtBegin},'%Y%m%d')
+	</if>
+	<if test="txtEnd!=null and txtEnd!=''">
+		and STR_TO_DATE(#{txtEnd},'%Y%m%d') >= CREATE_TIME
+	</if>
+	<if test="txtBegin1!=null and txtBegin1!=''">
+		and START_DATE >= STR_TO_DATE(#{txtBegin1},'%Y%m%d')
+	</if>
+	<if test="txtEnd1!=null and txtEnd1!=''">
+		and STR_TO_DATE(#{txtEnd1},'%Y%m%d') >= START_DATE
+	</if>
+  </select>
+
+<delete id="deletes">
+		delete from APP_SCHOOL_CURRICULUM_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findMonthMillisecondList" resultType="String"  parameterType="hashmap">
+	    select UNIX_TIMESTAMP(date_add(date_add(last_day(START_DATE),interval 1 day),interval -1 month))
+	    from APP_SCHOOL_CURRICULUM_INFO
+	    Where 1=1
+	    <if test="hospitalId != null and hospitalId != ''">
+	    	and HOSPITAL_ID = #{hospitalId}
+	    </if>
+	    group by DATE_FORMAT(START_DATE,'%Y-%m')
+	</select>
+
+	<select id="findAppSchoolCurriculumListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,HOSPITAL_ID,START_DATE,START_TIME,END_TIME,TOPIC,COURSE_CONTENT,SPEAKER,CREATE_TIME,UPDATE_TIME
+	    from APP_SCHOOL_CURRICULUM_INFO
+	    where 1=1
+	    <if test="hospitalId != null and hospitalId != ''">
+	    	and HOSPITAL_ID = #{hospitalId}
+	    </if>
+	    <if test="monthTime != null and monthTime != ''">
+	   	 	and strcmp(date_format(START_DATE, '%Y-%m'), DATE_FORMAT(FROM_UNIXTIME(#{monthTime}),'%Y-%m')) = 0 
+	    </if>
+	    order by START_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

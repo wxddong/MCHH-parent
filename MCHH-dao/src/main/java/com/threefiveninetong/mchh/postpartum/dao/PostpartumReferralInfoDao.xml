@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.postpartum.dao.PostpartumReferralInfoDao" >
+	
+	 <select id="getPostpartumReferralByPostpartumExaId" resultMap="BaseResultMap" parameterType="String" >
+    select p.ID,POS_ID,REFERRAL,REFERRAL_REASON as referralReason,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK,r.name departmentName
+    from POSTPARTUM_REFERRAL_INFO p
+    left outer join SYS_ROLE r
+    on p.DEPARTMENT = r.id 
+    where
+			POS_ID = #{ postpartumExaId}
+	  </select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.postpartum.po.PostpartumReferralInfoPO" >
+	<result column="ID" property="id" />
+	<result column="POS_ID" property="posId" />
+	<result column="REFERRAL" property="referral" />
+	<result column="REFERRAL_REASON" property="referralReason" />
+	<result column="MECHANISM" property="mechanism" />
+	<result column="DEPARTMENT" property="department" />
+	<result column="NEXT_FOLLOWING_DATE" property="nextFollowingDate" />
+	<result column="ORDER_CHECK" property="orderCheck" />
+	<result column="HEALTH_HANDBOOK" property="healthHandbook" />
+	<result column="departmentName" property="departmentName" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,POS_ID,REFERRAL,REFERRAL_REASON as referralReason,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK
+    from POSTPARTUM_REFERRAL_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,POS_ID,REFERRAL,REFERRAL_REASON as referralReason,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK
+    from POSTPARTUM_REFERRAL_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from POSTPARTUM_REFERRAL_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.postpartum.po.PostpartumReferralInfoPO" >
+    insert into POSTPARTUM_REFERRAL_INFO (ID,POS_ID,REFERRAL,REFERRAL_REASON,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ posId, javaType=String, jdbcType=VARCHAR},
+				#{ referral, javaType=String, jdbcType=VARCHAR},
+				#{ referralReason, javaType=String, jdbcType=VARCHAR},
+				#{ mechanism, javaType=String, jdbcType=VARCHAR},
+				#{ department, javaType=String, jdbcType=VARCHAR},
+				#{ nextFollowingDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ orderCheck, javaType=String, jdbcType=VARCHAR},
+				#{ healthHandbook, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.postpartum.po.PostpartumReferralInfoPO" >
+    update POSTPARTUM_REFERRAL_INFO
+    set
+				REFERRAL = #{ referral, javaType=String, jdbcType=VARCHAR},
+				REFERRAL_REASON = #{ referralReason, javaType=String, jdbcType=VARCHAR},
+				MECHANISM = #{ mechanism, javaType=String, jdbcType=VARCHAR},
+				DEPARTMENT = #{ department, javaType=String, jdbcType=VARCHAR},
+				NEXT_FOLLOWING_DATE = #{ nextFollowingDate, javaType=Date, jdbcType=TIMESTAMP},
+				ORDER_CHECK = #{ orderCheck, javaType=String, jdbcType=VARCHAR},
+				HEALTH_HANDBOOK = #{ healthHandbook, javaType=String, jdbcType=VARCHAR}
+	    where 
+			POS_ID = #{ posId}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,POS_ID,REFERRAL,REFERRAL_REASON as referralReason,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK
+    from POSTPARTUM_REFERRAL_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from POSTPARTUM_REFERRAL_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.premarital.dao.HealthInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.premarital.po.HealthInfoPO" >
+	<result column="ID" property="id" />
+	<result column="MARRIAGE_TA_ID" property="marriageTaId" />
+	<result column="KINSHIP" property="kinship" />
+	<result column="OTHER_RELATIONSHIPS" property="otherRelationships" />
+	<result column="MEDICAL_HISTORY" property="medicalHistory" />
+	<result column="MEDICAL_OTHER" property="medicalOther" />
+	<result column="SURGERY_HISTORY" property="surgeryHistory" />
+	<result column="OPERATION" property="operation" />
+	<result column="OPERATION_OTHER" property="operationOther" />
+	<result column="HPI" property="hpi" />
+	<result column="CASE_INFORMATION" property="caseInformation" />
+	<result column="MENARCHE_AGE" property="menarcheAge" />
+	<result column="MENSTRUAL_PERIOD" property="menstrualPeriod" />
+	<result column="CYCLE" property="cycle" />
+	<result column="AMOUNT" property="amount" />
+	<result column="DYSMENORRHEA" property="dysmenorrhea" />
+	<result column="LAST_MENSTRUAL_PERIOD" property="lastMenstrualPeriod" />
+	<result column="WHETHER_PREGNANT" property="whetherPregnant" />
+	<result column="MARRIED_HISTORY" property="marriedHistory" />
+	<result column="MARRIAGE_STATUS" property="marriageStatus" />
+	<result column="AMONT_NUMBER" property="amontNumber" />
+	<result column="AMONT_NUMBER_OTHER" property="amontNumberOther" />
+	<result column="PRETERM_DELIVERY_NUM" property="pretermDeliveryNum" />
+	<result column="PRETERM_DELIVERY_OTHER" property="pretermDeliveryOther" />
+	<result column="ABORTION_NUMBER" property="abortionNumber" />
+	<result column="ABORTION_OTHER" property="abortionOther" />
+	<result column="CHILDREN_NUMBER" property="childrenNumber" />
+	<result column="CHILDREN_OTHER" property="childrenOther" />
+	<result column="GENETIC_HISTORY" property="geneticHistory" />
+	<result column="GENETIC_HISTORY_REMARK" property="geneticHistoryRemark" />
+	<result column="PATIENT_RELATIONSHIP" property="patientRelationship" />
+	<result column="RELATIVES_MATING" property="relativesMating" />
+	<result column="RELATIVES_MATING_REMARK" property="relativesMatingRemark" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,KINSHIP,OTHER_RELATIONSHIPS,MEDICAL_HISTORY,MEDICAL_OTHER,SURGERY_HISTORY,OPERATION,OPERATION_OTHER,HPI,CASE_INFORMATION,MENARCHE_AGE,MENSTRUAL_PERIOD,CYCLE,AMOUNT,DYSMENORRHEA,LAST_MENSTRUAL_PERIOD,WHETHER_PREGNANT,MARRIED_HISTORY,MARRIAGE_STATUS,AMONT_NUMBER,AMONT_NUMBER_OTHER,PRETERM_DELIVERY_NUM,PRETERM_DELIVERY_OTHER,ABORTION_NUMBER,ABORTION_OTHER,CHILDREN_NUMBER,CHILDREN_OTHER,GENETIC_HISTORY,PATIENT_RELATIONSHIP,RELATIVES_MATING,RELATIVES_MATING_REMARK
+    from HEALTH_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="getHealthByPremaritalId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,KINSHIP,OTHER_RELATIONSHIPS,MEDICAL_HISTORY,MEDICAL_OTHER,SURGERY_HISTORY,OPERATION,OPERATION_OTHER,HPI,CASE_INFORMATION,MENARCHE_AGE,MENSTRUAL_PERIOD,CYCLE,AMOUNT,DYSMENORRHEA,LAST_MENSTRUAL_PERIOD,WHETHER_PREGNANT,MARRIED_HISTORY,MARRIAGE_STATUS,AMONT_NUMBER,AMONT_NUMBER_OTHER,PRETERM_DELIVERY_NUM,PRETERM_DELIVERY_OTHER,ABORTION_NUMBER,ABORTION_OTHER,CHILDREN_NUMBER,CHILDREN_OTHER,GENETIC_HISTORY,GENETIC_HISTORY_REMARK,PATIENT_RELATIONSHIP,RELATIVES_MATING,RELATIVES_MATING_REMARK
+    from HEALTH_INFO
+    where
+			MARRIAGE_TA_ID = #{ premaritalId}
+	  </select>
+	  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MARRIAGE_TA_ID,KINSHIP,OTHER_RELATIONSHIPS,MEDICAL_HISTORY,MEDICAL_OTHER,SURGERY_HISTORY,OPERATION,OPERATION_OTHER,HPI,CASE_INFORMATION,MENARCHE_AGE,MENSTRUAL_PERIOD,CYCLE,AMOUNT,DYSMENORRHEA,LAST_MENSTRUAL_PERIOD,WHETHER_PREGNANT,MARRIED_HISTORY,MARRIAGE_STATUS,AMONT_NUMBER,AMONT_NUMBER_OTHER,PRETERM_DELIVERY_NUM,PRETERM_DELIVERY_OTHER,ABORTION_NUMBER,ABORTION_OTHER,CHILDREN_NUMBER,CHILDREN_OTHER,GENETIC_HISTORY,PATIENT_RELATIONSHIP,RELATIVES_MATING,RELATIVES_MATING_REMARK
+    from HEALTH_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from HEALTH_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.premarital.po.HealthInfoPO" >
+    insert into HEALTH_INFO (ID,MARRIAGE_TA_ID,KINSHIP,OTHER_RELATIONSHIPS,MEDICAL_HISTORY,MEDICAL_OTHER,SURGERY_HISTORY,OPERATION,OPERATION_OTHER,HPI,CASE_INFORMATION,MENARCHE_AGE,MENSTRUAL_PERIOD,CYCLE,AMOUNT,DYSMENORRHEA,LAST_MENSTRUAL_PERIOD,WHETHER_PREGNANT,MARRIED_HISTORY,MARRIAGE_STATUS,AMONT_NUMBER,AMONT_NUMBER_OTHER,PRETERM_DELIVERY_NUM,PRETERM_DELIVERY_OTHER,ABORTION_NUMBER,ABORTION_OTHER,CHILDREN_NUMBER,CHILDREN_OTHER,GENETIC_HISTORY,GENETIC_HISTORY_REMARK,PATIENT_RELATIONSHIP,RELATIVES_MATING,RELATIVES_MATING_REMARK)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				#{ kinship, javaType=String, jdbcType=VARCHAR},
+				#{ otherRelationships, javaType=String, jdbcType=VARCHAR},
+				#{ medicalHistory, javaType=String, jdbcType=VARCHAR},
+				#{ medicalOther, javaType=String, jdbcType=VARCHAR},
+				#{ surgeryHistory, javaType=String, jdbcType=VARCHAR},
+				#{ operation, javaType=String, jdbcType=VARCHAR},
+				#{ operationOther, javaType=String, jdbcType=VARCHAR},
+				#{ hpi, javaType=String, jdbcType=VARCHAR},
+				#{ caseInformation, javaType=String, jdbcType=VARCHAR},
+				#{ menarcheAge, javaType=String, jdbcType=VARCHAR},
+				#{ menstrualPeriod, javaType=String, jdbcType=VARCHAR},
+				#{ cycle, javaType=String, jdbcType=VARCHAR},
+				#{ amount, javaType=String, jdbcType=VARCHAR},
+				#{ dysmenorrhea, javaType=String, jdbcType=VARCHAR},
+				#{ lastMenstrualPeriod, javaType=String, jdbcType=VARCHAR},
+				#{ whetherPregnant, javaType=String, jdbcType=VARCHAR},
+				#{ marriedHistory, javaType=String, jdbcType=VARCHAR},
+				#{ marriageStatus, javaType=String, jdbcType=VARCHAR},
+				#{ amontNumber, javaType=String, jdbcType=VARCHAR},
+				#{ amontNumberOther, javaType=String, jdbcType=VARCHAR},
+				#{ pretermDeliveryNum, javaType=String, jdbcType=VARCHAR},
+				#{ pretermDeliveryOther, javaType=String, jdbcType=VARCHAR},
+				#{ abortionNumber, javaType=String, jdbcType=VARCHAR},
+				#{ abortionOther, javaType=String, jdbcType=VARCHAR},
+				#{ childrenNumber, javaType=String, jdbcType=VARCHAR},
+				#{ childrenOther, javaType=String, jdbcType=VARCHAR},
+				#{ geneticHistory, javaType=String, jdbcType=VARCHAR},
+				#{ geneticHistoryRemark, javaType=String, jdbcType=VARCHAR},
+				#{ patientRelationship, javaType=String, jdbcType=VARCHAR},
+				#{ relativesMating, javaType=String, jdbcType=VARCHAR},
+				#{ relativesMatingRemark, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.premarital.po.HealthInfoPO" >
+    update HEALTH_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				KINSHIP = #{ kinship, javaType=String, jdbcType=VARCHAR},
+				OTHER_RELATIONSHIPS = #{ otherRelationships, javaType=String, jdbcType=VARCHAR},
+				MEDICAL_HISTORY = #{ medicalHistory, javaType=String, jdbcType=VARCHAR},
+				MEDICAL_OTHER = #{ medicalOther, javaType=String, jdbcType=VARCHAR},
+				SURGERY_HISTORY = #{ surgeryHistory, javaType=String, jdbcType=VARCHAR},
+				OPERATION = #{ operation, javaType=String, jdbcType=VARCHAR},
+				OPERATION_OTHER = #{ operationOther, javaType=String, jdbcType=VARCHAR},
+				HPI = #{ hpi, javaType=String, jdbcType=VARCHAR},
+				CASE_INFORMATION = #{ caseInformation, javaType=String, jdbcType=VARCHAR},
+				MENARCHE_AGE = #{ menarcheAge, javaType=String, jdbcType=VARCHAR},
+				MENSTRUAL_PERIOD = #{ menstrualPeriod, javaType=String, jdbcType=VARCHAR},
+				CYCLE = #{ cycle, javaType=String, jdbcType=VARCHAR},
+				AMOUNT = #{ amount, javaType=String, jdbcType=VARCHAR},
+				DYSMENORRHEA = #{ dysmenorrhea, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSTRUAL_PERIOD = #{ lastMenstrualPeriod, javaType=String, jdbcType=VARCHAR},
+				WHETHER_PREGNANT = #{ whetherPregnant, javaType=String, jdbcType=VARCHAR},
+				MARRIED_HISTORY = #{ marriedHistory, javaType=String, jdbcType=VARCHAR},
+				MARRIAGE_STATUS = #{ marriageStatus, javaType=String, jdbcType=VARCHAR},
+				AMONT_NUMBER = #{ amontNumber, javaType=String, jdbcType=VARCHAR},
+				AMONT_NUMBER_OTHER = #{ amontNumberOther, javaType=String, jdbcType=VARCHAR},
+				PRETERM_DELIVERY_NUM = #{ pretermDeliveryNum, javaType=String, jdbcType=VARCHAR},
+				PRETERM_DELIVERY_OTHER = #{ pretermDeliveryOther, javaType=String, jdbcType=VARCHAR},
+				ABORTION_NUMBER = #{ abortionNumber, javaType=String, jdbcType=VARCHAR},
+				ABORTION_OTHER = #{ abortionOther, javaType=String, jdbcType=VARCHAR},
+				CHILDREN_NUMBER = #{ childrenNumber, javaType=String, jdbcType=VARCHAR},
+				CHILDREN_OTHER = #{ childrenOther, javaType=String, jdbcType=VARCHAR},
+				GENETIC_HISTORY = #{ geneticHistory, javaType=String, jdbcType=VARCHAR},
+				PATIENT_RELATIONSHIP = #{ patientRelationship, javaType=String, jdbcType=VARCHAR},
+				RELATIVES_MATING = #{ relativesMating, javaType=String, jdbcType=VARCHAR},
+				RELATIVES_MATING_REMARK = #{ relativesMatingRemark, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+<update id="edit" parameterType="com.threefiveninetong.mchh.premarital.po.HealthInfoPO" >
+    update HEALTH_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				KINSHIP = #{ kinship, javaType=String, jdbcType=VARCHAR},
+				OTHER_RELATIONSHIPS = #{ otherRelationships, javaType=String, jdbcType=VARCHAR},
+				MEDICAL_HISTORY = #{ medicalHistory, javaType=String, jdbcType=VARCHAR},
+				MEDICAL_OTHER = #{ medicalOther, javaType=String, jdbcType=VARCHAR},
+				SURGERY_HISTORY = #{ surgeryHistory, javaType=String, jdbcType=VARCHAR},
+				OPERATION = #{ operation, javaType=String, jdbcType=VARCHAR},
+				OPERATION_OTHER = #{ operationOther, javaType=String, jdbcType=VARCHAR},
+				HPI = #{ hpi, javaType=String, jdbcType=VARCHAR},
+				CASE_INFORMATION = #{ caseInformation, javaType=String, jdbcType=VARCHAR},
+				MENARCHE_AGE = #{ menarcheAge, javaType=String, jdbcType=VARCHAR},
+				MENSTRUAL_PERIOD = #{ menstrualPeriod, javaType=String, jdbcType=VARCHAR},
+				CYCLE = #{ cycle, javaType=String, jdbcType=VARCHAR},
+				AMOUNT = #{ amount, javaType=String, jdbcType=VARCHAR},
+				DYSMENORRHEA = #{ dysmenorrhea, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSTRUAL_PERIOD = #{ lastMenstrualPeriod, javaType=String, jdbcType=VARCHAR},
+				WHETHER_PREGNANT = #{ whetherPregnant, javaType=String, jdbcType=VARCHAR},
+				MARRIED_HISTORY = #{ marriedHistory, javaType=String, jdbcType=VARCHAR},
+				MARRIAGE_STATUS = #{ marriageStatus, javaType=String, jdbcType=VARCHAR},
+				AMONT_NUMBER = #{ amontNumber, javaType=String, jdbcType=VARCHAR},
+				AMONT_NUMBER_OTHER = #{ amontNumberOther, javaType=String, jdbcType=VARCHAR},
+				PRETERM_DELIVERY_NUM = #{ pretermDeliveryNum, javaType=String, jdbcType=VARCHAR},
+				PRETERM_DELIVERY_OTHER = #{ pretermDeliveryOther, javaType=String, jdbcType=VARCHAR},
+				ABORTION_NUMBER = #{ abortionNumber, javaType=String, jdbcType=VARCHAR},
+				ABORTION_OTHER = #{ abortionOther, javaType=String, jdbcType=VARCHAR},
+				CHILDREN_NUMBER = #{ childrenNumber, javaType=String, jdbcType=VARCHAR},
+				CHILDREN_OTHER = #{ childrenOther, javaType=String, jdbcType=VARCHAR},
+				GENETIC_HISTORY = #{ geneticHistory, javaType=String, jdbcType=VARCHAR},
+				GENETIC_HISTORY_REMARK = #{ geneticHistoryRemark, javaType=String, jdbcType=VARCHAR},
+				PATIENT_RELATIONSHIP = #{ patientRelationship, javaType=String, jdbcType=VARCHAR},
+				RELATIVES_MATING = #{ relativesMating, javaType=String, jdbcType=VARCHAR},
+				RELATIVES_MATING_REMARK = #{ relativesMatingRemark, javaType=String, jdbcType=VARCHAR}
+	    where 
+			MARRIAGE_TA_ID = #{ marriageTaId}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MARRIAGE_TA_ID,KINSHIP,OTHER_RELATIONSHIPS,MEDICAL_HISTORY,MEDICAL_OTHER,SURGERY_HISTORY,OPERATION,OPERATION_OTHER,HPI,CASE_INFORMATION,MENARCHE_AGE,MENSTRUAL_PERIOD,CYCLE,AMOUNT,DYSMENORRHEA,LAST_MENSTRUAL_PERIOD,WHETHER_PREGNANT,MARRIED_HISTORY,MARRIAGE_STATUS,AMONT_NUMBER,AMONT_NUMBER_OTHER,PRETERM_DELIVERY_NUM,PRETERM_DELIVERY_OTHER,ABORTION_NUMBER,ABORTION_OTHER,CHILDREN_NUMBER,CHILDREN_OTHER,GENETIC_HISTORY,PATIENT_RELATIONSHIP,RELATIVES_MATING,RELATIVES_MATING_REMARK
+    from HEALTH_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from HEALTH_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

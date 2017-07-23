@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="10 seconds">
+
+<property name="LOG_HOME" value="${catalina.home}/logs/MCHH-boss/" /> 
+	<!-- 控制台输出 -->
+	<appender name="stdout"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<!-- 
+		如果返回DENY，那么记录事件立即被抛弃，不再经过剩余过滤器；
+		
+		如果返回NEUTRAL，那么有序列表里的下一个过滤器会接着处理记录事件；
+		
+		如果返回ACCEPT，那么记录事件被立即处理，不再经过剩余过滤器。
+	 -->
+	<!-- 时间滚动输出 level为 INFO 日志 -->
+	<appender name="file—info"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>NEUTRAL</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/info.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 时间滚动输出 level为 WARN 日志 -->
+	<appender name="file—warn"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>NEUTRAL</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/warn.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 时间滚动输出 level为 ERROR 日志 -->
+	<appender name="file—error"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_HOME}/logs/error.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%date [%thread] %-5level %logger{80} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="com.threefiveninetong.mchh.task.TaskController" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${LOG_HOME}/logs/%d{yyyy-MM-dd}/task/TaskController.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+	<appender name="com.threefiveninetong.mchh.task.service.TaskService" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${LOG_HOME}/logs/%d{yyyy-MM-dd}/task/TaskService.log</fileNamePattern>
+		<maxHistory>30</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}   - %msg %n </pattern>
+		</encoder>
+	</appender>
+		
+
+	<!--<appender name="email"
+		class="ch.qos.logback.classic.net.SMTPAppender">
+		<SMTPHost>smtp.qiye.163.com</SMTPHost> 邮件服务器地址 
+		<SMTPPort>25</SMTPPort>SMTPPORT端口 
+		<SSL>false</SSL>
+		<Username>jiaxh@itkt.cn</Username> 用户名 
+		<Password>abc123456</Password> 密码 
+		<To>495745342@qq.com</To> 目标接收人 
+		<From>jiaxh@itkt.cn</From> 发件人 
+		<Subject>leifeng_api错误日志: %logger - %m</Subject> 主题 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<encoder>
+			 一般采用这种方式格式化输出 
+			<layout class="ch.qos.logback.classic.html.HTMLLayout">
+		 
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				 采用什么渲染方式，这采取的是HTML方式 
+				<Pattern>%date %-5level %logger - %message%n</Pattern>
+			</layout>
+		</encoder>
+	</appender>
+
+	--><!--输出jdbctemplate的sql -->
+	<logger name="org.springframework.jdbc.core" additivity="true">
+		<level value="INFO" />
+	</logger>
+	
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="INFO" />
+	</logger>
+	<!--  -->
+	<logger name="org.springframework" additivity="true">
+		<level value="ERROR" />
+	</logger>
+	
+	  <logger name="org.springframework.web.servlet.DispatcherServlet" additivity="true">
+		<level value="ERROR" />
+	</logger>
+	
+	<logger name="com.threefiveninetong.mchh.task.TaskController" level="INFO" additivity="true">
+		<appender-ref ref="com.threefiveninetong.mchh.task.TaskController"/>
+	</logger>
+	<logger name="com.threefiveninetong.mchh.task.service.TaskService" level="INFO" additivity="true">
+		<appender-ref ref="com.threefiveninetong.mchh.task.service.TaskService"/>
+	</logger>
+	
+	<root level="INFO">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="file—info" />
+		<appender-ref ref="file—error" />
+		<!--
+		<appender-ref ref="email" />
+		-->
+	</root>
+</configuration>

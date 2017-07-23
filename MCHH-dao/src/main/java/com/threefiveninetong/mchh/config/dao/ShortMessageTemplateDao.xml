@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.ShortMessageTemplateDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.ShortMessageTemplatePO" >
+	<result column="ID" property="id" />
+	<result column="MESS_TYPE" property="messType" />
+	<result column="SEND_CROWD" property="sendCrowd" />
+	<result column="CONTENT" property="content" />
+	<result column="SEND_TIME" property="sendTime" />
+	<result column="USE_SIGN" property="useSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from SHORT_MESSAGE_TEMPLATE
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from SHORT_MESSAGE_TEMPLATE  where MESS_TYPE ='0' group by SEND_CROWD 
+  </select>
+  
+  <select id="findAllHight" resultMap="BaseResultMap" >
+    select ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from SHORT_MESSAGE_TEMPLATE  where MESS_TYPE ='1' group by SEND_CROWD 
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from SHORT_MESSAGE_TEMPLATE
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.ShortMessageTemplatePO" >
+    insert into SHORT_MESSAGE_TEMPLATE (ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ messType, javaType=String, jdbcType=VARCHAR},
+				#{ sendCrowd, javaType=String, jdbcType=VARCHAR},
+				#{ content, javaType=String, jdbcType=VARCHAR},
+				#{ sendTime, javaType=String, jdbcType=VARCHAR},
+				#{ useSign, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.ShortMessageTemplatePO" >
+    update SHORT_MESSAGE_TEMPLATE
+    set
+			MESS_TYPE = #{ messType, javaType=String, jdbcType=VARCHAR},
+				SEND_CROWD = #{ sendCrowd, javaType=String, jdbcType=VARCHAR},
+				CONTENT = #{ content, javaType=String, jdbcType=VARCHAR},
+				SEND_TIME = #{ sendTime, javaType=String, jdbcType=VARCHAR},
+				USE_SIGN = #{ useSign, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from SHORT_MESSAGE_TEMPLATE
+    where 1=1
+    and MESS_TYPE='0'
+    <if test="sendCrowd!=null and sendCrowd!=''">
+     and SEND_CROWD=#{sendCrowd}
+    </if>
+    <if test="useSign!=null and useSign!=''">
+    and USE_SIGN=#{useSign}
+    
+    </if>
+  </select>
+  
+   <select id="listForPageHight" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from SHORT_MESSAGE_TEMPLATE
+    where 1=1
+    and MESS_TYPE='1'
+    <if test="sendCrowd!=null and sendCrowd!=''">
+     and SEND_CROWD=#{sendCrowd}
+    </if>
+    <if test="useSign!=null and useSign!=''">
+    and USE_SIGN=#{useSign}
+    
+    </if>
+  </select>
+
+
+<delete id="deletes">
+		delete from SHORT_MESSAGE_TEMPLATE
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+<select id="findAlluse" resultMap="BaseResultMap" >
+    select ID,MESS_TYPE,SEND_CROWD,CONTENT,SEND_TIME,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from SHORT_MESSAGE_TEMPLATE where USE_SIGN="0"
+  </select>
+  
+  <resultMap id="BaseResultMapTemp" type="com.threefiveninetong.mchh.config.dto.SmsScreenTempVo" >
+	<result column="ID" property="id" />
+	<result column="BIRTH_ARCHIVES_ID" property="birthArchivesId" />
+	<result column="TELEPHONE" property="telephone" />
+	<result column="ORDER_CHECK" property="orderCheck" />
+	<result column="NEXT_FOLLOWING_DATE" property="nextFollowingDate" />
+	<result column="LAST_MENSES" property="lastMenses" />
+	<result column="HIGH_RISK" property="highRisk" />
+  </resultMap>
+  
+  <select id="screenByFollowingDate" resultMap="BaseResultMapTemp"  parameterType="hashmap">
+  <![CDATA[
+	select exa.ID,exa.BIRTH_ARCHIVES_ID,arc.TELEPHONE,ref.ORDER_CHECK,ref.NEXT_FOLLOWING_DATE from ARCHIVES_INFO arc,BIRTH_ARCHIVES_INFO bir,PRENATAL_REFERRAL_INFO ref,PRENATAL_EXA_INFO exa,(select p.BIRTH_ARCHIVES_ID, max(p.CREAT_TIME) CREAT_TIME from PRENATAL_EXA_INFO p 
+	where p.EDIT_STATUS='1' group by p.BIRTH_ARCHIVES_ID ) exaTemp
+	where exa.BIRTH_ARCHIVES_ID=exaTemp.BIRTH_ARCHIVES_ID and exa.CREAT_TIME=exaTemp.CREAT_TIME and ref.PRE_ID=exa.ID and arc.ID=bir.ARCHIVES_ID and bir.ID=exa.BIRTH_ARCHIVES_ID and  bir.PREGNANT_STATE='0'  and arc.DELTET_SIGN='1' and bir.DELTET_SIGN='1' and 
+	(((ref.ORDER_CHECK='1' and date(ref.NEXT_FOLLOWING_DATE)=#{ nextFollowingDate}) and (#{ startDay}<= DATEDIFF(#{ nextFollowingDate},date(bir.LAST_MENSES)) and DATEDIFF(#{ nextFollowingDate},date(bir.LAST_MENSES))<=#{ endDay}) ) or (ref.ORDER_CHECK='0' and ( #{ startDay}<=DATEDIFF(#{ nextFollowingDate},date(bir.LAST_MENSES)) and DATEDIFF(#{ nextFollowingDate},date(bir.LAST_MENSES))<=#{ startDay}+3 )))
+	]]>   
+  </select>
+  
+   <select id="screenByHighRisk" resultMap="BaseResultMapTemp"  parameterType="hashmap">
+  <![CDATA[
+	select exa.ID,exa.BIRTH_ARCHIVES_ID,arc.TELEPHONE,ref.ORDER_CHECK,ref.NEXT_FOLLOWING_DATE,bir.LAST_MENSES,ht.HIGH_RISK from ARCHIVES_INFO arc,BIRTH_ARCHIVES_INFO bir,PRENATAL_REFERRAL_INFO ref,PRENATAL_EXA_INFO exa,(select e.BIRTH_ARCHIVES_ID, max(e.CREAT_TIME) CREAT_TIME from 
+	(select p.* from prenatal_exa_info p,high_risk_info h where p.ID = h.EXAMINATION_ID) e 
+	where e.EDIT_STATUS='1' group by e.BIRTH_ARCHIVES_ID ) exaTemp, HIGH_RISK_INFO hi,(select t.HIGH_RISK_ID, group_concat(HIGH_RISK, ',') HIGH_RISK from HIGH_RISK_TERM t group by t.HIGH_RISK_ID) ht
+	where exa.BIRTH_ARCHIVES_ID=exaTemp.BIRTH_ARCHIVES_ID and exa.CREAT_TIME=exaTemp.CREAT_TIME and ref.PRE_ID=exa.ID and arc.ID=bir.ARCHIVES_ID and bir.ID=exa.BIRTH_ARCHIVES_ID and  bir.PREGNANT_STATE='0' and arc.DELTET_SIGN='1' and bir.DELTET_SIGN='1' and hi.EXAMINATION_ID = exa.ID and ht.HIGH_RISK_ID = hi.ID and ht.HIGH_RISK like CONCAT('%',#{ highRisk},'%') and
+	((ref.ORDER_CHECK='1' and date(ref.NEXT_FOLLOWING_DATE) = #{ nextFollowingDate}) or (ref.ORDER_CHECK='0')) 
+	]]>   
+  </select>
+  
+  <select id="getCloseCase" resultMap="BaseResultMapTemp" >
+    select arc.TELEPHONE
+	from BIRTH_ARCHIVES_INFO bir,ARCHIVES_INFO arc 
+	where bir.ARCHIVES_ID = arc.ID and arc.TELEPHONE in (select RECEIVER from  SYS_SMS_SENDED group by RECEIVER) and PREGNANT_STATE = '2'
+  </select>
+<!--codegen-->
+
+</mapper>

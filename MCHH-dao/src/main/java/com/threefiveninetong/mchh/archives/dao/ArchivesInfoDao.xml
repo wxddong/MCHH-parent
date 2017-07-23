@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.archives.dao.ArchivesInfoDao" >
+	
+	<select id="getCountCode" resultType="int" parameterType="String">
+		select count(*)
+	    from ARCHIVES_INFO
+	    where ARCHIVES_CODE like #{code}
+	</select>
+	
+	<update id="prenatalDelArchivesById" parameterType="String">
+		update ARCHIVES_INFO
+		set DELTET_SIGN = "0"
+		where ID = #{archivesId}
+	</update>
+	
+	<update id="savePrenatalUpdate" parameterType="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+	    update ARCHIVES_INFO
+	    set
+				SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+				INTERNATIONAL = #{ international, javaType=String, jdbcType=VARCHAR},
+				TELEPHONE = #{ telephone, javaType=String, jdbcType=VARCHAR},
+				NATION = #{ nation, javaType=String, jdbcType=VARCHAR},
+				ID_NO = #{ idNo, javaType=String, jdbcType=VARCHAR},
+				MAN_ID_NO = #{ manIdNo, javaType=String, jdbcType=VARCHAR},
+				BIRTHDAY = #{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				HOUSEHOLD_TYPE = #{ householdType, javaType=String, jdbcType=VARCHAR},
+				ACCOUNT_TYPE = #{ accountType, javaType=String, jdbcType=VARCHAR},
+				OCCUPATION = #{ occupation, javaType=String, jdbcType=VARCHAR},
+				EDUCATION = #{ education, javaType=String, jdbcType=VARCHAR},
+				ACC_PROVINCE_ID = #{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+				ACC_CITY_ID = #{ accCityId, javaType=String, jdbcType=VARCHAR},
+				ACC_COUNTY_ID = #{ accCountyId, javaType=String, jdbcType=VARCHAR},
+				ACC_TOWNSHIP_ID = #{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+				ACC_VILLAGE_ID = #{ accVillageId, javaType=String, jdbcType=VARCHAR},
+				ACC_ADDRESS = #{ accAddress, javaType=String, jdbcType=VARCHAR},
+				HOME_PROVINCE_ID = #{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+				HOME_CITY_ID = #{ homeCityId, javaType=String, jdbcType=VARCHAR},
+				HOME_COUNTY_ID = #{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+				HOME_TOWNSHIP_ID = #{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+				HOME_VILLAGE_ID = #{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+				HOME_ADDRESS = #{ homeAddress, javaType=String, jdbcType=VARCHAR},
+				WORK_UNIT = #{ workUnit, javaType=String, jdbcType=VARCHAR},
+				URGENT_CALL = #{ urgentCall, javaType=String, jdbcType=VARCHAR},
+				MAN_TELE = #{ manTele, javaType=String, jdbcType=VARCHAR},
+				MAN_INTE = #{ manInte, javaType=String, jdbcType=VARCHAR},
+				MAN_SEX = #{ manSex, javaType=String, jdbcType=VARCHAR},
+				MAN_BIRTHDAY = #{ manBirthday, javaType=Date, jdbcType=TIMESTAMP},
+				MAN_ACC_PROVINCE_ID = #{ manAccProvinceId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_CITY_ID = #{ manAccCityId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_COUNTY_ID = #{ manAccCountyId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_TOWNSHIP_ID = #{ manAccTownshipId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_VILLAGE_ID = #{ manAccVillageId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_ADDRESS = #{ manAccAddress, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_PROVINCE_ID = #{ manHomeProvinceId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_CITY_ID = #{ manHomeCityId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_COUNTY_ID = #{ manHomeCountyId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_TOWNSHIP_ID = #{ manHomeTownshipId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_VILLAGE_ID = #{ manHomeVillageId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_ADDRESS = #{ manHomeAddress, javaType=String, jdbcType=VARCHAR},
+				MAN_NATION = #{ manNation, javaType=String, jdbcType=VARCHAR},
+				MAN_HOU_TYPE = #{ manHouType, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_TYPE = #{ manAccType, javaType=String, jdbcType=VARCHAR},
+				MAN_OCCUPATION = #{ manOccupation, javaType=String, jdbcType=VARCHAR},
+				MAN_EDUCATION = #{ manEducation, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+	<select id="getArchivesByIdNum" resultMap="BaseResultMap" parameterType="String">
+		select ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,INTERNATIONAL,TELEPHONE,ID_NO,NATION,BIRTHDAY,HOUSEHOLD_TYPE,ACCOUNT_TYPE,OCCUPATION,EDUCATION,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,WORK_UNIT,URGENT_CALL,MAN_NAME,MAN_ID_NO,MAN_TELE,MAN_INTE,MAN_SEX,MAN_BIRTHDAY,MAN_ACC_PROVINCE_ID,MAN_ACC_CITY_ID,MAN_ACC_COUNTY_ID,MAN_ACC_TOWNSHIP_ID,MAN_ACC_VILLAGE_ID,MAN_ACC_ADDRESS,MAN_HOME_PROVINCE_ID,MAN_HOME_CITY_ID,MAN_HOME_COUNTY_ID,MAN_HOME_TOWNSHIP_ID,MAN_HOME_VILLAGE_ID,MAN_HOME_ADDRESS,MAN_NATION,MAN_HOU_TYPE,MAN_ACC_TYPE,MAN_OCCUPATION,MAN_EDUCATION,DELTET_SIGN,CREAT_TIME,UPDATE_TIME
+	    from ARCHIVES_INFO
+	    where DELTET_SIGN = "1"
+	    and ID_NO = #{idNum}
+	    ORDER BY CREAT_TIME DESC
+	    limit 1
+	</select>
+	
+	<select id="getArchivesByArchivesCode" resultMap="BaseResultMap" parameterType="String" >
+	   select ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,INTERNATIONAL,TELEPHONE,ID_NO,NATION,BIRTHDAY,HOUSEHOLD_TYPE,ACCOUNT_TYPE,OCCUPATION,EDUCATION,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,WORK_UNIT,URGENT_CALL,MAN_NAME,MAN_ID_NO,MAN_TELE,MAN_INTE,MAN_SEX,MAN_BIRTHDAY,MAN_ACC_PROVINCE_ID,MAN_ACC_CITY_ID,MAN_ACC_COUNTY_ID,MAN_ACC_TOWNSHIP_ID,MAN_ACC_VILLAGE_ID,MAN_ACC_ADDRESS,MAN_HOME_PROVINCE_ID,MAN_HOME_CITY_ID,MAN_HOME_COUNTY_ID,MAN_HOME_TOWNSHIP_ID,MAN_HOME_VILLAGE_ID,MAN_HOME_ADDRESS,MAN_NATION,MAN_HOU_TYPE,MAN_ACC_TYPE,MAN_OCCUPATION,MAN_EDUCATION,DELTET_SIGN,CREAT_TIME,UPDATE_TIME
+	   from ARCHIVES_INFO
+	   where DELTET_SIGN = "1"
+	   and 	ARCHIVES_CODE = #{archivesCode}
+	   ORDER BY CREAT_TIME DESC
+	   limit 1
+	</select>
+	
+	<update id="replenishManArchives" parameterType="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+    update ARCHIVES_INFO
+    set
+		MAN_NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+		MAN_ID_NO = #{ idNo, javaType=String, jdbcType=VARCHAR},
+		MAN_TELE = #{ telephone, javaType=String, jdbcType=VARCHAR},
+		MAN_INTE = #{ international, javaType=String, jdbcType=VARCHAR},
+		MAN_SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+		MAN_BIRTHDAY = #{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+		MAN_ACC_PROVINCE_ID = #{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+		MAN_ACC_CITY_ID = #{ accCityId, javaType=String, jdbcType=VARCHAR},
+		MAN_ACC_COUNTY_ID = #{ accCountyId, javaType=String, jdbcType=VARCHAR},
+		MAN_ACC_TOWNSHIP_ID = #{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+		MAN_ACC_VILLAGE_ID = #{ accVillageId, javaType=String, jdbcType=VARCHAR},
+		MAN_ACC_ADDRESS = #{ accAddress, javaType=String, jdbcType=VARCHAR},
+		MAN_HOME_PROVINCE_ID = #{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+		MAN_HOME_CITY_ID = #{ homeCityId, javaType=String, jdbcType=VARCHAR},
+		MAN_HOME_COUNTY_ID = #{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+		MAN_HOME_TOWNSHIP_ID = #{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+		MAN_HOME_VILLAGE_ID = #{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+		MAN_HOME_ADDRESS = #{ homeAddress, javaType=String, jdbcType=VARCHAR},
+		MAN_NATION = #{ nation, javaType=String, jdbcType=VARCHAR},
+		MAN_HOU_TYPE = #{ householdType, javaType=String, jdbcType=VARCHAR},
+		MAN_ACC_TYPE = #{ accountType, javaType=String, jdbcType=VARCHAR},
+		MAN_OCCUPATION = #{ occupation, javaType=String, jdbcType=VARCHAR},
+		MAN_EDUCATION = #{ education, javaType=String, jdbcType=VARCHAR},
+		MAN_WORK_UNIT = #{ workUnit, javaType=String, jdbcType=VARCHAR},
+		MAN_URGENT_CALL = #{ urgentCall, javaType=String, jdbcType=VARCHAR}
+	 where ARCHIVES_CODE = #{archivesCode}
+	  </update>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+	<result column="ID" property="id" />
+	<result column="ARCHIVES_CODE" property="archivesCode" />
+	<result column="REAL_NAME" property="operatorPO.realName" />
+	<result column="PREMARITAL_STATUS" property="premaritalExaInfoPO.premaritalStatus" />
+	<result column="EDIT_STATUS" property="premaritalExaInfoPO.editStatus" />
+	<result column="PRO_NAME" property="provinceInfoPO.name" />
+	<result column="CITY_NAME" property="cityInfoPO.name" />
+	<result column="ADDRESS" property="address" />
+	<result column="PRE_ID" property="premaritalExaInfoPO.id" />
+	<result column="HOSPITAL_ID" property="hospitalId" />
+	<result column="DOCTOR_ID" property="doctorId" />
+	<result column="NAME" property="name" />
+	<result column="SEX" property="sex" />
+	<result column="INTERNATIONAL" property="international" />
+	<result column="TELEPHONE" property="telephone" />
+	<result column="ID_NO" property="idNo" />
+	<result column="NATION" property="nation" />
+	<result column="BIRTHDAY" property="birthday" />
+	<result column="AGE" property="age" />
+	<result column="HOUSEHOLD_TYPE" property="householdType" />
+	<result column="ACCOUNT_TYPE" property="accountType" />
+	<result column="OCCUPATION" property="occupation" />
+	<result column="EDUCATION" property="education" />
+	<result column="ACC_PROVINCE_ID" property="accProvinceId" />
+	<result column="ACC_CITY_ID" property="accCityId" />
+	<result column="ACC_COUNTY_ID" property="accCountyId" />
+	<result column="ACC_TOWNSHIP_ID" property="accTownshipId" />
+	<result column="ACC_VILLAGE_ID" property="accVillageId" />
+	<result column="ACC_ADDRESS" property="accAddress" />
+	<result column="HOME_PROVINCE_ID" property="homeProvinceId" />
+	<result column="HOME_CITY_ID" property="homeCityId" />
+	<result column="HOME_COUNTY_ID" property="homeCountyId" />
+	<result column="HOME_TOWNSHIP_ID" property="homeTownshipId" />
+	<result column="HOME_VILLAGE_ID" property="homeVillageId" />
+	<result column="HOME_ADDRESS" property="homeAddress" />
+	<result column="WORK_UNIT" property="workUnit" />
+	<result column="URGENT_CALL" property="urgentCall" />
+	<result column="MAN_NAME" property="manName" />
+	<result column="MAN_ID_NO" property="manIdNo" />
+	<result column="MAN_TELE" property="manTele" />
+	<result column="MAN_INTE" property="manInte" />
+	<result column="MAN_SEX" property="manSex" />
+	<result column="MAN_BIRTHDAY" property="manBirthday" />
+	<result column="MAN_ACC_PROVINCE_ID" property="manAccProvinceId" />
+	<result column="MAN_ACC_CITY_ID" property="manAccCityId" />
+	<result column="MAN_ACC_COUNTY_ID" property="manAccCountyId" />
+	<result column="MAN_ACC_TOWNSHIP_ID" property="manAccTownshipId" />
+	<result column="MAN_ACC_VILLAGE_ID" property="manAccVillageId" />
+	<result column="MAN_ACC_ADDRESS" property="manAccAddress" />
+	<result column="MAN_HOME_PROVINCE_ID" property="manHomeProvinceId" />
+	<result column="MAN_HOME_CITY_ID" property="manHomeCityId" />
+	<result column="MAN_HOME_COUNTY_ID" property="manHomeCountyId" />
+	<result column="MAN_HOME_TOWNSHIP_ID" property="manHomeTownshipId" />
+	<result column="MAN_HOME_VILLAGE_ID" property="manHomeVillageId" />
+	<result column="MAN_HOME_ADDRESS" property="manHomeAddress" />
+	<result column="MAN_WORK_UNIT" property="manWorkUnit" />
+	<result column="MAN_URGENT_CALL" property="manUrgentCall" />
+	<result column="MAN_NATION" property="manNation" />
+	<result column="MAN_HOU_TYPE" property="manHouType" />
+	<result column="MAN_ACC_TYPE" property="manAccType" />
+	<result column="MAN_OCCUPATION" property="manOccupation" />
+	<result column="MAN_EDUCATION" property="manEducation" />
+	<result column="DELTET_SIGN" property="deltetSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="LAST_MENSTRUAL_PERIOD" property="lastmenstrual" />
+	<result column="EXC_TERM" property="inspectionResultPO.excTerm" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,INTERNATIONAL,TELEPHONE,ID_NO,MAN_URGENT_CALL,NATION,BIRTHDAY,MAN_WORK_UNIT,HOUSEHOLD_TYPE,ACCOUNT_TYPE,OCCUPATION,EDUCATION,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,WORK_UNIT,URGENT_CALL,MAN_NAME,MAN_ID_NO,MAN_TELE,MAN_INTE,MAN_SEX,MAN_BIRTHDAY,MAN_ACC_PROVINCE_ID,MAN_ACC_CITY_ID,MAN_ACC_COUNTY_ID,MAN_ACC_TOWNSHIP_ID,MAN_ACC_VILLAGE_ID,MAN_ACC_ADDRESS,MAN_HOME_PROVINCE_ID,MAN_HOME_CITY_ID,MAN_HOME_COUNTY_ID,MAN_HOME_TOWNSHIP_ID,MAN_HOME_VILLAGE_ID,MAN_HOME_ADDRESS,MAN_NATION,MAN_HOU_TYPE,MAN_ACC_TYPE,MAN_OCCUPATION,MAN_EDUCATION,DELTET_SIGN,CREAT_TIME,UPDATE_TIME
+    from ARCHIVES_INFO
+    where
+			ID = #{ id}
+	</select>
+	
+	
+	
+	<select id="findlian" resultMap="BaseResultMap" parameterType="String" >
+    select ar.ID,ar.ARCHIVES_CODE,ar.HOSPITAL_ID,ar.DOCTOR_ID,ar.NAME,ar.SEX,ar.INTERNATIONAL,ar.TELEPHONE,ar.ID_NO,ar.NATION,ar.BIRTHDAY,ar.HOUSEHOLD_TYPE,ar.ACCOUNT_TYPE,ar.OCCUPATION,ar.EDUCATION,ar.ACC_PROVINCE_ID,ar.ACC_CITY_ID,ar.ACC_COUNTY_ID,ar.ACC_TOWNSHIP_ID,ar.ACC_VILLAGE_ID,ar.ACC_ADDRESS,ar.HOME_PROVINCE_ID,ar.HOME_CITY_ID,ar.HOME_COUNTY_ID,ar.HOME_TOWNSHIP_ID,ar.HOME_VILLAGE_ID,ar.HOME_ADDRESS,ar.WORK_UNIT,ar.URGENT_CALL,ar.MAN_NAME,ar.MAN_ID_NO,ar.MAN_TELE,ar.MAN_INTE,ar.MAN_SEX,ar.MAN_BIRTHDAY,ar.MAN_ACC_PROVINCE_ID,ar.MAN_ACC_CITY_ID,ar.MAN_ACC_COUNTY_ID,ar.MAN_ACC_TOWNSHIP_ID,ar.MAN_ACC_VILLAGE_ID,ar.MAN_ACC_ADDRESS,ar.MAN_HOME_PROVINCE_ID,ar.MAN_HOME_CITY_ID,ar.MAN_HOME_COUNTY_ID,ar.MAN_HOME_TOWNSHIP_ID,ar.MAN_HOME_VILLAGE_ID,ar.MAN_HOME_ADDRESS,ar.MAN_NATION,ar.MAN_HOU_TYPE,ar.MAN_ACC_TYPE,ar.MAN_OCCUPATION,ar.MAN_EDUCATION,ar.DELTET_SIGN,ar.CREAT_TIME,ar.UPDATE_TIME,
+     heal.LAST_MENSTRUAL_PERIOD
+    from ARCHIVES_INFO ar 
+	left join 
+	PREMARITAL_EXA_INFO pr 
+	on pr.ARCHIVES_ID=ar.ID
+	left join 
+	HEALTH_INFO heal 
+	on heal.MARRIAGE_TA_ID=pr.ID
+    where 
+			ar.ID = #{ id}
+	and 
+	ar.SEX=0
+	</select>
+	
+	
+	<select id="findAllByCountyId" resultMap="BaseResultMap" parameterType="String" >
+    select ar.ID,ar.ARCHIVES_CODE,ar.HOSPITAL_ID,ar.DOCTOR_ID,ar.NAME,ar.SEX,ar.INTERNATIONAL,ar.TELEPHONE,ar.ID_NO,ar.NATION,ar.BIRTHDAY,ar.HOUSEHOLD_TYPE,ar.ACCOUNT_TYPE,ar.OCCUPATION,ar.EDUCATION,ar.ACC_PROVINCE_ID,ar.ACC_CITY_ID,ar.ACC_COUNTY_ID,ar.ACC_TOWNSHIP_ID,ar.ACC_VILLAGE_ID,ar.ACC_ADDRESS,ar.HOME_PROVINCE_ID,ar.HOME_CITY_ID,ar.HOME_COUNTY_ID,ar.HOME_TOWNSHIP_ID,ar.HOME_VILLAGE_ID,ar.HOME_ADDRESS,ar.WORK_UNIT,ar.URGENT_CALL,ar.MAN_NAME,ar.MAN_ID_NO,ar.MAN_TELE,ar.MAN_INTE,ar.MAN_SEX,ar.MAN_BIRTHDAY,ar.MAN_ACC_PROVINCE_ID,ar.MAN_ACC_CITY_ID,ar.MAN_ACC_COUNTY_ID,ar.MAN_ACC_TOWNSHIP_ID,ar.MAN_ACC_VILLAGE_ID,ar.MAN_ACC_ADDRESS,ar.MAN_HOME_PROVINCE_ID,ar.MAN_HOME_CITY_ID,ar.MAN_HOME_COUNTY_ID,ar.MAN_HOME_TOWNSHIP_ID,ar.MAN_HOME_VILLAGE_ID,ar.MAN_HOME_ADDRESS,ar.MAN_NATION,ar.MAN_HOU_TYPE,ar.MAN_ACC_TYPE,ar.MAN_OCCUPATION,ar.MAN_EDUCATION,ar.DELTET_SIGN,ar.CREAT_TIME,ar.UPDATE_TIME,
+     heal.LAST_MENSTRUAL_PERIOD
+    from ARCHIVES_INFO ar 
+    where 
+			ar.ACC_COUNTY_ID = #{ id}
+	</select>
+	
+	
+	
+	
+	
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,INTERNATIONAL,TELEPHONE,ID_NO,NATION,MAN_WORK_UNIT,MAN_URGENT_CALL,BIRTHDAY,HOUSEHOLD_TYPE,ACCOUNT_TYPE,OCCUPATION,EDUCATION,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,WORK_UNIT,URGENT_CALL,MAN_NAME,MAN_ID_NO,MAN_TELE,MAN_INTE,MAN_SEX,MAN_BIRTHDAY,MAN_ACC_PROVINCE_ID,MAN_ACC_CITY_ID,MAN_ACC_COUNTY_ID,MAN_ACC_TOWNSHIP_ID,MAN_ACC_VILLAGE_ID,MAN_ACC_ADDRESS,MAN_HOME_PROVINCE_ID,MAN_HOME_CITY_ID,MAN_HOME_COUNTY_ID,MAN_HOME_TOWNSHIP_ID,MAN_HOME_VILLAGE_ID,MAN_HOME_ADDRESS,MAN_NATION,MAN_HOU_TYPE,MAN_ACC_TYPE,MAN_OCCUPATION,MAN_EDUCATION,DELTET_SIGN,CREAT_TIME,UPDATE_TIME
+    from ARCHIVES_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from ARCHIVES_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+    insert into ARCHIVES_INFO (ID,ARCHIVES_CODE,HOSPITAL_ID,DOCTOR_ID,NAME,SEX,INTERNATIONAL,TELEPHONE,ID_NO,NATION,BIRTHDAY,HOUSEHOLD_TYPE,ACCOUNT_TYPE,OCCUPATION,EDUCATION,ACC_PROVINCE_ID,ACC_CITY_ID,ACC_COUNTY_ID,ACC_TOWNSHIP_ID,ACC_VILLAGE_ID,ACC_ADDRESS,HOME_PROVINCE_ID,HOME_CITY_ID,HOME_COUNTY_ID,HOME_TOWNSHIP_ID,HOME_VILLAGE_ID,HOME_ADDRESS,WORK_UNIT,URGENT_CALL,MAN_NAME,MAN_ID_NO,MAN_TELE,MAN_INTE,MAN_SEX,MAN_BIRTHDAY,MAN_ACC_PROVINCE_ID,MAN_ACC_CITY_ID,MAN_ACC_COUNTY_ID,MAN_ACC_TOWNSHIP_ID,MAN_ACC_VILLAGE_ID,MAN_ACC_ADDRESS,MAN_HOME_PROVINCE_ID,MAN_HOME_CITY_ID,MAN_HOME_COUNTY_ID,MAN_HOME_TOWNSHIP_ID,MAN_HOME_VILLAGE_ID,MAN_HOME_ADDRESS,MAN_NATION,MAN_HOU_TYPE,MAN_ACC_TYPE,MAN_OCCUPATION,MAN_EDUCATION,DELTET_SIGN,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ archivesCode, javaType=String, jdbcType=VARCHAR},
+				#{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				#{ doctorId, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ sex, javaType=String, jdbcType=VARCHAR},
+				#{ international, javaType=String, jdbcType=VARCHAR},
+				#{ telephone, javaType=String, jdbcType=VARCHAR},
+				#{ idNo, javaType=String, jdbcType=VARCHAR},
+				#{ nation, javaType=String, jdbcType=VARCHAR},
+				#{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				#{ householdType, javaType=String, jdbcType=VARCHAR},
+				#{ accountType, javaType=String, jdbcType=VARCHAR},
+				#{ occupation, javaType=String, jdbcType=VARCHAR},
+				#{ education, javaType=String, jdbcType=VARCHAR},
+				#{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+				#{ accCityId, javaType=String, jdbcType=VARCHAR},
+				#{ accCountyId, javaType=String, jdbcType=VARCHAR},
+				#{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+				#{ accVillageId, javaType=String, jdbcType=VARCHAR},
+				#{ accAddress, javaType=String, jdbcType=VARCHAR},
+				#{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+				#{ homeCityId, javaType=String, jdbcType=VARCHAR},
+				#{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+				#{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+				#{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+				#{ homeAddress, javaType=String, jdbcType=VARCHAR},
+				#{ workUnit, javaType=String, jdbcType=VARCHAR},
+				#{ urgentCall, javaType=String, jdbcType=VARCHAR},
+				#{ manName, javaType=String, jdbcType=VARCHAR},
+				#{ manIdNo, javaType=String, jdbcType=VARCHAR},
+				#{ manTele, javaType=String, jdbcType=VARCHAR},
+				#{ manInte, javaType=String, jdbcType=VARCHAR},
+				#{ manSex, javaType=String, jdbcType=VARCHAR},
+				#{ manBirthday, javaType=Date, jdbcType=TIMESTAMP},
+				#{ manAccProvinceId, javaType=String, jdbcType=VARCHAR},
+				#{ manAccCityId, javaType=String, jdbcType=VARCHAR},
+				#{ manAccCountyId, javaType=String, jdbcType=VARCHAR},
+				#{ manAccTownshipId, javaType=String, jdbcType=VARCHAR},
+				#{ manAccVillageId, javaType=String, jdbcType=VARCHAR},
+				#{ manAccAddress, javaType=String, jdbcType=VARCHAR},
+				#{ manHomeProvinceId, javaType=String, jdbcType=VARCHAR},
+				#{ manHomeCityId, javaType=String, jdbcType=VARCHAR},
+				#{ manHomeCountyId, javaType=String, jdbcType=VARCHAR},
+				#{ manHomeTownshipId, javaType=String, jdbcType=VARCHAR},
+				#{ manHomeVillageId, javaType=String, jdbcType=VARCHAR},
+				#{ manHomeAddress, javaType=String, jdbcType=VARCHAR},
+				#{ manNation, javaType=String, jdbcType=VARCHAR},
+				#{ manHouType, javaType=String, jdbcType=VARCHAR},
+				#{ manAccType, javaType=String, jdbcType=VARCHAR},
+				#{ manOccupation, javaType=String, jdbcType=VARCHAR},
+				#{ manEducation, javaType=String, jdbcType=VARCHAR},
+				#{ deltetSign, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+    update ARCHIVES_INFO
+    set
+			ARCHIVES_CODE = #{ archivesCode, javaType=String, jdbcType=VARCHAR},
+				HOSPITAL_ID = #{ hospitalId, javaType=String, jdbcType=VARCHAR},
+				DOCTOR_ID = #{ doctorId, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+				INTERNATIONAL = #{ international, javaType=String, jdbcType=VARCHAR},
+				TELEPHONE = #{ telephone, javaType=String, jdbcType=VARCHAR},
+				ID_NO = #{ idNo, javaType=String, jdbcType=VARCHAR},
+				NATION = #{ nation, javaType=String, jdbcType=VARCHAR},
+				BIRTHDAY = #{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				HOUSEHOLD_TYPE = #{ householdType, javaType=String, jdbcType=VARCHAR},
+				ACCOUNT_TYPE = #{ accountType, javaType=String, jdbcType=VARCHAR},
+				OCCUPATION = #{ occupation, javaType=String, jdbcType=VARCHAR},
+				EDUCATION = #{ education, javaType=String, jdbcType=VARCHAR},
+				ACC_PROVINCE_ID = #{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+				ACC_CITY_ID = #{ accCityId, javaType=String, jdbcType=VARCHAR},
+				ACC_COUNTY_ID = #{ accCountyId, javaType=String, jdbcType=VARCHAR},
+				ACC_TOWNSHIP_ID = #{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+				ACC_VILLAGE_ID = #{ accVillageId, javaType=String, jdbcType=VARCHAR},
+				ACC_ADDRESS = #{ accAddress, javaType=String, jdbcType=VARCHAR},
+				HOME_PROVINCE_ID = #{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+				HOME_CITY_ID = #{ homeCityId, javaType=String, jdbcType=VARCHAR},
+				HOME_COUNTY_ID = #{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+				HOME_TOWNSHIP_ID = #{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+				HOME_VILLAGE_ID = #{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+				HOME_ADDRESS = #{ homeAddress, javaType=String, jdbcType=VARCHAR},
+				WORK_UNIT = #{ workUnit, javaType=String, jdbcType=VARCHAR},
+				URGENT_CALL = #{ urgentCall, javaType=String, jdbcType=VARCHAR},
+				MAN_NAME = #{ manName, javaType=String, jdbcType=VARCHAR},
+				MAN_ID_NO = #{ manIdNo, javaType=String, jdbcType=VARCHAR},
+				MAN_TELE = #{ manTele, javaType=String, jdbcType=VARCHAR},
+				MAN_INTE = #{ manInte, javaType=String, jdbcType=VARCHAR},
+				MAN_SEX = #{ manSex, javaType=String, jdbcType=VARCHAR},
+				MAN_BIRTHDAY = #{ manBirthday, javaType=Date, jdbcType=TIMESTAMP},
+				MAN_ACC_PROVINCE_ID = #{ manAccProvinceId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_CITY_ID = #{ manAccCityId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_COUNTY_ID = #{ manAccCountyId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_TOWNSHIP_ID = #{ manAccTownshipId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_VILLAGE_ID = #{ manAccVillageId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_ADDRESS = #{ manAccAddress, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_PROVINCE_ID = #{ manHomeProvinceId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_CITY_ID = #{ manHomeCityId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_COUNTY_ID = #{ manHomeCountyId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_TOWNSHIP_ID = #{ manHomeTownshipId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_VILLAGE_ID = #{ manHomeVillageId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_ADDRESS = #{ manHomeAddress, javaType=String, jdbcType=VARCHAR},
+				MAN_NATION = #{ manNation, javaType=String, jdbcType=VARCHAR},
+				MAN_HOU_TYPE = #{ manHouType, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_TYPE = #{ manAccType, javaType=String, jdbcType=VARCHAR},
+				MAN_OCCUPATION = #{ manOccupation, javaType=String, jdbcType=VARCHAR},
+				MAN_EDUCATION = #{ manEducation, javaType=String, jdbcType=VARCHAR},
+				DELTET_SIGN = #{ deltetSign, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+  
+  <update id="updateWoman" parameterType="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+    update ARCHIVES_INFO
+    set
+			ARCHIVES_CODE = #{ archivesCode, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				SEX = #{ sex, javaType=String, jdbcType=VARCHAR},
+				INTERNATIONAL = #{ international, javaType=String, jdbcType=VARCHAR},
+				TELEPHONE = #{ telephone, javaType=String, jdbcType=VARCHAR},
+				ID_NO = #{ idNo, javaType=String, jdbcType=VARCHAR},
+				NATION = #{ nation, javaType=String, jdbcType=VARCHAR},
+				BIRTHDAY = #{ birthday, javaType=Date, jdbcType=TIMESTAMP},
+				HOUSEHOLD_TYPE = #{ householdType, javaType=String, jdbcType=VARCHAR},
+				ACCOUNT_TYPE = #{ accountType, javaType=String, jdbcType=VARCHAR},
+				OCCUPATION = #{ occupation, javaType=String, jdbcType=VARCHAR},
+				EDUCATION = #{ education, javaType=String, jdbcType=VARCHAR},
+				ACC_PROVINCE_ID = #{ accProvinceId, javaType=String, jdbcType=VARCHAR},
+				ACC_CITY_ID = #{ accCityId, javaType=String, jdbcType=VARCHAR},
+				ACC_COUNTY_ID = #{ accCountyId, javaType=String, jdbcType=VARCHAR},
+				ACC_TOWNSHIP_ID = #{ accTownshipId, javaType=String, jdbcType=VARCHAR},
+				ACC_VILLAGE_ID = #{ accVillageId, javaType=String, jdbcType=VARCHAR},
+				ACC_ADDRESS = #{ accAddress, javaType=String, jdbcType=VARCHAR},
+				HOME_PROVINCE_ID = #{ homeProvinceId, javaType=String, jdbcType=VARCHAR},
+				HOME_CITY_ID = #{ homeCityId, javaType=String, jdbcType=VARCHAR},
+				HOME_COUNTY_ID = #{ homeCountyId, javaType=String, jdbcType=VARCHAR},
+				HOME_TOWNSHIP_ID = #{ homeTownshipId, javaType=String, jdbcType=VARCHAR},
+				HOME_VILLAGE_ID = #{ homeVillageId, javaType=String, jdbcType=VARCHAR},
+				HOME_ADDRESS = #{ homeAddress, javaType=String, jdbcType=VARCHAR},
+				WORK_UNIT = #{ workUnit, javaType=String, jdbcType=VARCHAR},
+				URGENT_CALL = #{ urgentCall, javaType=String, jdbcType=VARCHAR},
+				MAN_NAME = #{ manName, javaType=String, jdbcType=VARCHAR},
+				MAN_ID_NO = #{ manIdNo, javaType=String, jdbcType=VARCHAR},
+				MAN_TELE = #{ manTele, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+	  
+<update id="updateMan" parameterType="com.threefiveninetong.mchh.archives.po.ArchivesInfoPO" >
+    update ARCHIVES_INFO
+    set
+			ARCHIVES_CODE = #{ archivesCode, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				TELEPHONE = #{ telephone, javaType=String, jdbcType=VARCHAR},
+				ID_NO = #{ idNo, javaType=String, jdbcType=VARCHAR},
+				MAN_NAME = #{ manName, javaType=String, jdbcType=VARCHAR},
+				MAN_ID_NO = #{ manIdNo, javaType=String, jdbcType=VARCHAR},
+				MAN_TELE = #{ manTele, javaType=String, jdbcType=VARCHAR},
+				MAN_INTE = #{ manInte, javaType=String, jdbcType=VARCHAR},
+				MAN_SEX = #{ manSex, javaType=String, jdbcType=VARCHAR},
+				MAN_BIRTHDAY = #{ manBirthday, javaType=Date, jdbcType=TIMESTAMP},
+				MAN_ACC_PROVINCE_ID = #{ manAccProvinceId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_CITY_ID = #{ manAccCityId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_COUNTY_ID = #{ manAccCountyId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_TOWNSHIP_ID = #{ manAccTownshipId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_VILLAGE_ID = #{ manAccVillageId, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_ADDRESS = #{ manAccAddress, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_PROVINCE_ID = #{ manHomeProvinceId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_CITY_ID = #{ manHomeCityId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_COUNTY_ID = #{ manHomeCountyId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_TOWNSHIP_ID = #{ manHomeTownshipId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_VILLAGE_ID = #{ manHomeVillageId, javaType=String, jdbcType=VARCHAR},
+				MAN_HOME_ADDRESS = #{ manHomeAddress, javaType=String, jdbcType=VARCHAR},
+				MAN_WORK_UNIT = #{ manWorkUnit, javaType=String, jdbcType=VARCHAR},
+				MAN_URGENT_CALL = #{ manUrgentCall, javaType=String, jdbcType=VARCHAR},
+				MAN_NATION = #{ manNation, javaType=String, jdbcType=VARCHAR},
+				MAN_HOU_TYPE = #{ manHouType, javaType=String, jdbcType=VARCHAR},
+				MAN_ACC_TYPE = #{ manAccType, javaType=String, jdbcType=VARCHAR},
+				MAN_OCCUPATION = #{ manOccupation, javaType=String, jdbcType=VARCHAR},
+				MAN_EDUCATION = #{ manEducation, javaType=String, jdbcType=VARCHAR},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+  
+  <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select arch.ID,arch.ARCHIVES_CODE,arch.HOSPITAL_ID,arch.DOCTOR_ID,arch.NAME,arch.SEX,arch.INTERNATIONAL,
+    	arch.TELEPHONE,arch.ID_NO,arch.NATION,arch.BIRTHDAY,arch.HOUSEHOLD_TYPE,arch.ACCOUNT_TYPE,arch.OCCUPATION,
+    	arch.EDUCATION,arch.ACC_PROVINCE_ID,arch.ACC_CITY_ID,arch.ACC_COUNTY_ID,arch.ACC_TOWNSHIP_ID,arch.ACC_VILLAGE_ID,
+    	arch.ACC_ADDRESS,arch.HOME_PROVINCE_ID,arch.HOME_CITY_ID,arch.HOME_COUNTY_ID,arch.HOME_TOWNSHIP_ID,arch.HOME_VILLAGE_ID,
+    	arch.HOME_ADDRESS,arch.WORK_UNIT,arch.URGENT_CALL,arch.MAN_NAME,arch.MAN_ID_NO,arch.MAN_TELE,arch.MAN_INTE,
+    	arch.MAN_SEX,arch.MAN_BIRTHDAY,arch.MAN_ACC_PROVINCE_ID,arch.MAN_ACC_CITY_ID,arch.MAN_ACC_COUNTY_ID,arch.MAN_ACC_TOWNSHIP_ID,
+    	arch.MAN_ACC_VILLAGE_ID,arch.MAN_ACC_ADDRESS,arch.MAN_HOME_PROVINCE_ID,arch.MAN_HOME_CITY_ID,arch.MAN_HOME_COUNTY_ID,
+    	arch.MAN_HOME_TOWNSHIP_ID,arch.MAN_HOME_VILLAGE_ID,arch.MAN_HOME_ADDRESS,arch.MAN_NATION,arch.MAN_HOU_TYPE,
+    	arch.MAN_ACC_TYPE,arch.MAN_OCCUPATION,arch.MAN_EDUCATION,arch.DELTET_SIGN,arch.CREAT_TIME,arch.UPDATE_TIME,
+    	pre.PREMARITAL_STATUS,pre.EDIT_STATUS,pre.SEX as preSex,pre.ID as PRE_ID,oper.REAL_NAME,
+    	CONCAT(pro.NAME,city.NAME) AS ADDRESS
+    from ARCHIVES_INFO arch
+    left join PREMARITAL_EXA_INFO pre on arch.ID = pre.ARCHIVES_ID
+    left join sys_operator oper on arch.DOCTOR_ID = oper.ID
+    left join PROVINCE_INFO pro on pro.ID = arch.HOME_PROVINCE_ID
+    left join CITY_INFO city on city.ID = arch.HOME_CITY_ID
+    where pre.SEX = '0'
+    and (pre.EDIT_STATUS != '2' 
+    OR pre.EDIT_STATUS is NULL)
+    
+    <if test="archivesCode!=null and archivesCode!=''">
+		and arch.ARCHIVES_CODE = #{archivesCode}
+	</if>
+    <if test="name!=null and name!=''">
+		and arch.NAME like #{name}
+	</if>
+	<if test="idNo!=null and idNo!=''">
+		and arch.ID_NO = #{idNo}
+	</if>
+	<if test="txtBegin!=null and txtBegin!=''">
+		and arch.CREAT_TIME >= STR_TO_DATE(#{txtBegin},'%Y-%m-%d')
+	</if>
+	<if test="txtEnd!=null and txtEnd!=''">
+		<!-- <![CDATA[and arch.CREATE_TIME <=STR_TO_DATE(#{txtEnd},'%Y-%m-%d')]]> -->
+		and STR_TO_DATE(#{txtEnd},'%Y-%m-%d') >= arch.CREAT_TIME
+	</if>
+	<if test="premaritalStatus!=null and premaritalStatus!=''">
+		<![CDATA[
+	    			and  pre.PREMARITAL_STATUS = #{premaritalStatus}
+	    			]]>
+	</if>
+	<if test="realName!=null and realName!=''">
+		and oper.REAL_NAME = #{realName}
+	</if>
+	order by arch.CREAT_TIME desc
+  </select>
+  
+  <select id="listForPageCheck" resultMap="BaseResultMap"  parameterType="hashmap">
+    select arch.ID,arch.ARCHIVES_CODE,arch.HOSPITAL_ID,arch.DOCTOR_ID,arch.NAME,arch.SEX,arch.INTERNATIONAL,
+    	arch.TELEPHONE,arch.ID_NO,arch.NATION,arch.BIRTHDAY,
+    	(year(now())-year(arch.BIRTHDAY)-1) + ( DATE_FORMAT(arch.BIRTHDAY, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d') ) as AGE,
+    	arch.HOUSEHOLD_TYPE,arch.ACCOUNT_TYPE,arch.OCCUPATION,
+    	arch.EDUCATION,arch.ACC_PROVINCE_ID,arch.ACC_CITY_ID,arch.ACC_COUNTY_ID,arch.ACC_TOWNSHIP_ID,arch.ACC_VILLAGE_ID,
+    	arch.ACC_ADDRESS,arch.HOME_PROVINCE_ID,arch.HOME_CITY_ID,arch.HOME_COUNTY_ID,arch.HOME_TOWNSHIP_ID,arch.HOME_VILLAGE_ID,
+    	arch.HOME_ADDRESS,arch.WORK_UNIT,arch.URGENT_CALL,arch.MAN_NAME,arch.MAN_ID_NO,arch.MAN_TELE,arch.MAN_INTE,
+    	arch.MAN_SEX,arch.MAN_BIRTHDAY,arch.MAN_ACC_PROVINCE_ID,arch.MAN_ACC_CITY_ID,arch.MAN_ACC_COUNTY_ID,arch.MAN_ACC_TOWNSHIP_ID,
+    	arch.MAN_ACC_VILLAGE_ID,arch.MAN_ACC_ADDRESS,arch.MAN_HOME_PROVINCE_ID,arch.MAN_HOME_CITY_ID,arch.MAN_HOME_COUNTY_ID,
+    	arch.MAN_HOME_TOWNSHIP_ID,arch.MAN_HOME_VILLAGE_ID,arch.MAN_HOME_ADDRESS,arch.MAN_NATION,arch.MAN_HOU_TYPE,
+    	arch.MAN_ACC_TYPE,arch.MAN_OCCUPATION,arch.MAN_EDUCATION,arch.DELTET_SIGN,arch.CREAT_TIME,arch.UPDATE_TIME,pre.ID as Prd,
+    	pre.PREMARITAL_STATUS,pre.EDIT_STATUS,oper.REAL_NAME,ins.EXC_TERM
+    from ARCHIVES_INFO arch
+    left join PREMARITAL_EXA_INFO pre on arch.ID = pre.ARCHIVES_ID
+    left join sys_operator oper on arch.DOCTOR_ID = oper.ID
+    left join INSPECTION_RESULT ins on ins.MARRIAGE_TA_ID=pre.ID
+    where arch.DELTET_SIGN = "1"
+    and pre.SEX = '1'
+   <if test="sex!=null and sex!=''">
+		and arch.SEX = #{sex}
+	</if>
+	<if test="exc1!=null and exc1!=''">
+  		and ins.EXC_TERM like CONCAT('%',#{exc1},'%')
+  		or ins.EXC_TERM like CONCAT('%'#{exc1},'%')
+  		or ins.EXC_TERM like CONCAT('%',#{exc1}'%')
+	</if>
+	<if test="exc2!=null and exc2!=''">
+  		and ins.EXC_TERM like CONCAT('%',#{exc2},'%')
+  		or ins.EXC_TERM like CONCAT('%'#{exc2},'%')
+  		or ins.EXC_TERM like CONCAT('%',#{exc2}'%')
+	</if>
+	<if test="exc3!=null and exc13=''">
+  		and ins.EXC_TERM like CONCAT('%',#{exc3},'%')
+  		or ins.EXC_TERM like CONCAT('%'#{exc3},'%')
+  		or ins.EXC_TERM like CONCAT('%',#{exc3}'%')
+	</if>
+	<if test="exc4!=null and exc4!=''">
+  		and ins.EXC_TERM like CONCAT('%',#{exc4},'%')
+  		or ins.EXC_TERM like CONCAT('%'#{exc4},'%')
+  		or ins.EXC_TERM like CONCAT('%',#{exc4}'%')
+	</if>
+	<if test="exc5!=null and exc5!=''">
+  		and ins.EXC_TERM like CONCAT('%',#{exc5},'%')
+  		or ins.EXC_TERM like CONCAT('%'#{exc5},'%')
+  		or ins.EXC_TERM like CONCAT('%',#{exc5}'%')
+	</if>
+	<if test="exc6!=null and exc6!=''">
+  		and ins.EXC_TERM like CONCAT('%',#{exc6},'%')
+  		or ins.EXC_TERM like CONCAT('%'#{exc6},'%')
+  		or ins.EXC_TERM like CONCAT('%',#{exc6}'%')
+	</if>
+	<if test="creatTime!=null and creatTime!=''">
+		and arch.CREAT_TIME >= STR_TO_DATE(#{creatTime},'%Y-%m-%d')
+	</if>
+	<if test="updateTime!=null and updateTime!=''">
+		and STR_TO_DATE(#{updateTime},'%Y-%m-%d') >= arch.CREAT_TIME
+	</if>
+	
+	
+  </select>
+  
+  <select id="manListForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select arch.ID,arch.ARCHIVES_CODE,arch.HOSPITAL_ID,arch.DOCTOR_ID,arch.NAME,arch.SEX,arch.INTERNATIONAL,
+    	arch.TELEPHONE,arch.ID_NO,arch.NATION,arch.BIRTHDAY,arch.HOUSEHOLD_TYPE,arch.ACCOUNT_TYPE,arch.OCCUPATION,
+    	arch.EDUCATION,arch.ACC_PROVINCE_ID,arch.ACC_CITY_ID,arch.ACC_COUNTY_ID,arch.ACC_TOWNSHIP_ID,arch.ACC_VILLAGE_ID,
+    	arch.ACC_ADDRESS,arch.HOME_PROVINCE_ID,arch.HOME_CITY_ID,arch.HOME_COUNTY_ID,arch.HOME_TOWNSHIP_ID,arch.HOME_VILLAGE_ID,
+    	arch.HOME_ADDRESS,arch.WORK_UNIT,arch.URGENT_CALL,arch.MAN_NAME,arch.MAN_ID_NO,arch.MAN_TELE,arch.MAN_INTE,
+    	arch.MAN_SEX,arch.MAN_BIRTHDAY,arch.MAN_ACC_PROVINCE_ID,arch.MAN_ACC_CITY_ID,arch.MAN_ACC_COUNTY_ID,arch.MAN_ACC_TOWNSHIP_ID,
+    	arch.MAN_ACC_VILLAGE_ID,arch.MAN_ACC_ADDRESS,arch.MAN_HOME_PROVINCE_ID,arch.MAN_HOME_CITY_ID,arch.MAN_HOME_COUNTY_ID,
+    	arch.MAN_HOME_TOWNSHIP_ID,arch.MAN_HOME_VILLAGE_ID,arch.MAN_HOME_ADDRESS,arch.MAN_NATION,arch.MAN_HOU_TYPE,
+    	arch.MAN_ACC_TYPE,arch.MAN_OCCUPATION,arch.MAN_EDUCATION,arch.DELTET_SIGN,arch.CREAT_TIME,arch.UPDATE_TIME,
+    	arch.MAN_URGENT_CALL,arch.MAN_WORK_UNIT,
+    	pre.PREMARITAL_STATUS,pre.EDIT_STATUS,pre.ID as PRE_ID,oper.REAL_NAME,CONCAT(pro.NAME,city.NAME) AS ADDRESS
+    from ARCHIVES_INFO arch
+    left join PREMARITAL_EXA_INFO pre on arch.ID = pre.ARCHIVES_ID
+    left join sys_operator oper on arch.DOCTOR_ID = oper.ID
+    left join PROVINCE_INFO pro on pro.ID = arch.MAN_HOME_PROVINCE_ID
+    left join CITY_INFO city on city.ID = arch.MAN_HOME_CITY_ID
+    where pre.SEX = '1'
+    and (pre.EDIT_STATUS != '2' OR pre.EDIT_STATUS is NULL)
+    <if test="archivesCode!=null and archivesCode!=''">
+		and arch.ARCHIVES_CODE = #{archivesCode}
+	</if>
+    <if test="manName!=null and manName!=''">
+		and arch.MAN_NAME like #{manName}
+	</if>
+	<if test="manIdNo!=null and manIdNo!=''">
+		and arch.MAN_ID_NO = #{manIdNo}
+	</if>
+	<if test="txtBegin!=null and txtBegin!=''">
+		and arch.CREAT_TIME >= STR_TO_DATE(#{txtBegin},'%Y-%m-%d')
+	</if>
+	<if test="txtEnd!=null and txtEnd!=''">
+		and STR_TO_DATE(#{txtEnd},'%Y-%m-%d') >= arch.CREAT_TIME
+	</if>
+	<if test="premaritalStatus!=null and premaritalStatus!=''">
+		<![CDATA[
+	    			and  pre.PREMARITAL_STATUS = #{premaritalStatus}
+	    			]]>
+	</if>
+	<if test="realName!=null and realName!=''">
+		and oper.REAL_NAME = #{realName}
+	</if>
+	order by arch.CREAT_TIME desc
+  </select>
+
+<delete id="deletes">
+		delete from ARCHIVES_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

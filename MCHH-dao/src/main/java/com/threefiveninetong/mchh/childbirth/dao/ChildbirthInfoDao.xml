@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.childbirth.dao.ChildbirthInfoDao" >
+	
+	<select id="getChildbirthByBasicId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,BASIC_ID,CHILDBIRTH_PLACE,FIRST_HOUR,SECOND_HOUR,THIRD_HOUR,TOTAL_HOUR,FIRST_MINUTE,SECOND_MINUTE,THIRD_MINUTE,TOTAL_MINUTE,PLACENTA,PERINEUM_CUT,INJURY_DEGREE,BEAR_BLEEDING,AFTERBEAR_TWO,TOTAL_BLEEDING,AMNIOTIC_FLUID_TRAIT,AMNIOTIC_FLUID_REMARK,AMNIOTIC_FLUID_AMOUNT,FETAL_NUM,PUERPERA,PUERPERA_DIE_REASON,BABY
+	    from CHILDBIRTH_INFO
+	    where BASIC_ID = #{ id}
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.childbirth.po.ChildbirthInfoPO" >
+	<result column="ID" property="id" />
+	<result column="BASIC_ID" property="basicId" />
+	<result column="CHILDBIRTH_PLACE" property="childbirthPlace" />
+	<result column="FIRST_HOUR" property="firstHour" />
+	<result column="SECOND_HOUR" property="secondHour" />
+	<result column="THIRD_HOUR" property="thirdHour" />
+	<result column="TOTAL_HOUR" property="totalHour" />
+	<result column="FIRST_MINUTE" property="firstMinute" />
+	<result column="SECOND_MINUTE" property="secondMinute" />
+	<result column="THIRD_MINUTE" property="thirdMinute" />
+	<result column="TOTAL_MINUTE" property="totalMinute" />
+	<result column="PLACENTA" property="placenta" />
+	<result column="PERINEUM_CUT" property="perineumCut" />
+	<result column="INJURY_DEGREE" property="injuryDegree" />
+	<result column="BEAR_BLEEDING" property="bearBleeding" />
+	<result column="AFTERBEAR_TWO" property="afterbearTwo" />
+	<result column="TOTAL_BLEEDING" property="totalBleeding" />
+	<result column="AMNIOTIC_FLUID_TRAIT" property="amnioticFluidTrait" />
+	<result column="AMNIOTIC_FLUID_REMARK" property="amnioticFluidRemark" />
+	<result column="AMNIOTIC_FLUID_AMOUNT" property="amnioticFluidAmount" />
+	<result column="FETAL_NUM" property="fetalNum" />
+	<result column="PUERPERA" property="puerpera" />
+	<result column="PUERPERA_DIE_REASON" property="puerperaDieReason" />
+	<result column="BABY" property="baby" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,BASIC_ID,CHILDBIRTH_PLACE,FIRST_HOUR,SECOND_HOUR,THIRD_HOUR,TOTAL_HOUR,FIRST_MINUTE,SECOND_MINUTE,THIRD_MINUTE,TOTAL_MINUTE,PLACENTA,PERINEUM_CUT,INJURY_DEGREE,BEAR_BLEEDING,AFTERBEAR_TWO,TOTAL_BLEEDING,AMNIOTIC_FLUID_TRAIT,AMNIOTIC_FLUID_REMARK,AMNIOTIC_FLUID_AMOUNT,FETAL_NUM,PUERPERA,PUERPERA_DIE_REASON,BABY
+    from CHILDBIRTH_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,BASIC_ID,CHILDBIRTH_PLACE,FIRST_HOUR,SECOND_HOUR,THIRD_HOUR,TOTAL_HOUR,FIRST_MINUTE,SECOND_MINUTE,THIRD_MINUTE,TOTAL_MINUTE,PLACENTA,PERINEUM_CUT,INJURY_DEGREE,BEAR_BLEEDING,AFTERBEAR_TWO,TOTAL_BLEEDING,AMNIOTIC_FLUID_TRAIT,AMNIOTIC_FLUID_REMARK,AMNIOTIC_FLUID_AMOUNT,FETAL_NUM,PUERPERA,PUERPERA_DIE_REASON,BABY
+    from CHILDBIRTH_INFO
+    group by CHILDBIRTH_PLACE
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CHILDBIRTH_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.childbirth.po.ChildbirthInfoPO" >
+    insert into CHILDBIRTH_INFO (ID,BASIC_ID,CHILDBIRTH_PLACE,FIRST_HOUR,SECOND_HOUR,THIRD_HOUR,TOTAL_HOUR,FIRST_MINUTE,SECOND_MINUTE,THIRD_MINUTE,TOTAL_MINUTE,PLACENTA,PERINEUM_CUT,INJURY_DEGREE,BEAR_BLEEDING,AFTERBEAR_TWO,TOTAL_BLEEDING,AMNIOTIC_FLUID_TRAIT,AMNIOTIC_FLUID_REMARK,AMNIOTIC_FLUID_AMOUNT,FETAL_NUM,PUERPERA,PUERPERA_DIE_REASON,BABY)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ basicId, javaType=String, jdbcType=VARCHAR},
+				#{ childbirthPlace, javaType=String, jdbcType=VARCHAR},
+				#{ firstHour, javaType=String, jdbcType=VARCHAR},
+				#{ secondHour, javaType=String, jdbcType=VARCHAR},
+				#{ thirdHour, javaType=String, jdbcType=VARCHAR},
+				#{ totalHour, javaType=String, jdbcType=VARCHAR},
+				#{ firstMinute, javaType=String, jdbcType=VARCHAR},
+				#{ secondMinute, javaType=String, jdbcType=VARCHAR},
+				#{ thirdMinute, javaType=String, jdbcType=VARCHAR},
+				#{ totalMinute, javaType=String, jdbcType=VARCHAR},
+				#{ placenta, javaType=String, jdbcType=VARCHAR},
+				#{ perineumCut, javaType=String, jdbcType=VARCHAR},
+				#{ injuryDegree, javaType=String, jdbcType=VARCHAR},
+				#{ bearBleeding, javaType=String, jdbcType=VARCHAR},
+				#{ afterbearTwo, javaType=String, jdbcType=VARCHAR},
+				#{ totalBleeding, javaType=String, jdbcType=VARCHAR},
+				#{ amnioticFluidTrait, javaType=String, jdbcType=VARCHAR},
+				#{ amnioticFluidRemark, javaType=String, jdbcType=VARCHAR},
+				#{ amnioticFluidAmount, javaType=String, jdbcType=VARCHAR},
+				#{ fetalNum, javaType=String, jdbcType=VARCHAR},
+				#{ puerpera, javaType=String, jdbcType=VARCHAR},
+				#{ puerperaDieReason, javaType=String, jdbcType=VARCHAR},
+				#{ baby, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.childbirth.po.ChildbirthInfoPO" >
+    update CHILDBIRTH_INFO
+    set
+			BASIC_ID = #{ basicId, javaType=String, jdbcType=VARCHAR},
+				CHILDBIRTH_PLACE = #{ childbirthPlace, javaType=String, jdbcType=VARCHAR},
+				FIRST_HOUR = #{ firstHour, javaType=String, jdbcType=VARCHAR},
+				SECOND_HOUR = #{ secondHour, javaType=String, jdbcType=VARCHAR},
+				THIRD_HOUR = #{ thirdHour, javaType=String, jdbcType=VARCHAR},
+				TOTAL_HOUR = #{ totalHour, javaType=String, jdbcType=VARCHAR},
+				FIRST_MINUTE = #{ firstMinute, javaType=String, jdbcType=VARCHAR},
+				SECOND_MINUTE = #{ secondMinute, javaType=String, jdbcType=VARCHAR},
+				THIRD_MINUTE = #{ thirdMinute, javaType=String, jdbcType=VARCHAR},
+				TOTAL_MINUTE = #{ totalMinute, javaType=String, jdbcType=VARCHAR},
+				PLACENTA = #{ placenta, javaType=String, jdbcType=VARCHAR},
+				PERINEUM_CUT = #{ perineumCut, javaType=String, jdbcType=VARCHAR},
+				INJURY_DEGREE = #{ injuryDegree, javaType=String, jdbcType=VARCHAR},
+				BEAR_BLEEDING = #{ bearBleeding, javaType=String, jdbcType=VARCHAR},
+				AFTERBEAR_TWO = #{ afterbearTwo, javaType=String, jdbcType=VARCHAR},
+				TOTAL_BLEEDING = #{ totalBleeding, javaType=String, jdbcType=VARCHAR},
+				AMNIOTIC_FLUID_TRAIT = #{ amnioticFluidTrait, javaType=String, jdbcType=VARCHAR},
+				AMNIOTIC_FLUID_REMARK = #{ amnioticFluidRemark, javaType=String, jdbcType=VARCHAR},
+				AMNIOTIC_FLUID_AMOUNT = #{ amnioticFluidAmount, javaType=String, jdbcType=VARCHAR},
+				FETAL_NUM = #{ fetalNum, javaType=String, jdbcType=VARCHAR},
+				PUERPERA = #{ puerpera, javaType=String, jdbcType=VARCHAR},
+				PUERPERA_DIE_REASON = #{ puerperaDieReason, javaType=String, jdbcType=VARCHAR},
+				BABY = #{ baby, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,BASIC_ID,CHILDBIRTH_PLACE,FIRST_HOUR,SECOND_HOUR,THIRD_HOUR,TOTAL_HOUR,FIRST_MINUTE,SECOND_MINUTE,THIRD_MINUTE,TOTAL_MINUTE,PLACENTA,PERINEUM_CUT,INJURY_DEGREE,BEAR_BLEEDING,AFTERBEAR_TWO,TOTAL_BLEEDING,AMNIOTIC_FLUID_TRAIT,AMNIOTIC_FLUID_REMARK,AMNIOTIC_FLUID_AMOUNT,FETAL_NUM,PUERPERA,PUERPERA_DIE_REASON,BABY
+    from CHILDBIRTH_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from CHILDBIRTH_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppParentingBabyGrowRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppParentingBabyGrowRecordPO" >
+	<result column="ID" property="id" />
+	<result column="PAR_ID" property="parId" />
+	<result column="WEIGHT" property="weight" />
+	<result column="HEIGHT" property="height" />
+	<result column="CREATE_TIME" property="createTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PAR_ID,WEIGHT,HEIGHT,CREATE_TIME
+    from APP_PARENTING_BABY_GROW_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PAR_ID,WEIGHT,HEIGHT,CREATE_TIME
+    from APP_PARENTING_BABY_GROW_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PARENTING_BABY_GROW_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingBabyGrowRecordPO" >
+    insert into APP_PARENTING_BABY_GROW_RECORD (ID,PAR_ID,WEIGHT,HEIGHT,CREATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ parId, javaType=String, jdbcType=VARCHAR},
+				#{ weight, javaType=String, jdbcType=VARCHAR},
+				#{ height, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingBabyGrowRecordPO" >
+    update APP_PARENTING_BABY_GROW_RECORD
+    set
+			PAR_ID = #{ parId, javaType=String, jdbcType=VARCHAR},
+				WEIGHT = #{ weight, javaType=String, jdbcType=VARCHAR},
+				HEIGHT = #{ height, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,PAR_ID,WEIGHT,HEIGHT,CREATE_TIME
+    from APP_PARENTING_BABY_GROW_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PARENTING_BABY_GROW_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppParentingBabyGrowRecordListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,PAR_ID,WEIGHT,HEIGHT,CREATE_TIME
+	    from APP_PARENTING_BABY_GROW_RECORD
+	    where 1=1
+	    <if test="parId != null and parId != ''">
+	    	and PAR_ID = #{parId}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

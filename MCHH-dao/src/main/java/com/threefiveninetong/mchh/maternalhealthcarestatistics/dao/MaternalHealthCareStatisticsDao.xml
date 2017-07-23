@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.maternalhealthcarestatistics.dao.MaternalHealthCareStatisticsDao" >
+  
+  <select id="listForPage" resultType="com.threefiveninetong.mchh.maternalhealthcarestatistics.po.MaternalHealthCareStatisticsPO"  parameterType="hashmap">
+  
+	   SELECT a.ID archivesId,a.ARCHIVES_CODE archivesCode,a.CREAT_TIME creatDate,a.name name,
+	   		  a.BIRTHDAY birthday,b.LAST_MENSES lastMenses,b.PREDICT_DATE predictDate,
+			  b.ID birthArchivesId,p.ID preExaId,b.CLOSING_DATE closeDate,hrt.HIGH_RISK highRisk,
+			  cb.BIRTH_DATE birthDate,ci.CHILDBIRTH_PLACE childbirthPlace, 
+			  pr.`NAME` provinceName,city.`NAME` cityName,dac.`NAME` countyName,
+			  ti.`NAME` townshipName,vi.`NAME` villageName,a.HOME_ADDRESS detailAddress,
+			  a.TELEPHONE telephone,a.ID_NO idNo
+			 
+
+	  FROM `birth_archives_info` b
+
+      left outer join archives_info a
+      on a.ID = b.ARCHIVES_ID
+
+      left outer join PRENATAL_EXA_INFO p
+      on p.BIRTH_ARCHIVES_ID = b.id
+
+	  right join (
+					select p.BIRTH_ARCHIVES_ID, max(p.CREAT_TIME) CREAT_TIME from PRENATAL_EXA_INFO p where p.EDIT_STATUS='1' group by p.BIRTH_ARCHIVES_ID 
+				) exaTemp
+	  on p.BIRTH_ARCHIVES_ID=exaTemp.BIRTH_ARCHIVES_ID and p.CREAT_TIME=exaTemp.CREAT_TIME 
+
+	  left outer join HIGH_RISK_INFO hi
+	  on hi.EXAMINATION_ID = p.ID
+
+	  left outer join (select hrt.HIGH_RISK_ID,GROUP_CONCAT(HIGH_RISK) HIGH_RISK from  high_risk_term hrt where hrt.CORRECT=0 GROUP BY hrt.HIGH_RISK_ID ) hrt
+	  on hrt.HIGH_RISK_ID = hi.ID 
+
+	 left outer join (SELECT cai.ID ,cai.BIRTH_ARCHIVES_ID,cai.BIRTH_DATE from childbirth_basic_info cai WHERE cai.EDIT_STATUS=1) cb
+	 ON cb.BIRTH_ARCHIVES_ID = b.ID
+	
+		 left outer join CHILDBIRTH_INFO ci
+		 on ci.BASIC_ID = cb.ID
+
+		 left outer join PROVINCE_INFO pr 
+		 on a.HOME_PROVINCE_ID = pr.ID
+
+	 	left outer join CITY_INFO city 
+	 	on a.HOME_CITY_ID = city.ID
+
+		left outer join district_and_county_info dac
+		on a.HOME_COUNTY_ID = dac.ID
+	
+		left outer join township_info ti 
+		on a.HOME_TOWNSHIP_ID = ti.ID
+	
+		left outer join village_info vi
+		on a.HOME_VILLAGE_ID = vi.ID
+	
+	
+		where a.DELTET_SIGN = 1 and b.DELTET_SIGN = 1 AND b.PREDICT_DATE is not null 
+		<if test="archivesCode!=null and archivesCode!=''">
+			and a.ARCHIVES_CODE = #{archivesCode}
+		</if>
+		<if test="name!=null and name!=''">
+			and a.Name like '%${name}%'
+		</if>
+		<if test="idNo!=null and idNo!=''">
+			and a.ID_NO = #{idNo}
+		</if> 
+		
+		<if test="departmentId!=null and departmentId!=''">
+			AND b.HOSPITAL_ID = #{departmentId}
+		</if>
+		
+		<if test="creatDateStare!=null and creatDateStare!='' and creatDateEnd!=null and creatDateEnd!=''">
+			AND b.CREAT_TIME BETWEEN DATE(#{creatDateStare}) AND DATE(#{creatDateEnd})
+		</if>
+		<if test="exceptDateStare!=null and exceptDateStare!='' and exceptDateEnd!=null and exceptDateEnd!=''">
+			AND b.PREDICT_DATE BETWEEN DATE(#{exceptDateStare}) AND DATE(#{exceptDateEnd})
+		</if>
+		<if test="isClose!=null and isClose!=''">
+			AND B.PREGNANT_STATE = #{isClose}
+			<if test="closeReason!=null and closeReason!=''">
+				AND b.CLOSING_REASON = #{closeReason}
+			</if>
+		</if>
+		
+			<if test="statueAll!=null and statueAll!=''">
+				AND B.PREGNANT_STATE != #{statueAll}
+			</if>
+		
+		<if test="statue!=null and statue!=''">
+			AND B.PREGNANT_STATE = #{statue}
+		</if>
+		
+  </select>
+	
+ <select id="getChecksByTime" resultType="com.threefiveninetong.mchh.maternalhealthcarestatistics.po.Dates"  parameterType="hashmap">
+  
+ 		SELECT  p.CREAT_TIME checkDate,pri.NEXT_FOLLOWING_DATE orderDate,DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) days
+
+		FROM `birth_archives_info` b
+		
+		left outer join archives_info a
+		on a.ID = b.ARCHIVES_ID
+		
+		left outer join PRENATAL_EXA_INFO p
+		on p.BIRTH_ARCHIVES_ID = b.id
+		
+		left outer join prenatal_referral_info pri 
+		on pri.PRE_ID = p.ID
+		
+		where a.DELTET_SIGN = 1 and  b.PREDICT_DATE is not null  and p.BIRTH_ARCHIVES_ID = #{birthArchivesId}  AND p.EDIT_STATUS = 1
+		
+		 <if test="maxDay!=null and maxDay!=''">
+		  	and DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[<]]> #{maxDay}
+		</if>
+	    <if test="minDay!=null and minDay!=''">
+			and DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) <![CDATA[>]]> #{minDay}
+		</if>
+
+		ORDER BY p.CREAT_TIME DESC
+	
+		
+  </select>
+  
+   <select id="getPost3to7CheckTimes" resultType="com.threefiveninetong.mchh.maternalhealthcarestatistics.po.Dates"  parameterType="hashmap">
+  
+	 	SELECT po.CREAT_TIME checkDate,pr.NEXT_FOLLOWING_DATE orderDate FROM 
+		birth_archives_info b
+		LEFT JOIN archives_info a
+		ON b.ARCHIVES_ID = a.ID
+		LEFT JOIN postpartum_exa_info po 
+		ON po.BIRTH_ARCHIVES_ID = b.ID
+		LEFT JOIN postpartum_referral_info pr
+		on pr.POS_ID = po.ID  
+		
+		WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND po.EDIT_STATUS = 1 AND po.TYPE = 0 AND po.BIRTH_ARCHIVES_ID = #{birthArchivesId}
+		ORDER BY po.CREAT_TIME DESC
+		
+  </select>
+  
+   <select id="getPost42CheckTimes" resultType="integer"  parameterType="hashmap">
+		SELECT  COUNT(po.ID)  FROM
+		birth_archives_info b
+		LEFT JOIN archives_info a
+		ON b.ARCHIVES_ID = a.ID
+		
+		LEFT JOIN postpartum_exa_info po 
+		ON po.BIRTH_ARCHIVES_ID = b.ID
+		
+		WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND po.EDIT_STATUS = 1 AND po.TYPE = 1 AND po.BIRTH_ARCHIVES_ID = #{birthArchivesId}
+  </select>
+  
+ 
+  
+
+</mapper>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.DistrictAndCountyInfoDao" >
+
+  <update id="delDistrictAndCountyInfo"  >
+    update DISTRICT_AND_COUNTY_INFO
+    set
+			DELETE_SIGN = "0"
+		
+	   where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	  </update>
+	  
+<!-- 	<delete id="delDistrictAndCountyInfo"> -->
+<!-- 		delete from DISTRICT_AND_COUNTY_INFO -->
+<!-- 		where id in -->
+<!-- 		<foreach collection="array" index="index" item="item" open="(" -->
+<!-- 			separator="," close=")"> -->
+<!-- 			#{item}    -->
+<!-- 	    </foreach> -->
+<!-- 	</delete> -->
+
+	<select id="getTownCountByCountyId" resultType="int" parameterType="string">
+		SELECT COUNT(0) c FROM TOWNSHIP_INFO t
+		WHERE t.COUNTY_ID = #{countyId} AND t.DELETE_SIGN="1"
+	</select>
+
+	<select id="getDistrictandcountyByCityId" resultMap="BaseResultMap">
+  		select ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME
+    	from DISTRICT_AND_COUNTY_INFO
+    	where DELETE_SIGN = "1"
+		and CITY_ID = #{cityId}
+	</select>
+  
+  <select id="listForPage" resultMap="ListResultMap"  parameterType="hashmap">
+    select d.ID,d.CITY_ID,d.NAME,d.NAME_SPELL,d.FIRST_LETTER,d.DELETE_SIGN,d.NUMBER,d.SORT_NUM,d.ISVALID,d.STATISTICNOW,d.STATISTICFUR,d.CREAT_TIME,d.UPDATE_TIME
+    ,c.number cNumber,c.id cId,p.number pNumber,p.id pId
+    from DISTRICT_AND_COUNTY_INFO d
+    LEFT OUTER JOIN city_info c
+	on d.CITY_ID = c.ID
+	LEFT OUTER JOIN province_info p
+	on c.PROVINCE_ID = p.ID
+    WHERE d.DELETE_SIGN='1'
+    <if test="pName!=null and pName!=''">
+		and p.NAME like '%${pName}%'
+	</if>
+    <if test="cName!=null and cName!=''">
+		and c.NAME like '%${cName}%'
+	</if>
+	<if test="dName!=null and dName!=''">
+		and d.NAME like '%${dName}%'
+	</if>
+	<if test="number!=null and number!=''">
+		and d.NUMBER = #{number}
+	</if>
+	<if test="name!=null and name!=''" >
+		and	d.NAME=#{name}
+	</if>
+	<if test="isvalid!=null and isvalid!=''">
+		and	d.ISVALID=#{isvalid}
+	</if>
+	<if test="statisticfur!=null and statisticfur!=''">
+		and	#{statisticfur}&gt;=d.STATISTICFUR
+	</if>
+	<if test="statisticnow!=null and statisticnow!=''">
+		and	d.STATISTICNOW &gt;=#{statisticnow}
+	</if>
+    order by SORT_NUM
+  </select>
+  
+  <resultMap id="ListResultMap" type="com.threefiveninetong.mchh.config.po.DistrictAndCountyInfoPO" >
+	<result column="ID" property="id" />
+	<result column="cNumber" property="cityInfoPO.number" />
+	<result column="cId" property="cityInfoPO.id" />
+	<result column="pNumber" property="cityInfoPO.provinceInfoPO.number" />
+	<result column="pId" property="cityInfoPO.provinceInfoPO.id" />
+	<result column="NAME" property="name" />
+	<result column="NAME_SPELL" property="nameSpell" />
+	<result column="FIRST_LETTER" property="firstLetter" />
+	<result column="DELETE_SIGN" property="deleteSign" />
+	<result column="NUMBER" property="number" />
+	<result column="SORT_NUM" property="sortNum" />
+	<result column="ISVALID" property="isvalid" />
+	<result column="STATISTICNOW" property="statisticnow" />
+	<result column="STATISTICFUR" property="statisticfur" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.DistrictAndCountyInfoPO" >
+	<result column="ID" property="id" />
+	<result column="CITY_ID" property="cityId" />
+	<result column="NAME" property="name" />
+	<result column="NAME_SPELL" property="nameSpell" />
+	<result column="FIRST_LETTER" property="firstLetter" />
+	<result column="DELETE_SIGN" property="deleteSign" />
+	<result column="NUMBER" property="number" />
+	<result column="SORT_NUM" property="sortNum" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,ISVALID,STATISTICNOW,STATISTICFUR,CREAT_TIME,UPDATE_TIME
+    from DISTRICT_AND_COUNTY_INFO
+    where
+			ID = #{ id}
+  </select>
+  
+  <select id="queryXianName" resultMap="BaseResultMap">
+	  	select 
+	  	ID,NAME
+	  	from
+	  	DISTRICT_AND_COUNTY_INFO
+	  </select>
+  
+  
+  <select id="findByName" resultMap="BaseResultMap" parameterType="String" >
+    select ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,ISVALID,STATISTICNOW,STATISTICFUR,CREAT_TIME,UPDATE_TIME
+    from DISTRICT_AND_COUNTY_INFO
+    where
+			NAME = #{ name}
+  </select>
+  
+  
+  <select id="getByName" resultMap="BaseResultMap" parameterType="String" >
+    select ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,ISVALID,STATISTICNOW,STATISTICFUR,CREAT_TIME,UPDATE_TIME
+    from DISTRICT_AND_COUNTY_INFO
+    where
+			NAME = #{ name} AND DELETE_SIGN='1'
+  </select>
+  
+   <select id="findAllSortNum" resultType="String" >
+    select DISTINCT(SORT_NUM)
+    from DISTRICT_AND_COUNTY_INFO
+    where DELETE_SIGN='1'
+    order by SORT_NUM
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,ISVALID,STATISTICNOW,STATISTICFUR,CREAT_TIME,UPDATE_TIME
+    from DISTRICT_AND_COUNTY_INFO
+    where DELETE_SIGN='1'
+    order by SORT_NUM
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from DISTRICT_AND_COUNTY_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.DistrictAndCountyInfoPO" >
+    insert into DISTRICT_AND_COUNTY_INFO (ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ cityId, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				#{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				#{ deleteSign, javaType=String, jdbcType=VARCHAR},
+				#{ number, javaType=String, jdbcType=VARCHAR},
+				#{ sortNum},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+  
+   <insert id="addCounty" parameterType="com.threefiveninetong.mchh.config.po.DistrictAndCountyInfoPO" >
+    insert into DISTRICT_AND_COUNTY_INFO 
+    (ID,CITY_ID,NAME,NAME_SPELL,FIRST_LETTER,DELETE_SIGN,NUMBER,SORT_NUM,ISVALID,STATISTICNOW,STATISTICFUR,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ cityInfoPO.id, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				#{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				#{ deleteSign, javaType=String, jdbcType=VARCHAR},
+				#{ number, javaType=String, jdbcType=VARCHAR},
+				#{ sortNum},
+				#{ isvalid, javaType=String, jdbcType=VARCHAR},
+				#{ statisticnow, javaType=Date, jdbcType=TIMESTAMP},
+				#{ statisticfur, javaType=Date, jdbcType=TIMESTAMP},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.DistrictAndCountyInfoPO" >
+    update DISTRICT_AND_COUNTY_INFO
+    set
+			CITY_ID = #{ cityInfoPO.id, javaType=String, jdbcType=VARCHAR},
+				NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				NAME_SPELL = #{ nameSpell, javaType=String, jdbcType=VARCHAR},
+				FIRST_LETTER = #{ firstLetter, javaType=String, jdbcType=VARCHAR},
+				NUMBER = #{ number, javaType=String, jdbcType=VARCHAR},
+				SORT_NUM = #{ sortNum},
+				ISVALID=#{isvalid, javaType=String, jdbcType=VARCHAR},
+				STATISTICNOW=#{statisticnow, javaType=Date, jdbcType=TIMESTAMP},
+				STATISTICFUR=#{statisticfur, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+	  
+
+<delete id="deletes">
+		delete from DISTRICT_AND_COUNTY_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

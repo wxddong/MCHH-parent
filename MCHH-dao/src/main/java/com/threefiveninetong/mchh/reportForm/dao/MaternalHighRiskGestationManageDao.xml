@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.reportForm.dao.MaternalHighRiskGestationManageDao" >
+  
+  <select id="listForPage" resultType="com.threefiveninetong.mchh.reportForm.po.MaternalHighRiskGestationManagePO"  parameterType="hashmap">
+  	
+		SELECT x.ID departmentId,x.NAME hospitalName,x.maternalNum,IFNULL(y.maternalFilterNum,0) maternalFilterNum,IFNULL(y.maternalFilterNum/x.maternalNum,0) maternalFilterRate
+		FROM
+		(
+				SELECT sd.ID,sd.NAME,COUNT(b.ID) maternalNum ,b.CLOSING_DATE
+				FROM sys_department sd
+				LEFT JOIN birth_archives_info b
+				ON b.HOSPITAL_ID = sd.ID
+		
+				LEFT JOIN archives_info a
+				on a.ID = b.ARCHIVES_ID
+		
+				WHERE  a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 
+				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+					AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+				</if>
+				GROUP BY sd.ID
+		) x
+		
+		LEFT JOIN
+		
+		(
+				SELECT sd.ID,sd.NAME,COUNT(b.ID) maternalFilterNum
+				FROM sys_department sd
+				LEFT JOIN birth_archives_info b
+				ON b.HOSPITAL_ID = sd.ID
+		
+				LEFT JOIN archives_info a
+				on a.ID = b.ARCHIVES_ID
+		
+				WHERE  a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND b.RISK_SIGN = 1 
+				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+					AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+				</if>
+				GROUP BY sd.ID
+				
+		) y
+		
+		ON x.ID = y.ID
+		<if test="departmentId!=null and departmentId!='' and departmentId!=null and departmentId!=''">
+  			WHERE x.ID =#{departmentId}
+  		</if>
+  </select>
+	
+  
+</mapper>

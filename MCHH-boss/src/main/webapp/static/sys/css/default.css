@@ -1,0 +1,46 @@
+*{font:12px/1.5 "宋体","Arial Narrow",HELVETICA;}
+body{background:#fff; } /* D2E0F2 */
+a{ color:Black; text-decoration:none;}
+a:hover{ color:Red; text-decoration:underline;}
+.textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
+
+.txt01{font:Verdana, Geneva, sans-serif,宋体;padding:3px 2px 2px 2px; border-width:1px; border-color:#ddd;  color:#000;}
+.txt {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
+.footer{text-align:center;color:#fff; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
+
+.head a{color:#201F35;text-decoration:none;}
+.head a:hover {color:#fff;}
+.head_btn{line-height:22px; text-align:center; padding:1px; display:inline-block; vertical-align:middle;}
+.head_btn span{padding:22px 8px 0 8px; vertical-align:middle; display:inline-block;}
+#editPass i{display:block; font-size:20px;}
+#loginOut i{display:block;font-size:20px;}
+.panel-header i{transition:all .2s;}
+.accordion-header-selected i{transform:rotate(180deg);}
+.accordion-header-selected .panel-title i{transform:rotate(0deg);}
+
+.easyui-accordion ul{list-style-type:none;margin:0px; padding:0px;}
+.easyui-accordion ul li{ padding:0px;}
+.easyui-accordion ul li a{line-height:24px; color:#727070;}
+.easyui-accordion ul li a:hover{text-decoration:none;}
+.easyui-accordion ul li div{margin:2px 0px; border-top:1px solid #ccc; padding:3px 0 3px 10px;}
+.easyui-accordion ul li:last-child div{border-bottom:1px solid #ccc;}
+.easyui-accordion ul li div.hover{background:#E6EEF9;cursor:pointer;}
+.easyui-accordion ul li div.hover a{color:#416AA3;}
+.easyui-accordion ul li div.selected{border-left: 5px solid #ee5f45;cursor:default;}
+.easyui-accordion ul li div.selected a{color:#ee5f45; font-weight:bold;}
+
+
+
+.icon{padding:2px 9px; background:url(../images/tabicons.png) no-repeat; }
+.icon-sys{ background:url(../images/directory.png) no-repeat;}
+.icon-add{background-position: -19px 0px;}
+.icon-nav{background-position: -120px -380px;}
+.icon-users{background-position: -100px -480px;}
+.icon-role{background-position: -360px -200px;}
+.icon-set{background-position: -380px -200px;}
+.icon-log{background-position: -380px -80px;}
+
+.mini-handler {cursor: w-resize; height: 100%; left: 0; overflow: visible; position: absolute; top: 0; width: 5px;}
+.mini-handler-buttons {left: 0; overflow: visible; position: absolute; top: 50%; width: 100%;}
+.mini-splitter-pane1-button,.mini-splitter-pane2-button {background: url(../images/mini-left.gif) no-repeat center center; cursor: pointer; display: block; height: 35px; width: 100%;}
+.mini-splitter-pane2-button {background: url(../images/mini-right.gif) no-repeat center center;}

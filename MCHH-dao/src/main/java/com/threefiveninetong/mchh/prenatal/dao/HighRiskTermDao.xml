@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.prenatal.dao.HighRiskTermDao" >
+	
+	<select id="getCountByHighRiskIdAndState" resultType="int" parameterType="String" >
+	    select count(*)
+	    from HIGH_RISK_TERM
+	    where HIGH_RISK_ID=#{highRiskId}
+	    and CORRECT = "0"
+  	</select>
+	
+	<delete id="removeByHighRiskId" parameterType="String" >
+	    delete from HIGH_RISK_TERM
+	    where HIGH_RISK_ID = #{highRiskId}
+	</delete>
+	
+	<select id="getThisHighRiskTermByHighRiskId" resultMap="BaseResultMap" >
+	    select ID,HIGH_RISK_ID,HIGH_RISK,SCORE,CORRECT,STATUS,CORRECTION_TIME,TERM_ID
+	    from HIGH_RISK_TERM
+	    where HIGH_RISK_ID=#{highRiskId}
+  	</select>
+	
+	<select id="getAllTermByhighRiskId" resultMap="BaseResultMap" >
+	    select ID,HIGH_RISK_ID,HIGH_RISK,SCORE,CORRECT,STATUS,CORRECTION_TIME,TERM_ID
+	    from HIGH_RISK_TERM
+	    where HIGH_RISK_ID=#{highRiskId}
+	    and CORRECT = 0
+  	</select>
+	
+  <select id="getItemsByHighRiskId" resultType="String" parameterType="String" >
+     select HIGH_RISK
+     from HIGH_RISK_TERM
+     where
+			HIGH_RISK_ID = #{highRiskId}
+  </select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.prenatal.po.HighRiskTermPO" >
+	<result column="ID" property="id" />
+	<result column="HIGH_RISK_ID" property="highRiskId" />
+	<result column="TERM_ID" property="termId" />
+	<result column="HIGH_RISK" property="highRisk" />
+	<result column="SCORE" property="score" />
+	<result column="CORRECT" property="correct" />
+	<result column="STATUS" property="status" />
+	<result column="CORRECTION_TIME" property="correctionTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,HIGH_RISK_ID,HIGH_RISK,SCORE,CORRECT,STATUS,CORRECTION_TIME,TERM_ID
+    from HIGH_RISK_TERM
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,HIGH_RISK_ID,HIGH_RISK,SCORE,CORRECT,STATUS,CORRECTION_TIME,TERM_ID
+    from HIGH_RISK_TERM
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from HIGH_RISK_TERM
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.prenatal.po.HighRiskTermPO" >
+    insert into HIGH_RISK_TERM (ID,HIGH_RISK_ID,HIGH_RISK,TERM_ID,SCORE,CORRECT,STATUS,CORRECTION_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ highRiskId, javaType=String, jdbcType=VARCHAR},
+				#{ highRisk, javaType=String, jdbcType=VARCHAR},
+				#{ termId, javaType=String, jdbcType=VARCHAR},
+				#{ score, javaType=String, jdbcType=VARCHAR},
+				#{ correct, javaType=String, jdbcType=VARCHAR},
+				#{ status, javaType=String, jdbcType=VARCHAR},
+				#{ correctionTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.prenatal.po.HighRiskTermPO" >
+    update HIGH_RISK_TERM
+    set
+			HIGH_RISK_ID = #{ highRiskId, javaType=String, jdbcType=VARCHAR},
+				HIGH_RISK = #{ highRisk, javaType=String, jdbcType=VARCHAR},
+				SCORE = #{ score, javaType=String, jdbcType=VARCHAR},
+				CORRECT = #{ correct, javaType=String, jdbcType=VARCHAR},
+				STATUS = #{ status, javaType=String, jdbcType=VARCHAR},
+				CORRECTION_TIME = #{ correctionTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,HIGH_RISK_ID,HIGH_RISK,SCORE,CORRECT,STATUS,CORRECTION_TIME,TERM_ID
+    from HIGH_RISK_TERM
+  </select>
+
+
+<delete id="deletes">
+		delete from HIGH_RISK_TERM
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

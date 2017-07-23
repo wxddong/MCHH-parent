@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppParentingOneMonthRecordDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppParentingOneMonthRecordPO" >
+	<result column="ID" property="id" />
+	<result column="PAR_ID" property="parId" />
+	<result column="UMBILICAL_TIME" property="umbilicalTime" />
+	<result column="JAUNDICE_FADE_TIME" property="jaundiceFadeTime" />
+	<result column="FEEDING_MODE" property="feedingMode" />
+	<result column="FEEDING_SITUATION" property="feedingSituation" />
+	<result column="FRIGHT_CRY" property="frightCry" />
+	<result column="CRYING" property="crying" />
+	<result column="V_SUPPLEMENT" property="vSupplement" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PAR_ID,UMBILICAL_TIME,JAUNDICE_FADE_TIME,FEEDING_MODE,FEEDING_SITUATION,FRIGHT_CRY,CRYING,V_SUPPLEMENT,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_ONE_MONTH_RECORD
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PAR_ID,UMBILICAL_TIME,JAUNDICE_FADE_TIME,FEEDING_MODE,FEEDING_SITUATION,FRIGHT_CRY,CRYING,V_SUPPLEMENT,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_ONE_MONTH_RECORD
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PARENTING_ONE_MONTH_RECORD
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingOneMonthRecordPO" >
+    insert into APP_PARENTING_ONE_MONTH_RECORD (ID,PAR_ID,UMBILICAL_TIME,JAUNDICE_FADE_TIME,FEEDING_MODE,FEEDING_SITUATION,FRIGHT_CRY,CRYING,V_SUPPLEMENT,CREATE_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ parId, javaType=String, jdbcType=VARCHAR},
+				#{ umbilicalTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ jaundiceFadeTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ feedingMode, javaType=String, jdbcType=VARCHAR},
+				#{ feedingSituation, javaType=String, jdbcType=VARCHAR},
+				#{ frightCry, javaType=String, jdbcType=VARCHAR},
+				#{ crying, javaType=String, jdbcType=VARCHAR},
+				#{ vSupplement, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingOneMonthRecordPO" >
+    update APP_PARENTING_ONE_MONTH_RECORD
+    set
+			PAR_ID = #{ parId, javaType=String, jdbcType=VARCHAR},
+				UMBILICAL_TIME = #{ umbilicalTime, javaType=Date, jdbcType=TIMESTAMP},
+				JAUNDICE_FADE_TIME = #{ jaundiceFadeTime, javaType=Date, jdbcType=TIMESTAMP},
+				FEEDING_MODE = #{ feedingMode, javaType=String, jdbcType=VARCHAR},
+				FEEDING_SITUATION = #{ feedingSituation, javaType=String, jdbcType=VARCHAR},
+				FRIGHT_CRY = #{ frightCry, javaType=String, jdbcType=VARCHAR},
+				CRYING = #{ crying, javaType=String, jdbcType=VARCHAR},
+				V_SUPPLEMENT = #{ vSupplement, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,PAR_ID,UMBILICAL_TIME,JAUNDICE_FADE_TIME,FEEDING_MODE,FEEDING_SITUATION,FRIGHT_CRY,CRYING,V_SUPPLEMENT,CREATE_TIME,UPDATE_TIME
+    from APP_PARENTING_ONE_MONTH_RECORD
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PARENTING_ONE_MONTH_RECORD
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findAppParentingOneMonthRecordListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,PAR_ID,UMBILICAL_TIME,JAUNDICE_FADE_TIME,FEEDING_MODE,FEEDING_SITUATION,FRIGHT_CRY,CRYING,V_SUPPLEMENT,CREATE_TIME,UPDATE_TIME
+	    from APP_PARENTING_ONE_MONTH_RECORD
+	    where 1=1
+	    <if test="parId != null and parId != ''">
+	    	and PAR_ID = #{parId}
+	    </if>
+	    order by CREATE_TIME desc
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

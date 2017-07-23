@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.achievements.dao.AchievementsDao" >
+  
+  <select id="countyListForPage" resultType="com.threefiveninetong.mchh.achievements.po.CountyAchievementsPO"  parameterType="hashmap">
+	
+		SELECT a.departmentId,a.departmentName,a.populationNum,a.populationNum*0.012 shouldCloseNum FROM
+		(
+			select sd.ID departmentId,sd.`NAME` departmentName,sd.`LEVEL`, 
+			CASE sd.`LEVEL`WHEN 2 THEN (SELECT p.MARRY_NUM FROM population_data p WHERE p.VILLAGE_ID = sd.REGION_ID AND p.ISVALID=1 
+										<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+											AND  DATE(#{closeDateStare})<![CDATA[>=]]> p.STATISTICAL_DATE AND DATE(#{closeDateEnd})<![CDATA[<=]]>p.STATISTICAL_DATE_END
+										</if>
+											ORDER BY p.STATISTICAL_DATE_END DESC  LIMIT 1)
+					       WHEN 1 THEN (SELECT p.MARRY_NUM FROM population_data p WHERE p.TOW_ID = sd.REGION_ID AND p.ISVALID=1 AND p.VILLAGE_ID IS NULL
+					       				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+											AND  DATE(#{closeDateStare})<![CDATA[>=]]> p.STATISTICAL_DATE AND DATE(#{closeDateEnd})<![CDATA[<=]]>p.STATISTICAL_DATE_END
+										</if>
+											ORDER BY p.STATISTICAL_DATE_END DESC  LIMIT 1)
+						   WHEN 0 THEN (SELECT p.MARRY_NUM FROM population_data p WHERE p.COUNTY_ID = sd.REGION_ID AND p.ISVALID=1 AND p.TOW_ID IS NULL AND VILLAGE_ID IS NULL
+						   				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+											AND  DATE(#{closeDateStare})<![CDATA[>=]]> p.STATISTICAL_DATE AND DATE(#{closeDateEnd})<![CDATA[<=]]>p.STATISTICAL_DATE_END
+										</if>
+											ORDER BY p.STATISTICAL_DATE_END DESC  LIMIT 1)
+						   END  populationNum
+																														
+			from  sys_department sd
+
+		) a
+		WHERE a.populationNum is NOT NULL
+		
+  </select>
+  
+     <select id="getActualCloseNum" resultType="integer"  parameterType="hashmap">
+   
+  		SELECT COUNT(0) actualCloseNum
+		FROM sys_department sd
+
+		LEFT JOIN birth_archives_info b
+		ON sd.ID = b.HOSPITAL_ID
+
+		LEFT JOIN archives_info a
+		ON a.ID = b.ARCHIVES_ID
+
+		WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND b.PREGNANT_STATE = 2 
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		
+		
+  </select>
+  
+  
+  
+       <select id="getPreGreat0Num" resultType="integer"  parameterType="hashmap">
+   
+  			 SELECT COUNT(a.preExaNum) preGreat0Num FROM
+			(
+			SELECT count(b.ID) preExaNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right JOIN prenatal_exa_info p
+			ON p.BIRTH_ARCHIVES_ID = b.ID
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND p.EDIT_STATUS = 1 
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			
+			GROUP BY b.ID
+			) a
+		
+  </select>
+  
+  
+   <select id="getearlyCardNum" resultType="integer"  parameterType="hashmap">
+   
+  		 SELECT IFNULL(count(DATEDIFF(b.CREAT_TIME,b.LAST_MENSES)),0) earlyCardNum
+		 from birth_archives_info b
+		 LEFT JOIN archives_info a
+		 on a.ID = b.ARCHIVES_ID
+		 WHERE b.DELTET_SIGN = 1 AND b.HOSPITAL_ID = #{departmentId} and a.DELTET_SIGN = 1 AND DATEDIFF(b.CREAT_TIME,b.LAST_MENSES) <![CDATA[<]]> 91
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+				${home}
+		</if>
+  </select>
+  
+  
+  <select id="getSysManagementPersonsNum" resultType="integer"  parameterType="hashmap">
+   
+  		  
+	  	SELECT count(0) sysManagementPersonsNum FROM
+		(
+		SELECT e.* FROM
+		(
+		SELECT c.* FROM
+		(
+		
+		SELECT a.* FROM
+		(
+		SELECT b.ID birthArchivesId,p.ID preExaId1,b.LAST_MENSES lastMenses,p.CREAT_TIME checkDate,DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) days
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		on a.ID = b.ARCHIVES_ID
+		RIGHT JOIN prenatal_exa_info p
+		ON p.BIRTH_ARCHIVES_ID = b.ID
+		WHERE b.HOSPITAL_ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1  AND p.EDIT_STATUS = 1 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[<]]>91
+		
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		
+		GROUP BY b.ID
+		) a
+		
+		INNER JOIN
+		 
+		(
+		SELECT b.ID birthArchivesId,p.ID preExaId,b.LAST_MENSES lastMenses,p.CREAT_TIME checkDate,DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) days
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		on a.ID = b.ARCHIVES_ID
+		RIGHT JOIN prenatal_exa_info p
+		ON p.BIRTH_ARCHIVES_ID = b.ID
+		WHERE b.HOSPITAL_ID = #{departmentId} AND b.DELTET_SIGN = 1 AND  a.DELTET_SIGN = 1 AND p.EDIT_STATUS = 1 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[<]]>140 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[>]]>111
+		
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		
+		GROUP BY b.ID
+		) b
+		 
+		ON a.birthArchivesId = b.birthArchivesId
+		
+		) c
+		
+		INNER JOIN
+		
+		(
+		SELECT b.ID birthArchivesId,p.ID preExaId,b.LAST_MENSES lastMenses,p.CREAT_TIME checkDate,DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) days
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		on a.ID = b.ARCHIVES_ID
+		RIGHT JOIN prenatal_exa_info p
+		ON p.BIRTH_ARCHIVES_ID = b.ID
+		WHERE b.HOSPITAL_ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND p.EDIT_STATUS = 1 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[<]]>168 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[>]]>146
+		
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		
+		GROUP BY b.ID
+		) d
+		
+		ON  c.birthArchivesId = d.birthArchivesId
+		) e
+		
+		INNER JOIN 
+		
+		(
+		SELECT b.ID birthArchivesId,p.ID preExaId,b.LAST_MENSES lastMenses,p.CREAT_TIME checkDate,DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) days
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		on a.ID = b.ARCHIVES_ID
+		RIGHT JOIN prenatal_exa_info p
+		ON p.BIRTH_ARCHIVES_ID = b.ID
+		WHERE b.HOSPITAL_ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND p.EDIT_STATUS = 1 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[<]]>252 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[>]]>195
+		
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		
+		GROUP BY b.ID
+		) f
+		
+		ON e.birthArchivesId = f.birthArchivesId
+		) g
+		
+		INNER JOIN
+		
+		(
+		SELECT b.ID birthArchivesId,p.ID preExaId,b.LAST_MENSES lastMenses,p.CREAT_TIME checkDate,DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) days
+		FROM birth_archives_info b
+		LEFT JOIN archives_info a
+		on a.ID = b.ARCHIVES_ID
+		RIGHT JOIN prenatal_exa_info p
+		ON p.BIRTH_ARCHIVES_ID = b.ID
+		WHERE b.HOSPITAL_ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND p.EDIT_STATUS = 1 AND
+		DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[<]]>280 AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)<![CDATA[>]]>258
+		
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		
+		GROUP BY b.ID
+		) h
+	
+	ON g.birthArchivesId = h.birthArchivesId
+  </select>
+ 
+
+   <select id="getPostGreat0Num" resultType="integer"  parameterType="hashmap">
+   
+  		  SELECT COUNT(z.birtArchivesId) postGreat0Num FROM
+			(
+			SELECT  x.birtArchivesId FROM #x.birtArchivesId,x.pId ,x.EDIT_STATUS ,x.TYPE FROM
+			(
+			SELECT b.ID birtArchivesId,po.ID pId,po.EDIT_STATUS,po.TYPE
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			RIGHT JOIN postpartum_exa_info po 
+			on po.BIRTH_ARCHIVES_ID = b.ID
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND po.TYPE =0 AND po.EDIT_STATUS = 1 
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			
+			) x
+			
+			INNER JOIN 
+			
+			(
+			SELECT b.ID birtArchivesId,po.ID pId,po.EDIT_STATUS,po.TYPE
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			RIGHT JOIN postpartum_exa_info po 
+			on po.BIRTH_ARCHIVES_ID = b.ID
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 AND po.TYPE =1 AND po.EDIT_STATUS = 1 
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			) y
+			
+			ON x.birtArchivesId = y.birtArchivesId
+			
+			GROUP BY x.birtArchivesId
+			) z
+			
+  </select>
+ 
+ 
+   <select id="getBloodNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.HEMOGLOBIN is not null or se.LEUCOCYTE is NOT NULL OR se.PLATELET IS NOT NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			
+				
+  </select>
+  
+  
+     <select id="getUrineNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.PROTEINURIA is not null or se.URINE_SUGAR is NOT NULL OR se.KETONE IS NOT NULL OR se.URINE_BLOOD is not NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+ 
+ 
+ 
+     <select id="getBloodTypeNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.BLOOD_TYPE is not null or se.BLOOD_TYPE_RH is NOT NULL OR se.BLOOD_GLUCOSE IS NOT NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+  
+       <select id="getLiverNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.SGPT is not null or se.SGOT is NOT NULL OR se.ALBUMIN IS NOT NULL OR se.TOTAL_BILIRUBIN is NOT NULL OR se.DBIL is not NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+  
+    <select id="getKidneyNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.SCR is not null or se.BUN is NOT NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+  
+  
+      <select id="getHepatitisBNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.HBSAG is not NULL OR se.HBSAB is not null or se.HBCAB is not null or se.HBEAB is not null or se.HBEAB is not null) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+  
+      <select id="getSyphilisNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.SYPHILIS_SEROLOGY is not NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+  
+
+     <select id="getAidsNum" resultType="integer"  parameterType="hashmap">
+   
+  		    SELECT COUNT(b.ID) bloodNum
+			FROM sys_department sd
+			
+			LEFT JOIN birth_archives_info b
+			ON sd.ID = b.HOSPITAL_ID
+			
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			
+			right  JOIN (  
+						SELECT p1.* FROM prenatal_exa_info p1 
+						right JOIN(SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID) p3
+						ON  p3.BIRTH_ARCHIVES_ID = p1.BIRTH_ARCHIVES_ID
+						WHERE p1.CREAT_TIME = p3.minTime
+						) p
+			on b.ID = p.BIRTH_ARCHIVES_ID
+			
+			right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE   se.HIVAB   is not NULL) se 
+			ON se.EXAMINATION_ID = p.id
+			
+			WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1   
+			
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+				
+  </select>
+  
+       <select id="getHemoglobinNum" resultType="integer"  parameterType="hashmap">
+   
+				 SELECT COUNT(w.bID) hemoglobinNum FROM
+				(
+				SELECT b.ID bID,p.p2id pId
+				FROM sys_department sd
+				
+				LEFT JOIN birth_archives_info b
+				ON sd.ID = b.HOSPITAL_ID
+				
+				LEFT JOIN archives_info a
+				ON a.ID = b.ARCHIVES_ID
+				
+				right  JOIN ( 
+							SELECT p2.BIRTH_ARCHIVES_ID bId,p2.ID p2id,p2.CREAT_TIME,p3.mintime
+							FROM prenatal_exa_info p2 
+							LEFT JOIN (SELECT p1.BIRTH_ARCHIVES_ID,MIN(p1.CREAT_TIME) mintime FROM prenatal_exa_info p1 WHERE p1.EDIT_STATUS = 1 GROUP BY p1.BIRTH_ARCHIVES_ID) p3
+							on p2.BIRTH_ARCHIVES_ID = p3.BIRTH_ARCHIVES_ID 
+							WHERE p2.EDIT_STATUS = 1 and p2.CREAT_TIME !=p3.mintime
+						) p
+				on b.ID = p.bId
+				
+				right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.HEMOGLOBIN is not NULL) se 
+				ON se.EXAMINATION_ID = p.p2id
+				
+				WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 
+				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+					AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+				</if>
+				<if test="home!=null and home!=''">
+					${home}
+				</if>
+				GROUP BY b.ID
+				) w
+  </select>
+        <select id="getUrineProteinNum" resultType="integer"  parameterType="hashmap">
+   
+				 SELECT COUNT(w.bID) hemoglobinNum FROM
+				(
+				SELECT b.ID bID,p.p2id pId
+				FROM sys_department sd
+				
+				LEFT JOIN birth_archives_info b
+				ON sd.ID = b.HOSPITAL_ID
+				
+				LEFT JOIN archives_info a
+				ON a.ID = b.ARCHIVES_ID
+				
+				right  JOIN ( 
+							SELECT p2.BIRTH_ARCHIVES_ID bId,p2.ID p2id,p2.CREAT_TIME,p3.mintime
+							FROM prenatal_exa_info p2 
+							LEFT JOIN (SELECT p1.BIRTH_ARCHIVES_ID,MIN(p1.CREAT_TIME) mintime FROM prenatal_exa_info p1 WHERE p1.EDIT_STATUS = 1 GROUP BY p1.BIRTH_ARCHIVES_ID) p3
+							on p2.BIRTH_ARCHIVES_ID = p3.BIRTH_ARCHIVES_ID 
+							WHERE p2.EDIT_STATUS = 1 and p2.CREAT_TIME !=p3.mintime
+						) p
+				on b.ID = p.bId
+				
+				right JOIN (SELECT se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.PROTEINURIA is not NULL) se 
+				ON se.EXAMINATION_ID = p.p2id
+				
+				WHERE sd.ID = #{departmentId} AND b.DELTET_SIGN = 1 AND a.DELTET_SIGN = 1 
+				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+					AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+				</if>
+				<if test="home!=null and home!=''">
+					${home}
+				</if>
+				GROUP BY b.ID
+				) w
+				
+  </select>		
+  
+   <select id="doctorListForPage" resultType="com.threefiveninetong.mchh.achievements.po.DoctorAchievementsPO"  parameterType="hashmap">
+   
+		SELECT so.ID doctorId,so.REAL_NAME doctorName,so.DEP_ID departmentId,sd.`NAME` hospitalName
+		FROM `sys_operator` so 
+		LEFT JOIN sys_department sd
+		ON so.DEP_ID = sd.ID
+		where 1 = 1 AND so.FLAG = 1
+		<if test="doctorId!=null and doctorId!=''">
+			AND so.ID = #{doctorId}
+		</if>
+  </select>
+  
+  
+     <select id="getPreExaNum" resultType="integer"  parameterType="hashmap">
+   
+		SELECT COUNT(w.bId) preExaNum FROM
+		(
+		SELECT p.ID preExaId,p.CREAT_TIME ,p.DOCTOR_ID doctorId,b.ID bId,b.LAST_MENSES, DATEDIFF(p.CREAT_TIME,b.LAST_MENSES)
+		FROM prenatal_exa_info p
+		LEFT JOIN birth_archives_info b
+		ON p.BIRTH_ARCHIVES_ID  = b.ID
+		LEFT JOIN archives_info a
+		ON b.ARCHIVES_ID = a.ID
+		WHERE p.EDIT_STATUS = 1 AND a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND p.DOCTOR_ID = #{doctorId}
+		<if test="maxDay!=null and maxDay!=''">
+		 	AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) <![CDATA[<]]> #{maxDay} 
+		</if> 
+		<if test="minDay!=null and minDay!=''">
+		 	AND DATEDIFF(p.CREAT_TIME,b.LAST_MENSES) <![CDATA[>]]> #{minDay}  
+		</if> 
+		<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+			AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+		</if>
+		<if test="home!=null and home!=''">
+			${home}
+		</if>
+		GROUP BY p.BIRTH_ARCHIVES_ID
+		) w
+		
+  </select>
+  
+  
+     <select id="getPost3to7Num" resultType="integer"  parameterType="hashmap">
+   
+			SELECT  COUNT(w.pId) post3to7Num
+			FROM
+			(
+			SELECT po.ID pId 
+			FROM postpartum_exa_info po 
+			LEFT JOIN birth_archives_info b
+			ON b.ID = po.BIRTH_ARCHIVES_ID
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND po.EDIT_STATUS = 1 AND po.TYPE=0 
+			AND po.DOCTOR_ID = #{doctorId} 
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			GROUP BY po.BIRTH_ARCHIVES_ID
+			) w
+		
+  </select>
+  
+      <select id="getPost42Num" resultType="integer"  parameterType="hashmap">
+   
+			SELECT  COUNT(w.pId) post42Num
+			FROM
+			(
+			SELECT po.ID pId 
+			FROM postpartum_exa_info po 
+			LEFT JOIN birth_archives_info b
+			ON b.ID = po.BIRTH_ARCHIVES_ID
+			LEFT JOIN archives_info a
+			ON a.ID = b.ARCHIVES_ID
+			WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND po.EDIT_STATUS = 1 AND po.TYPE=1 
+			AND po.DOCTOR_ID = #{doctorId} 
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			GROUP BY po.BIRTH_ARCHIVES_ID
+			) w
+		
+  </select>
+  
+       <select id="getItemsCheckNum" resultType="integer"  parameterType="hashmap">
+   
+			SELECT COUNT(w.bID) itemsNum 
+			FROM 
+			( SELECT p.ID,b.ID bId FROM
+				( 	SELECT p1.*
+					FROM  prenatal_exa_info p1
+		   			right  JOIN( SELECT p2.ID,p2.BIRTH_ARCHIVES_ID ,p2.EDIT_STATUS,p2.DOCTOR_ID,MIN(p2.CREAT_TIME) minTime FROM prenatal_exa_info p2 WHERE p2.EDIT_STATUS = 1  GROUP BY p2.BIRTH_ARCHIVES_ID ) p3 
+					 ON p1.BIRTH_ARCHIVES_ID = p3.BIRTH_ARCHIVES_ID
+					WHERE p1.CREAT_TIME = p3.minTime
+				)p
+			LEFT JOIN birth_archives_info b 
+			ON b.ID = p.BIRTH_ARCHIVES_ID 
+			LEFT JOIN archives_info a 
+			on a.ID = b.ARCHIVES_ID 
+			RIGHT JOIN (SELECT se.ID,se.EXAMINATION_ID FROM supplementary_exam_info se WHERE ${items}) se1
+			 ON se1.EXAMINATION_ID = p.ID 
+			WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN =1 AND p.EDIT_STATUS = 1 AND p.DOCTOR_ID = #{doctorId} 
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			<if test="home!=null and home!=''">
+				${home}
+			</if>
+			 GROUP BY b.ID 
+			) w
+  </select>
+  
+  
+    
+       <select id="getHemoglobinNum1" resultType="integer"  parameterType="hashmap">
+   
+				SELECT  COUNT(w.bID) hemoglobinNum
+				FROM
+				(
+				SELECT b.ID bID,p.ID pId,se1.ID seId,p.CREAT_TIME pCreatTime
+				FROM (SELECT p2.BIRTH_ARCHIVES_ID,p2.ID ,p2.DOCTOR_ID,p2.CREAT_TIME,p3.mintime,p2.EDIT_STATUS
+					FROM prenatal_exa_info p2 
+					LEFT JOIN (SELECT p1.BIRTH_ARCHIVES_ID,MIN(p1.CREAT_TIME) mintime FROM prenatal_exa_info p1 WHERE p1.EDIT_STATUS = 1 GROUP BY p1.BIRTH_ARCHIVES_ID) p3
+					on p2.BIRTH_ARCHIVES_ID = p3.BIRTH_ARCHIVES_ID 
+					WHERE p2.EDIT_STATUS = 1 and p2.CREAT_TIME !=p3.mintime) p
+				
+				
+				LEFT JOIN birth_archives_info b
+				ON b.ID = p.BIRTH_ARCHIVES_ID
+				
+				JOIN archives_info a
+				on a.ID = b.ARCHIVES_ID
+				
+				RIGHT  JOIN (SELECT se.ID,se.EXAMINATION_ID FROM supplementary_exam_info se WHERE se.HEMOGLOBIN is not null) se1
+				ON se1.EXAMINATION_ID = p.ID
+				
+				WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN =1 AND p.EDIT_STATUS = 1 
+				AND p.DOCTOR_ID = #{doctorId}
+				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+					AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+				</if>
+				<if test="home!=null and home!=''">
+					${home}
+				</if>
+				GROUP BY p.BIRTH_ARCHIVES_ID
+				) w
+  
+  </select>
+  
+         <select id="getUrineProteinNum1" resultType="integer"  parameterType="hashmap">
+   
+				SELECT  COUNT(w.bID) hemoglobinNum
+				FROM
+				(
+				SELECT b.ID bID,p.ID pId,se1.ID seId,p.CREAT_TIME pCreatTime
+				FROM (SELECT p2.BIRTH_ARCHIVES_ID,p2.ID ,p2.DOCTOR_ID,p2.CREAT_TIME,p3.mintime,p2.EDIT_STATUS
+											FROM prenatal_exa_info p2 
+											LEFT JOIN (SELECT p1.BIRTH_ARCHIVES_ID,MIN(p1.CREAT_TIME) mintime FROM prenatal_exa_info p1 WHERE p1.EDIT_STATUS = 1 GROUP BY p1.BIRTH_ARCHIVES_ID) p3
+											on p2.BIRTH_ARCHIVES_ID = p3.BIRTH_ARCHIVES_ID 
+											WHERE p2.EDIT_STATUS = 1 and p2.CREAT_TIME !=p3.mintime) p
+				
+				
+				LEFT JOIN birth_archives_info b
+				ON b.ID = p.BIRTH_ARCHIVES_ID
+				
+				JOIN archives_info a
+				on a.ID = b.ARCHIVES_ID
+				
+				RIGHT  JOIN (SELECT se.ID,se.EXAMINATION_ID FROM supplementary_exam_info se WHERE  se.PROTEINURIA is not null) se1
+				ON se1.EXAMINATION_ID = p.ID
+				
+				WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN =1 AND p.EDIT_STATUS = 1 
+				AND p.DOCTOR_ID = #{doctorId}
+				<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+					AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+				</if>
+				<if test="home!=null and home!=''">
+					${home}
+				</if>
+				GROUP BY p.BIRTH_ARCHIVES_ID
+				) w
+  </select>
+  
+  
+   <select id="getActualCloseNum1" resultType="integer"  parameterType="hashmap">
+			SELECT COUNT(w.bId) actualCloseNum
+			FROM
+			(
+			SELECT a.ID aId,b.id bId
+			FROM archives_info a
+			LEFT JOIN birth_archives_info b
+			ON b.ARCHIVES_ID = a.ID
+			WHERE a.DELTET_SIGN = 1 AND b.DELTET_SIGN = 1 AND b.PREGNANT_STATE = 2 AND 
+			a.DOCTOR_ID =  #{doctorId}
+			<if test="closeDateStare!=null and closeDateStare!='' and closeDateEnd!=null and closeDateEnd!=''">
+				AND b.CLOSING_DATE BETWEEN DATE(#{closeDateStare}) AND DATE(#{closeDateEnd})
+			</if>
+			) w
+  </select>
+  
+  
+  
+
+  
+  
+
+
+</mapper>

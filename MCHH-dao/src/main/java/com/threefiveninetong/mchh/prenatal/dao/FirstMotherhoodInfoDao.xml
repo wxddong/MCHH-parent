@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.prenatal.dao.FirstMotherhoodInfoDao" >
+	
+	<update id="edit" parameterType="com.threefiveninetong.mchh.prenatal.po.FirstMotherhoodInfoPO" >
+	    update FIRST_MOTHERHOOD_INFO
+	    set
+				PREGNANCY_WEEKS = #{ pregnancyWeeks, javaType=String, jdbcType=VARCHAR},
+				PREGNANCY_DAYS = #{ pregnancyDays, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+				PREGNANCY_NUM = #{ pregnancyNum, javaType=String, jdbcType=VARCHAR},
+				BEAR_NUM = #{ bearNum, javaType=String, jdbcType=VARCHAR},
+				EUTOCIA_NUM = #{ eutociaNum, javaType=String, jdbcType=VARCHAR},
+				CESAREAN_NUM = #{ cesareanNum, javaType=String, jdbcType=VARCHAR},
+				PREBEAR_NUM = #{ prebearNum, javaType=String, jdbcType=VARCHAR},
+				NATURAL_ABORTION_NUM = #{ naturalAbortionNum, javaType=String, jdbcType=VARCHAR},
+				INDUCED_ABORTION_NUM = #{ inducedAbortionNum, javaType=String, jdbcType=VARCHAR},
+				DRUG_ABORTION_NUM = #{ drugAbortionNum, javaType=String, jdbcType=VARCHAR},
+				EXFETATION_NUM = #{ exfetationNum, javaType=String, jdbcType=VARCHAR},
+				INDUCELABOUR_NUM = #{ inducelabourNum, javaType=String, jdbcType=VARCHAR},
+				ABORTION_NUM = #{ abortionNum, javaType=String, jdbcType=VARCHAR},
+				DEADFETUS_NUM = #{ deadfetusNum, javaType=String, jdbcType=VARCHAR},
+				STILLBIRTH_NUM = #{ stillbirthNum, javaType=String, jdbcType=VARCHAR},
+				NEWBORN_DIE_NUM = #{ newbornDieNum, javaType=String, jdbcType=VARCHAR},
+				DEFECT_NUM = #{ defectNum, javaType=String, jdbcType=VARCHAR},
+				BLEEDING_NUM = #{ bleedingNum, javaType=String, jdbcType=VARCHAR},
+				TWINS_NUM = #{ twinsNum, javaType=String, jdbcType=VARCHAR},
+				DEFORMITY_NUM = #{ deformityNum, javaType=String, jdbcType=VARCHAR},
+				HISTORY = #{ history, javaType=String, jdbcType=VARCHAR},
+				HISTORY_OTHERS = #{ historyOthers, javaType=String, jdbcType=VARCHAR},
+				FAM_HISTORY = #{ famHistory, javaType=String, jdbcType=VARCHAR},
+				HEREDITY_RELATION = #{ heredityRelation, javaType=String, jdbcType=VARCHAR},
+				MENTAL_RELATION = #{ mentalRelation, javaType=String, jdbcType=VARCHAR},
+				FAM_HISTORY_OTHERS = #{ famHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				PER_HISTORY = #{ perHistory, javaType=String, jdbcType=VARCHAR},
+				PER_HISTORY_OTHERS = #{ perHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				OPERATION = #{ operation, javaType=String, jdbcType=VARCHAR},
+				OPERATION_REMARK = #{ operationRemark, javaType=String, jdbcType=VARCHAR},
+				ALLERGY = #{ allergy, javaType=String, jdbcType=VARCHAR},
+				ALLERGY_REMARK = #{ allergyRemark, javaType=String, jdbcType=VARCHAR}
+	    where EXAMINATION_ID = #{ examinationId}
+	  </update>
+	
+	<select id="getFirstMotherhoodByPreantalExaId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,EXAMINATION_ID,PREGNANCY_WEEKS,PREGNANCY_DAYS,LAST_MENSES,PREDICT_DATE,PREGNANCY_NUM,BEAR_NUM,EUTOCIA_NUM,CESAREAN_NUM,PREBEAR_NUM,NATURAL_ABORTION_NUM,INDUCED_ABORTION_NUM,DRUG_ABORTION_NUM,EXFETATION_NUM,INDUCELABOUR_NUM,ABORTION_NUM,DEADFETUS_NUM,STILLBIRTH_NUM,NEWBORN_DIE_NUM,DEFECT_NUM,BLEEDING_NUM,TWINS_NUM,DEFORMITY_NUM,HISTORY,HISTORY_OTHERS,FAM_HISTORY,HEREDITY_RELATION,MENTAL_RELATION,FAM_HISTORY_OTHERS,PER_HISTORY,PER_HISTORY_OTHERS,OPERATION,OPERATION_REMARK,ALLERGY,ALLERGY_REMARK
+	    from FIRST_MOTHERHOOD_INFO
+	    where EXAMINATION_ID = #{ firstPreantalExaId}
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.prenatal.po.FirstMotherhoodInfoPO" >
+	<result column="ID" property="id" />
+	<result column="EXAMINATION_ID" property="examinationId" />
+	<result column="PREGNANCY_WEEKS" property="pregnancyWeeks" />
+	<result column="PREGNANCY_DAYS" property="pregnancyDays" />
+	<result column="LAST_MENSES" property="lastMenses" />
+	<result column="PREDICT_DATE" property="predictDate" />
+	<result column="PREGNANCY_NUM" property="pregnancyNum" />
+	<result column="BEAR_NUM" property="bearNum" />
+	<result column="EUTOCIA_NUM" property="eutociaNum" />
+	<result column="CESAREAN_NUM" property="cesareanNum" />
+	<result column="PREBEAR_NUM" property="prebearNum" />
+	<result column="NATURAL_ABORTION_NUM" property="naturalAbortionNum" />
+	<result column="INDUCED_ABORTION_NUM" property="inducedAbortionNum" />
+	<result column="DRUG_ABORTION_NUM" property="drugAbortionNum" />
+	<result column="EXFETATION_NUM" property="exfetationNum" />
+	<result column="INDUCELABOUR_NUM" property="inducelabourNum" />
+	<result column="ABORTION_NUM" property="abortionNum" />
+	<result column="DEADFETUS_NUM" property="deadfetusNum" />
+	<result column="STILLBIRTH_NUM" property="stillbirthNum" />
+	<result column="NEWBORN_DIE_NUM" property="newbornDieNum" />
+	<result column="DEFECT_NUM" property="defectNum" />
+	<result column="BLEEDING_NUM" property="bleedingNum" />
+	<result column="TWINS_NUM" property="twinsNum" />
+	<result column="DEFORMITY_NUM" property="deformityNum" />
+	<result column="HISTORY" property="history" />
+	<result column="HISTORY_OTHERS" property="historyOthers" />
+	<result column="FAM_HISTORY" property="famHistory" />
+	<result column="HEREDITY_RELATION" property="heredityRelation" />
+	<result column="MENTAL_RELATION" property="mentalRelation" />
+	<result column="FAM_HISTORY_OTHERS" property="famHistoryOthers" />
+	<result column="PER_HISTORY" property="perHistory" />
+	<result column="PER_HISTORY_OTHERS" property="perHistoryOthers" />
+	<result column="OPERATION" property="operation" />
+	<result column="OPERATION_REMARK" property="operationRemark" />
+	<result column="ALLERGY" property="allergy" />
+	<result column="ALLERGY_REMARK" property="allergyRemark" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,EXAMINATION_ID,PREGNANCY_WEEKS,PREGNANCY_DAYS,LAST_MENSES,PREDICT_DATE,PREGNANCY_NUM,BEAR_NUM,EUTOCIA_NUM,CESAREAN_NUM,PREBEAR_NUM,NATURAL_ABORTION_NUM,INDUCED_ABORTION_NUM,DRUG_ABORTION_NUM,EXFETATION_NUM,INDUCELABOUR_NUM,ABORTION_NUM,DEADFETUS_NUM,STILLBIRTH_NUM,NEWBORN_DIE_NUM,DEFECT_NUM,BLEEDING_NUM,TWINS_NUM,DEFORMITY_NUM,HISTORY,HISTORY_OTHERS,FAM_HISTORY,HEREDITY_RELATION,MENTAL_RELATION,FAM_HISTORY_OTHERS,PER_HISTORY,PER_HISTORY_OTHERS,OPERATION,OPERATION_REMARK,ALLERGY,ALLERGY_REMARK
+    from FIRST_MOTHERHOOD_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,EXAMINATION_ID,PREGNANCY_WEEKS,PREGNANCY_DAYS,LAST_MENSES,PREDICT_DATE,PREGNANCY_NUM,BEAR_NUM,EUTOCIA_NUM,CESAREAN_NUM,PREBEAR_NUM,NATURAL_ABORTION_NUM,INDUCED_ABORTION_NUM,DRUG_ABORTION_NUM,EXFETATION_NUM,INDUCELABOUR_NUM,ABORTION_NUM,DEADFETUS_NUM,STILLBIRTH_NUM,NEWBORN_DIE_NUM,DEFECT_NUM,BLEEDING_NUM,TWINS_NUM,DEFORMITY_NUM,HISTORY,HISTORY_OTHERS,FAM_HISTORY,HEREDITY_RELATION,MENTAL_RELATION,FAM_HISTORY_OTHERS,PER_HISTORY,PER_HISTORY_OTHERS,OPERATION,OPERATION_REMARK,ALLERGY,ALLERGY_REMARK
+    from FIRST_MOTHERHOOD_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from FIRST_MOTHERHOOD_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.prenatal.po.FirstMotherhoodInfoPO" >
+    insert into FIRST_MOTHERHOOD_INFO (ID,EXAMINATION_ID,PREGNANCY_WEEKS,PREGNANCY_DAYS,LAST_MENSES,PREDICT_DATE,PREGNANCY_NUM,BEAR_NUM,EUTOCIA_NUM,CESAREAN_NUM,PREBEAR_NUM,NATURAL_ABORTION_NUM,INDUCED_ABORTION_NUM,DRUG_ABORTION_NUM,EXFETATION_NUM,INDUCELABOUR_NUM,ABORTION_NUM,DEADFETUS_NUM,STILLBIRTH_NUM,NEWBORN_DIE_NUM,DEFECT_NUM,BLEEDING_NUM,TWINS_NUM,DEFORMITY_NUM,HISTORY,HISTORY_OTHERS,FAM_HISTORY,HEREDITY_RELATION,MENTAL_RELATION,FAM_HISTORY_OTHERS,PER_HISTORY,PER_HISTORY_OTHERS,OPERATION,OPERATION_REMARK,ALLERGY,ALLERGY_REMARK)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ examinationId, javaType=String, jdbcType=VARCHAR},
+				#{ pregnancyWeeks, javaType=String, jdbcType=VARCHAR},
+				#{ pregnancyDays, javaType=String, jdbcType=VARCHAR},
+				#{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				#{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ pregnancyNum, javaType=String, jdbcType=VARCHAR},
+				#{ bearNum, javaType=String, jdbcType=VARCHAR},
+				#{ eutociaNum, javaType=String, jdbcType=VARCHAR},
+				#{ cesareanNum, javaType=String, jdbcType=VARCHAR},
+				#{ prebearNum, javaType=String, jdbcType=VARCHAR},
+				#{ naturalAbortionNum, javaType=String, jdbcType=VARCHAR},
+				#{ inducedAbortionNum, javaType=String, jdbcType=VARCHAR},
+				#{ drugAbortionNum, javaType=String, jdbcType=VARCHAR},
+				#{ exfetationNum, javaType=String, jdbcType=VARCHAR},
+				#{ inducelabourNum, javaType=String, jdbcType=VARCHAR},
+				#{ abortionNum, javaType=String, jdbcType=VARCHAR},
+				#{ deadfetusNum, javaType=String, jdbcType=VARCHAR},
+				#{ stillbirthNum, javaType=String, jdbcType=VARCHAR},
+				#{ newbornDieNum, javaType=String, jdbcType=VARCHAR},
+				#{ defectNum, javaType=String, jdbcType=VARCHAR},
+				#{ bleedingNum, javaType=String, jdbcType=VARCHAR},
+				#{ twinsNum, javaType=String, jdbcType=VARCHAR},
+				#{ deformityNum, javaType=String, jdbcType=VARCHAR},
+				#{ history, javaType=String, jdbcType=VARCHAR},
+				#{ historyOthers, javaType=String, jdbcType=VARCHAR},
+				#{ famHistory, javaType=String, jdbcType=VARCHAR},
+				#{ heredityRelation, javaType=String, jdbcType=VARCHAR},
+				#{ mentalRelation, javaType=String, jdbcType=VARCHAR},
+				#{ famHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				#{ perHistory, javaType=String, jdbcType=VARCHAR},
+				#{ perHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				#{ operation, javaType=String, jdbcType=VARCHAR},
+				#{ operationRemark, javaType=String, jdbcType=VARCHAR},
+				#{ allergy, javaType=String, jdbcType=VARCHAR},
+				#{ allergyRemark, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.prenatal.po.FirstMotherhoodInfoPO" >
+    update FIRST_MOTHERHOOD_INFO
+    set
+			EXAMINATION_ID = #{ examinationId, javaType=String, jdbcType=VARCHAR},
+				PREGNANCY_WEEKS = #{ pregnancyWeeks, javaType=String, jdbcType=VARCHAR},
+				PREGNANCY_DAYS = #{ pregnancyDays, javaType=String, jdbcType=VARCHAR},
+				LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				PREDICT_DATE = #{ predictDate, javaType=Date, jdbcType=TIMESTAMP},
+				PREGNANCY_NUM = #{ pregnancyNum, javaType=String, jdbcType=VARCHAR},
+				BEAR_NUM = #{ bearNum, javaType=String, jdbcType=VARCHAR},
+				EUTOCIA_NUM = #{ eutociaNum, javaType=String, jdbcType=VARCHAR},
+				CESAREAN_NUM = #{ cesareanNum, javaType=String, jdbcType=VARCHAR},
+				PREBEAR_NUM = #{ prebearNum, javaType=String, jdbcType=VARCHAR},
+				NATURAL_ABORTION_NUM = #{ naturalAbortionNum, javaType=String, jdbcType=VARCHAR},
+				INDUCED_ABORTION_NUM = #{ inducedAbortionNum, javaType=String, jdbcType=VARCHAR},
+				DRUG_ABORTION_NUM = #{ drugAbortionNum, javaType=String, jdbcType=VARCHAR},
+				EXFETATION_NUM = #{ exfetationNum, javaType=String, jdbcType=VARCHAR},
+				INDUCELABOUR_NUM = #{ inducelabourNum, javaType=String, jdbcType=VARCHAR},
+				ABORTION_NUM = #{ abortionNum, javaType=String, jdbcType=VARCHAR},
+				DEADFETUS_NUM = #{ deadfetusNum, javaType=String, jdbcType=VARCHAR},
+				STILLBIRTH_NUM = #{ stillbirthNum, javaType=String, jdbcType=VARCHAR},
+				NEWBORN_DIE_NUM = #{ newbornDieNum, javaType=String, jdbcType=VARCHAR},
+				DEFECT_NUM = #{ defectNum, javaType=String, jdbcType=VARCHAR},
+				BLEEDING_NUM = #{ bleedingNum, javaType=String, jdbcType=VARCHAR},
+				TWINS_NUM = #{ twinsNum, javaType=String, jdbcType=VARCHAR},
+				DEFORMITY_NUM = #{ deformityNum, javaType=String, jdbcType=VARCHAR},
+				HISTORY = #{ history, javaType=String, jdbcType=VARCHAR},
+				HISTORY_OTHERS = #{ historyOthers, javaType=String, jdbcType=VARCHAR},
+				FAM_HISTORY = #{ famHistory, javaType=String, jdbcType=VARCHAR},
+				HEREDITY_RELATION = #{ heredityRelation, javaType=String, jdbcType=VARCHAR},
+				MENTAL_RELATION = #{ mentalRelation, javaType=String, jdbcType=VARCHAR},
+				FAM_HISTORY_OTHERS = #{ famHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				PER_HISTORY = #{ perHistory, javaType=String, jdbcType=VARCHAR},
+				PER_HISTORY_OTHERS = #{ perHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				OPERATION = #{ operation, javaType=String, jdbcType=VARCHAR},
+				OPERATION_REMARK = #{ operationRemark, javaType=String, jdbcType=VARCHAR},
+				ALLERGY = #{ allergy, javaType=String, jdbcType=VARCHAR},
+				ALLERGY_REMARK = #{ allergyRemark, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,EXAMINATION_ID,PREGNANCY_WEEKS,PREGNANCY_DAYS,LAST_MENSES,PREDICT_DATE,PREGNANCY_NUM,BEAR_NUM,EUTOCIA_NUM,CESAREAN_NUM,PREBEAR_NUM,NATURAL_ABORTION_NUM,INDUCED_ABORTION_NUM,DRUG_ABORTION_NUM,EXFETATION_NUM,INDUCELABOUR_NUM,ABORTION_NUM,DEADFETUS_NUM,STILLBIRTH_NUM,NEWBORN_DIE_NUM,DEFECT_NUM,BLEEDING_NUM,TWINS_NUM,DEFORMITY_NUM,HISTORY,HISTORY_OTHERS,FAM_HISTORY,HEREDITY_RELATION,MENTAL_RELATION,FAM_HISTORY_OTHERS,PER_HISTORY,PER_HISTORY_OTHERS,OPERATION,OPERATION_REMARK,ALLERGY,ALLERGY_REMARK
+    from FIRST_MOTHERHOOD_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from FIRST_MOTHERHOOD_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+<select id="getFirstMotherhoodByBirthArchivesId" resultMap="BaseResultMap" parameterType="String" >
+	    select fir.ID,EXAMINATION_ID,PREGNANCY_WEEKS,PREGNANCY_DAYS,LAST_MENSES,PREDICT_DATE,PREGNANCY_NUM,BEAR_NUM,EUTOCIA_NUM,CESAREAN_NUM,PREBEAR_NUM,NATURAL_ABORTION_NUM,INDUCED_ABORTION_NUM,DRUG_ABORTION_NUM,EXFETATION_NUM,INDUCELABOUR_NUM,ABORTION_NUM,DEADFETUS_NUM,STILLBIRTH_NUM,NEWBORN_DIE_NUM,DEFECT_NUM,BLEEDING_NUM,TWINS_NUM,DEFORMITY_NUM,HISTORY,HISTORY_OTHERS,FAM_HISTORY,HEREDITY_RELATION,MENTAL_RELATION,FAM_HISTORY_OTHERS,PER_HISTORY,PER_HISTORY_OTHERS,OPERATION,OPERATION_REMARK,ALLERGY,ALLERGY_REMARK
+	    from FIRST_MOTHERHOOD_INFO fir left join PRENATAL_EXA_INFO pre on fir.EXAMINATION_ID=pre.ID
+    	where pre.EDIT_STATUS = "1"
+			  AND pre.BIRTH_ARCHIVES_ID = #{birthArchivesId}
+		 	  ORDER BY pre.CREAT_TIME
+		 	  LIMIT 1
+	</select>
+<!--codegen-->
+
+</mapper>

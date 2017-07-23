@@ -1,0 +1,286 @@
+body {
+  margin:0px;
+  background-image:none;
+  position:static;
+  left:auto;
+  width:1550px;
+  margin-left:0;
+  margin-right:0;
+  text-align:left;
+}
+#base {
+  position:absolute;
+  z-index:0;
+}
+#u0 {
+  position:absolute;
+  left:1px;
+  top:34px;
+  width:719px;
+  height:346px;
+}
+#u0_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:719px;
+  height:346px;
+}
+#u1 {
+  position:absolute;
+  left:2px;
+  top:165px;
+  width:715px;
+  visibility:hidden;
+  word-wrap:break-word;
+}
+#u2 {
+  position:absolute;
+  left:5px;
+  top:2px;
+  width:180px;
+  height:36px;
+  font-family:'Arial Negreta', 'Arial';
+  font-weight:700;
+  color:#FFFFFF;
+}
+#u2_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:217px;
+  height:36px;
+}
+#u3 {
+  position:absolute;
+  left:-20px;
+  top:10px;
+  width:213px;
+  word-wrap:break-word;
+}
+#u4 {
+  position:absolute;
+  left:410px;
+  top:305px;
+  width:120px;
+  height:44px;
+  font-family:'Arial Negreta', 'Arial';
+  font-weight:700;
+  color:#FFFFFF;
+}
+#u4_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:120px;
+  height:44px;
+}
+#u5 {
+  position:absolute;
+  left:2px;
+  top:14px;
+  width:116px;
+  word-wrap:break-word;
+}
+#u6 {
+  position:absolute;
+  left:190px;
+  top:305px;
+  width:120px;
+  height:44px;
+  font-family:'Arial Negreta', 'Arial';
+  font-weight:700;
+  color:#FFFFFF;
+}
+#u6_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:120px;
+  height:44px;
+}
+#u7 {
+  position:absolute;
+  left:2px;
+  top:14px;
+  width:116px;
+  word-wrap:break-word;
+}
+#u8 {
+  position:absolute;
+  left:150px;
+  top:85px;
+  width:82px;
+  height:15px;
+}
+#u8_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:82px;
+  height:15px;
+}
+#u9 {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:82px;
+  word-wrap:break-word;
+}
+#u10 {
+  position:absolute;
+  left:220px;
+  top:80px;
+  width:145px;
+  height:25px;
+}
+#u10_input {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:145px;
+  height:25px;
+  background-image:none;
+  font-family:'Arial Normal', 'Arial';
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  text-decoration:none;
+  color:#333333;
+  text-align:left;
+}
+#u11 {
+  position:absolute;
+  left:150px;
+  top:140px;
+  width:78px;
+  height:15px;
+}
+#u11_img {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:78px;
+  height:15px;
+}
+#u12 {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:78px;
+  word-wrap:break-word;
+}
+#u13 {
+  position:absolute;
+  left:220px;
+  top:140px;
+  width:100px;
+  height:15px;
+}
+#u14 {
+  position:absolute;
+  left:16px;
+  top:0px;
+  width:82px;
+  word-wrap:break-word;
+}
+#u13_input {
+  position:absolute;
+  left:-3px;
+  top:-2px;
+}
+#u15 {
+  position:absolute;
+  left:400px;
+  top:140px;
+  width:100px;
+  height:15px;
+}
+#u16 {
+  position:absolute;
+  left:16px;
+  top:0px;
+  width:82px;
+  word-wrap:break-word;
+}
+#u15_input {
+  position:absolute;
+  left:-3px;
+  top:-2px;
+}
+#u17 {
+  position:absolute;
+  left:220px;
+  top:196px;
+  width:100px;
+  height:15px;
+}
+#u18 {
+  position:absolute;
+  left:16px;
+  top:0px;
+  width:82px;
+  word-wrap:break-word;
+}
+#u17_input {
+  position:absolute;
+  left:-3px;
+  top:-2px;
+}
+#u19 {
+  position:absolute;
+  left:220px;
+  top:252px;
+  width:140px;
+  height:15px;
+}
+#u20 {
+  position:absolute;
+  left:16px;
+  top:0px;
+  width:122px;
+  word-wrap:break-word;
+}
+#u19_input {
+  position:absolute;
+  left:-3px;
+  top:-2px;
+}
+#u21 {
+  position:absolute;
+  left:400px;
+  top:196px;
+  width:100px;
+  height:15px;
+}
+#u22 {
+  position:absolute;
+  left:16px;
+  top:0px;
+  width:82px;
+  word-wrap:break-word;
+}
+#u21_input {
+  position:absolute;
+  left:-3px;
+  top:-2px;
+}
+#u23 {
+  position:absolute;
+  left:400px;
+  top:252px;
+  width:140px;
+  height:15px;
+}
+#u24 {
+  position:absolute;
+  left:16px;
+  top:0px;
+  width:122px;
+  word-wrap:break-word;
+}
+#u23_input {
+  position:absolute;
+  left:-3px;
+  top:-2px;
+}

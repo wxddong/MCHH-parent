@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd  
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd  
+   	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+   	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd ">
+
+<!-- 指定系统寻找controller路径 -->
+	<mvc:annotation-driven validator="validator"  conversion-service="conversionService">
+      <mvc:message-converters>
+			<bean class="com.threefiveninetong.mchh.core.handler.JsonAbstractHttpMessageConverter">
+				<property name="serializerFeature">
+					<list>
+						<value>WriteMapNullValue</value>
+						<value>QuoteFieldNames</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- 自定义日期转换器 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.threefiveninetong.mchh.core.conver.StringToDateConverter">
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 搜索的包路径 -->
+	<context:component-scan base-package="com.threefiveninetong.mchh.*.controller" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- 放过导入的JS CSS 图片等文件 -->
+	<mvc:resources location="/static/" mapping="/static/**" cache-period="31556926" />
+
+<!-- 数据效验-->
+	<bean id="validatorAspect" class="com.threefiveninetong.mchh.core.aop.AopValidate">
+		<property name="validator" ref="validator" />
+	</bean>
+	
+	<aop:config>
+		<aop:aspect ref="validatorAspect">
+			<aop:around method="doBasicProfiling"
+				pointcut="@annotation(org.springframework.web.bind.annotation.RequestMapping)" />
+		</aop:aspect>
+	</aop:config>
+	
+	<!-- 自定义异常拦截 -->
+	<bean id="exceptionHandler"
+		class="com.threefiveninetong.mchh.core.aop.AopException">
+		<property name="messageSource" ref="messageSource"></property>
+	</bean>
+	
+	<!-- 配置注解用的本地化文件 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+		p:validationMessageSource-ref="messageSource">
+	</bean>
+	
+	<!-- 自定义拦截器  -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*"/>
+			<mvc:exclude-mapping path="/ico/**"/>
+			<mvc:exclude-mapping path="/img/**"/>
+			<mvc:exclude-mapping path="/js/**"/>
+			<mvc:exclude-mapping path="/static/**"/>
+			<bean class="com.threefiveninetong.mchh.core.handler.SystemInterceptor"></bean>
+		</mvc:interceptor>
+		<bean class="com.threefiveninetong.mchh.core.handler.TokenInterceptor"></bean>
+	</mvc:interceptors>
+	
+	<bean id="systemMonitor"
+		class="com.threefiveninetong.mchh.core.handler.SystemMonitor">
+		<!-- 超时警告时间 -->
+		<property name="methodWarningThreshold" value="10000" />
+	</bean>
+
+	<aop:config>
+		<aop:pointcut id="allControllerMethod"
+			expression="execution(* com.threefiveninetong.mchh.*.controller.*.*(..))" />
+
+		<aop:advisor advice-ref="systemMonitor"
+			pointcut-ref="allControllerMethod" />
+	</aop:config>
+	
+	
+	<!-- 本地化文件配置 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:fallbackToSystemLocale="true" p:useCodeAsDefaultMessage="false" p:defaultEncoding="UTF-8">
+		<property name="basenames">
+			<list>
+				<value>classpath:validation</value>
+				<value>classpath:exceptions</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 文件上传解析器-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:defaultEncoding="UTF-8">
+	</bean>
+
+	 
+	
+	<!-- 视图解析类,基于jsp和jstl基础之上解析	-->
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!--  解析器 -->
+	<bean id="xmlViewResolver"
+		class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="order" value="3" />
+		<property name="location" value="classpath:views.xml" />
+	</bean>
+
+	<!-- junit 测试用 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+		
+		<!-- 数据字典 -->
+	<bean id="codeDict" class="com.threefiveninetong.mchh.sys.common.CodeDictCacheImpl"></bean>
+		
+	<bean id="resources" class="com.threefiveninetong.mchh.sys.common.ResourcesImpl"/>
+	
+	<mvc:interceptors>
+		<!-- 权限拦截器 -->
+			<bean class="com.threefiveninetong.mchh.sys.interceptor.AuthorizationInterceptor">
+				<property name="resources" ref="resources"/>
+			</bean>
+		<!-- 日志拦截器 -->
+			<bean class="com.threefiveninetong.mchh.sys.interceptor.OperateLogInterceptor">
+				<property name="operateLogFactory">
+					<bean class="com.threefiveninetong.mchh.sys.common.OperateLogFactoryImpl">
+					<property name="resources" ref="resources"/>
+					<property name="operateLogService">
+						<bean class="com.threefiveninetong.mchh.sys.service.OperateLogService"/>
+					</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:interceptors>
+</beans>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.prenatal.dao.FirstGynecologicalExaInfoDao" >
+
+	<update id="edit" parameterType="com.threefiveninetong.mchh.prenatal.po.FirstGynecologicalExaInfoPO" >
+	    update FIRST_GYNECOLOGICAL_EXA_INFO
+	    set
+			OUTER_VULVA = #{ outerVulva, javaType=String, jdbcType=VARCHAR},
+			OUTER_VULVA_REMARK = #{ outerVulvaRemark, javaType=String, jdbcType=VARCHAR},
+			VAGINA = #{ vagina, javaType=String, jdbcType=VARCHAR},
+			VAGINA_REMARK = #{ vaginaRemark, javaType=String, jdbcType=VARCHAR},
+			UTERUS = #{ uterus, javaType=String, jdbcType=VARCHAR},
+			UTERUS_REMARK = #{ uterusRemark, javaType=String, jdbcType=VARCHAR},
+			UTERINE_NECK = #{ uterineNeck, javaType=String, jdbcType=VARCHAR},
+			UTERINE_NECK_REMARK = #{ uterineNeckRemark, javaType=String, jdbcType=VARCHAR},
+			APPENDIX = #{ appendix, javaType=String, jdbcType=VARCHAR},
+			APPENDIX_REMARK = #{ appendixRemark, javaType=String, jdbcType=VARCHAR}
+	    where EXAMINATION_ID = #{ examinationId}
+	  </update>
+	
+	<select id="getGynecologByPrenatalId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,EXAMINATION_ID,OUTER_VULVA,OUTER_VULVA_REMARK,VAGINA,VAGINA_REMARK,UTERUS,UTERUS_REMARK,UTERINE_NECK,UTERINE_NECK_REMARK,APPENDIX,APPENDIX_REMARK
+	    from FIRST_GYNECOLOGICAL_EXA_INFO
+	    where EXAMINATION_ID = #{ prenatalId}
+	</select>
+		
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.prenatal.po.FirstGynecologicalExaInfoPO" >
+	<result column="ID" property="id" />
+	<result column="EXAMINATION_ID" property="examinationId" />
+	<result column="OUTER_VULVA" property="outerVulva" />
+	<result column="OUTER_VULVA_REMARK" property="outerVulvaRemark" />
+	<result column="VAGINA" property="vagina" />
+	<result column="VAGINA_REMARK" property="vaginaRemark" />
+	<result column="UTERUS" property="uterus" />
+	<result column="UTERUS_REMARK" property="uterusRemark" />
+	<result column="UTERINE_NECK" property="uterineNeck" />
+	<result column="UTERINE_NECK_REMARK" property="uterineNeckRemark" />
+	<result column="APPENDIX" property="appendix" />
+	<result column="APPENDIX_REMARK" property="appendixRemark" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,EXAMINATION_ID,OUTER_VULVA,OUTER_VULVA_REMARK,VAGINA,VAGINA_REMARK,UTERUS,UTERUS_REMARK,UTERINE_NECK,UTERINE_NECK_REMARK,APPENDIX,APPENDIX_REMARK
+    from FIRST_GYNECOLOGICAL_EXA_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,EXAMINATION_ID,OUTER_VULVA,OUTER_VULVA_REMARK,VAGINA,VAGINA_REMARK,UTERUS,UTERUS_REMARK,UTERINE_NECK,UTERINE_NECK_REMARK,APPENDIX,APPENDIX_REMARK
+    from FIRST_GYNECOLOGICAL_EXA_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from FIRST_GYNECOLOGICAL_EXA_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.prenatal.po.FirstGynecologicalExaInfoPO" >
+    insert into FIRST_GYNECOLOGICAL_EXA_INFO (ID,EXAMINATION_ID,OUTER_VULVA,OUTER_VULVA_REMARK,VAGINA,VAGINA_REMARK,UTERUS,UTERUS_REMARK,UTERINE_NECK,UTERINE_NECK_REMARK,APPENDIX,APPENDIX_REMARK)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ examinationId, javaType=String, jdbcType=VARCHAR},
+				#{ outerVulva, javaType=String, jdbcType=VARCHAR},
+				#{ outerVulvaRemark, javaType=String, jdbcType=VARCHAR},
+				#{ vagina, javaType=String, jdbcType=VARCHAR},
+				#{ vaginaRemark, javaType=String, jdbcType=VARCHAR},
+				#{ uterus, javaType=String, jdbcType=VARCHAR},
+				#{ uterusRemark, javaType=String, jdbcType=VARCHAR},
+				#{ uterineNeck, javaType=String, jdbcType=VARCHAR},
+				#{ uterineNeckRemark, javaType=String, jdbcType=VARCHAR},
+				#{ appendix, javaType=String, jdbcType=VARCHAR},
+				#{ appendixRemark, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.prenatal.po.FirstGynecologicalExaInfoPO" >
+    update FIRST_GYNECOLOGICAL_EXA_INFO
+    set
+			EXAMINATION_ID = #{ examinationId, javaType=String, jdbcType=VARCHAR},
+				OUTER_VULVA = #{ outerVulva, javaType=String, jdbcType=VARCHAR},
+				OUTER_VULVA_REMARK = #{ outerVulvaRemark, javaType=String, jdbcType=VARCHAR},
+				VAGINA = #{ vagina, javaType=String, jdbcType=VARCHAR},
+				VAGINA_REMARK = #{ vaginaRemark, javaType=String, jdbcType=VARCHAR},
+				UTERUS = #{ uterus, javaType=String, jdbcType=VARCHAR},
+				UTERUS_REMARK = #{ uterusRemark, javaType=String, jdbcType=VARCHAR},
+				UTERINE_NECK = #{ uterineNeck, javaType=String, jdbcType=VARCHAR},
+				UTERINE_NECK_REMARK = #{ uterineNeckRemark, javaType=String, jdbcType=VARCHAR},
+				APPENDIX = #{ appendix, javaType=String, jdbcType=VARCHAR},
+				APPENDIX_REMARK = #{ appendixRemark, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,EXAMINATION_ID,OUTER_VULVA,OUTER_VULVA_REMARK,VAGINA,VAGINA_REMARK,UTERUS,UTERUS_REMARK,UTERINE_NECK,UTERINE_NECK_REMARK,APPENDIX,APPENDIX_REMARK
+    from FIRST_GYNECOLOGICAL_EXA_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from FIRST_GYNECOLOGICAL_EXA_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

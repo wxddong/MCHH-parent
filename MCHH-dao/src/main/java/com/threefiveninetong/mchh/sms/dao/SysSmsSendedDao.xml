@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sms.dao.SysSmsSendedDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.sms.po.SysSmsSendedPO" >
+	<result column="ID" property="id" />
+	<result column="SENDER" property="sender" />
+	<result column="RECEIVER" property="receiver" />
+	<result column="CONTENT" property="content" />
+	<result column="CREATETIME" property="createtime" />
+	<result column="SMSTYPE" property="smstype" />
+	<result column="SENDTIME" property="sendtime" />
+	<result column="SENDLEVEL" property="sendlevel" />
+	<result column="PLATFORM_CODE" property="platformCode" />
+	<result column="ENTERPRISEID" property="enterpriseid" />
+	<result column="MASDOWNMSGID" property="masdownmsgid" />
+	<result column="MASDOWNSTATE" property="masdownstate" />
+	<result column="RECEIVERDESCRIPTION" property="receiverdescription" />
+	<result column="DOWNSTATE" property="downstate" />
+	<result column="CHANNEL" property="channel" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,SENDER,RECEIVER,CONTENT,CREATETIME,SMSTYPE,SENDTIME,SENDLEVEL,PLATFORM_CODE,ENTERPRISEID,MASDOWNMSGID,MASDOWNSTATE,RECEIVERDESCRIPTION,DOWNSTATE,CHANNEL
+    from SYS_SMS_SENDED
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,SENDER,RECEIVER,CONTENT,CREATETIME,SMSTYPE,SENDTIME,SENDLEVEL,PLATFORM_CODE,ENTERPRISEID,MASDOWNMSGID,MASDOWNSTATE,RECEIVERDESCRIPTION,DOWNSTATE,CHANNEL
+    from SYS_SMS_SENDED
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from SYS_SMS_SENDED
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.sms.po.SysSmsSendedPO" >
+    insert into SYS_SMS_SENDED (ID,SENDER,RECEIVER,CONTENT,CREATETIME,SMSTYPE,SENDTIME,SENDLEVEL,PLATFORM_CODE,ENTERPRISEID,MASDOWNMSGID,MASDOWNSTATE,RECEIVERDESCRIPTION,DOWNSTATE,CHANNEL)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ sender, javaType=String, jdbcType=VARCHAR},
+				#{ receiver, javaType=String, jdbcType=VARCHAR},
+				#{ content, javaType=String, jdbcType=VARCHAR},
+				#{ createtime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ smstype, javaType=String, jdbcType=VARCHAR},
+				#{ sendtime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ sendlevel, javaType=String, jdbcType=VARCHAR},
+				#{ platformCode, javaType=String, jdbcType=VARCHAR},
+				#{ enterpriseid, javaType=String, jdbcType=VARCHAR},
+				#{ masdownmsgid, javaType=String, jdbcType=VARCHAR},
+				#{ masdownstate, javaType=String, jdbcType=VARCHAR},
+				#{ receiverdescription, javaType=String, jdbcType=VARCHAR},
+				#{ downstate, javaType=String, jdbcType=VARCHAR},
+				#{ channel, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.sms.po.SysSmsSendedPO" >
+    update SYS_SMS_SENDED
+    set
+			SENDER = #{ sender, javaType=String, jdbcType=VARCHAR},
+				RECEIVER = #{ receiver, javaType=String, jdbcType=VARCHAR},
+				CONTENT = #{ content, javaType=String, jdbcType=VARCHAR},
+				CREATETIME = #{ createtime, javaType=Date, jdbcType=TIMESTAMP},
+				SMSTYPE = #{ smstype, javaType=String, jdbcType=VARCHAR},
+				SENDTIME = #{ sendtime, javaType=Date, jdbcType=TIMESTAMP},
+				SENDLEVEL = #{ sendlevel, javaType=String, jdbcType=VARCHAR},
+				PLATFORM_CODE = #{ platformCode, javaType=String, jdbcType=VARCHAR},
+				ENTERPRISEID = #{ enterpriseid, javaType=String, jdbcType=VARCHAR},
+				MASDOWNMSGID = #{ masdownmsgid, javaType=String, jdbcType=VARCHAR},
+				MASDOWNSTATE = #{ masdownstate, javaType=String, jdbcType=VARCHAR},
+				RECEIVERDESCRIPTION = #{ receiverdescription, javaType=String, jdbcType=VARCHAR},
+				DOWNSTATE = #{ downstate, javaType=String, jdbcType=VARCHAR},
+				CHANNEL = #{ channel, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,SENDER,RECEIVER,CONTENT,CREATETIME,SMSTYPE,SENDTIME,SENDLEVEL,PLATFORM_CODE,ENTERPRISEID,MASDOWNMSGID,MASDOWNSTATE,RECEIVERDESCRIPTION,DOWNSTATE,CHANNEL
+    from SYS_SMS_SENDED
+  </select>
+
+
+<delete id="deletes">
+		delete from SYS_SMS_SENDED
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+ <select id="findByPhoneAndType" resultMap="BaseResultMap">
+    select ID,SENDER,RECEIVER,CONTENT,CREATETIME,SMSTYPE,SENDTIME,SENDLEVEL,PLATFORM_CODE,ENTERPRISEID,MASDOWNMSGID,MASDOWNSTATE,RECEIVERDESCRIPTION,DOWNSTATE,CHANNEL
+    from SYS_SMS_SENDED where RECEIVER=#{ telephone} and SMSTYPE=#{ smsType}
+  </select>
+  
+    <delete id="deleteByTel" parameterType="String" >
+    delete from SYS_SMS_SENDED
+    where RECEIVER = #{telephone}
+	  </delete>
+  
+
+<!--codegen-->
+
+</mapper>

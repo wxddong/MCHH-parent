@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appConfig.dao.AppAdvertisingDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appConfig.po.AppAdvertisingPO" >
+	<result column="ID" property="id" />
+	<result column="TITLE" property="title" />
+	<result column="CONTENT" property="content" />
+	<result column="IMAGE_URL" property="imageUrl" />
+	<result column="BIGEN_TIME" property="bigenTime" />
+	<result column="END_TIME" property="endTime" />
+	<result column="CREATE_TIME" property="createTime" />
+	<result column="STATUS" property="status" />
+	<result column="TYPE" property="type" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,TITLE,CONTENT,IMAGE_URL,BIGEN_TIME,END_TIME,CREATE_TIME,STATUS,TYPE
+    from APP_ADVERTISING
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,TITLE,CONTENT,IMAGE_URL,BIGEN_TIME,END_TIME,CREATE_TIME,STATUS,TYPE
+    from APP_ADVERTISING
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_ADVERTISING
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appConfig.po.AppAdvertisingPO" >
+    insert into APP_ADVERTISING (ID,TITLE,CONTENT,IMAGE_URL,BIGEN_TIME,END_TIME,CREATE_TIME,STATUS,TYPE)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ title, javaType=String, jdbcType=VARCHAR},
+				#{ content, javaType=String, jdbcType=VARCHAR},
+				#{ imageUrl, javaType=String, jdbcType=VARCHAR},
+				#{ bigenTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ endTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ status, javaType=String, jdbcType=VARCHAR},
+				#{ type, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appConfig.po.AppAdvertisingPO" >
+    update APP_ADVERTISING
+    set
+			TITLE = #{ title, javaType=String, jdbcType=VARCHAR},
+				CONTENT = #{ content, javaType=String, jdbcType=VARCHAR},
+				IMAGE_URL = #{ imageUrl, javaType=String, jdbcType=VARCHAR},
+				BIGEN_TIME = #{ bigenTime, javaType=Date, jdbcType=TIMESTAMP},
+				END_TIME = #{ endTime, javaType=Date, jdbcType=TIMESTAMP},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP},
+				STATUS = #{ status, javaType=String, jdbcType=VARCHAR},
+				TYPE = #{ type, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,TITLE,CONTENT,IMAGE_URL,BIGEN_TIME,END_TIME,CREATE_TIME,STATUS,TYPE
+    from APP_ADVERTISING
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_ADVERTISING
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+	<select id="findStartUp" resultMap="BaseResultMap">
+	 <![CDATA[
+	    Select ID,TITLE,CONTENT,IMAGE_URL,BIGEN_TIME,END_TIME,CREATE_TIME,STATUS,TYPE
+	    From APP_ADVERTISING 
+	    Where TYPE='0' and STATUS='0' and now() > BIGEN_TIME and now() < END_TIME order by CREATE_TIME desc limit 0,1	
+	    ]]>		
+ 	</select>
+<!--codegen-->
+
+</mapper>

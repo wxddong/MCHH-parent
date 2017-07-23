@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.premarital.dao.PhysiqueExaInfoDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.premarital.po.PhysiqueExaInfoPO" >
+	<result column="ID" property="id" />
+	<result column="MARRIAGE_TA_ID" property="marriageTaId" />
+	<result column="BLOOD_HI" property="bloodHi" />
+	<result column="BLOOD_LOW" property="bloodLow" />
+	<result column="BLOOD_TYPE" property="bloodType" />
+	<result column="YIN_YANG" property="yinYang" />
+	<result column="SPECIAL_POSTURE" property="specialPosture" />
+	<result column="POSTURE_REMARK" property="postureRemark" />
+	<result column="SPECIAL_FACE" property="specialFace" />
+	<result column="FACE_REMARK" property="faceRemark" />
+	<result column="MENTAL_STATE" property="mentalState" />
+	<result column="STATE_REMARK" property="stateRemark" />
+	<result column="INTELLIGENCE" property="intelligence" />
+	<result column="EXCEPTION_TYPES" property="exceptionTypes" />
+	<result column="SKIN_HAIR" property="skinHair" />
+	<result column="SKIN_HAIR_NOTE" property="skinHairNote" />
+	<result column="FACIAL_FEATURES" property="facialFeatures" />
+	<result column="FACIAL_FEATURES_REMARK" property="facialFeaturesRemark" />
+	<result column="THYROID_GLAND" property="thyroidGland" />
+	<result column="THYROID_GLAND_REMARK" property="thyroidGlandRemark" />
+	<result column="HEART_RATE" property="heartRate" />
+	<result column="HEART_RHYTHM" property="heartRhythm" />
+	<result column="HEART_RHYTHM_REMARK" property="heartRhythmRemark" />
+	<result column="NOISE" property="noise" />
+	<result column="NOISE_REMARK" property="noiseRemark" />
+	<result column="LUNG" property="lung" />
+	<result column="LUNG_REMARK" property="lungRemark" />
+	<result column="LIVER" property="liver" />
+	<result column="LIVER_REMARK" property="liverRemark" />
+	<result column="LIMBS" property="limbs" />
+	<result column="LIMBS_REMARK" property="limbsRemark" />
+	<result column="OTHERS" property="others" />
+	<result column="THROAT" property="throat" />
+	<result column="PUBIC_HAIR" property="pubicHair" />
+	<result column="BREAST" property="breast" />
+	<result column="BREAST_REMARK" property="breastRemark" />
+	<result column="ANUS_VULVA" property="anusVulva" />
+	<result column="ANUS_VULVA_REMARK" property="anusVulvaRemark" />
+	<result column="SECRETIONS" property="secretions" />
+	<result column="SECRETIONS_REMARK" property="secretionsRemark" />
+	<result column="VULVA_VAGINA" property="vulvaVagina" />
+	<result column="VULVA_VAGINA_REMARK" property="vulvaVaginaRemark" />
+	<result column="VULVA" property="vulva" />
+	<result column="VULVA_REMARK" property="vulvaRemark" />
+	<result column="VAGINA" property="vagina" />
+	<result column="VAGINA_REMARK" property="vaginaRemark" />
+	<result column="CERVICAL" property="cervical" />
+	<result column="CERVICAL_REMARK" property="cervicalRemark" />
+	<result column="UTERUS" property="uterus" />
+	<result column="UTERUS_REMARK" property="uterusRemark" />
+	<result column="ATTACHMENT" property="attachment" />
+	<result column="ATTACHMENT_REMARK" property="attachmentRemark" />
+	<result column="ATTACHMENT_OTHER" property="attachmentOther" />
+	<result column="VAGINAL_EXAMINATION" property="vaginalExamination" />
+	<result column="PENIS" property="penis" />
+	<result column="PENIS_REMARK" property="penisRemark" />
+	<result column="FORESKIN" property="foreskin" />
+	<result column="BILATERAL_TESTICULAR" property="bilateralTesticular" />
+	<result column="LEFT_TESTIS" property="leftTestis" />
+	<result column="RIGHT_TESTIS" property="rightTestis" />
+	<result column="WITHOUT" property="without" />
+	<result column="NORMAL_EPIDIDYMIS" property="normalEpididymis" />
+	<result column="LEFT_NODULES" property="leftNodules" />
+	<result column="RIHGT_NODULES" property="rihgtNodules" />
+	<result column="VARICOCELE" property="varicocele" />
+	<result column="VARICOSE_PARTS" property="varicoseParts" />
+	<result column="DEGREE" property="degree" />
+	<result column="GENITAL_OTHER" property="genitalOther" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,BLOOD_HI,BLOOD_LOW,BLOOD_TYPE,YIN_YANG,SPECIAL_POSTURE,POSTURE_REMARK,SPECIAL_FACE,FACE_REMARK,MENTAL_STATE,STATE_REMARK,INTELLIGENCE,EXCEPTION_TYPES,SKIN_HAIR,SKIN_HAIR_NOTE,FACIAL_FEATURES,FACIAL_FEATURES_REMARK,THYROID_GLAND,THYROID_GLAND_REMARK,HEART_RATE,HEART_RHYTHM,HEART_RHYTHM_REMARK,NOISE,NOISE_REMARK,LUNG,LUNG_REMARK,LIVER,LIVER_REMARK,LIMBS,LIMBS_REMARK,OTHERS,THROAT,PUBIC_HAIR,BREAST,BREAST_REMARK,ANUS_VULVA,ANUS_VULVA_REMARK,SECRETIONS,SECRETIONS_REMARK,VULVA_VAGINA,VULVA_VAGINA_REMARK,VULVA,VULVA_REMARK,VAGINA,VAGINA_REMARK,CERVICAL,CERVICAL_REMARK,UTERUS,UTERUS_REMARK,ATTACHMENT,ATTACHMENT_REMARK,ATTACHMENT_OTHER,VAGINAL_EXAMINATION,PENIS,PENIS_REMARK,FORESKIN,BILATERAL_TESTICULAR,LEFT_TESTIS,RIGHT_TESTIS,WITHOUT,NORMAL_EPIDIDYMIS,LEFT_NODULES,RIHGT_NODULES,VARICOCELE,VARICOSE_PARTS,DEGREE,GENITAL_OTHER
+    from PHYSIQUE_EXA_INFO
+    where
+			ID = #{ id}
+	  </select>
+
+<select id="getPhysiqueByPremaritalId" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MARRIAGE_TA_ID,BLOOD_HI,BLOOD_LOW,BLOOD_TYPE,YIN_YANG,SPECIAL_POSTURE,POSTURE_REMARK,SPECIAL_FACE,FACE_REMARK,MENTAL_STATE,STATE_REMARK,INTELLIGENCE,EXCEPTION_TYPES,SKIN_HAIR,SKIN_HAIR_NOTE,FACIAL_FEATURES,FACIAL_FEATURES_REMARK,THYROID_GLAND,THYROID_GLAND_REMARK,HEART_RATE,HEART_RHYTHM,HEART_RHYTHM_REMARK,NOISE,NOISE_REMARK,LUNG,LUNG_REMARK,LIVER,LIVER_REMARK,LIMBS,LIMBS_REMARK,OTHERS,THROAT,PUBIC_HAIR,BREAST,BREAST_REMARK,ANUS_VULVA,ANUS_VULVA_REMARK,SECRETIONS,SECRETIONS_REMARK,VULVA_VAGINA,VULVA_VAGINA_REMARK,VULVA,VULVA_REMARK,VAGINA,VAGINA_REMARK,CERVICAL,CERVICAL_REMARK,UTERUS,UTERUS_REMARK,ATTACHMENT,ATTACHMENT_REMARK,ATTACHMENT_OTHER,VAGINAL_EXAMINATION,PENIS,PENIS_REMARK,FORESKIN,BILATERAL_TESTICULAR,LEFT_TESTIS,RIGHT_TESTIS,WITHOUT,NORMAL_EPIDIDYMIS,LEFT_NODULES,RIHGT_NODULES,VARICOCELE,VARICOSE_PARTS,DEGREE,GENITAL_OTHER
+    from PHYSIQUE_EXA_INFO
+    where
+			MARRIAGE_TA_ID = #{ premaritalId}
+</select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,MARRIAGE_TA_ID,BLOOD_HI,BLOOD_LOW,BLOOD_TYPE,YIN_YANG,SPECIAL_POSTURE,POSTURE_REMARK,SPECIAL_FACE,FACE_REMARK,MENTAL_STATE,STATE_REMARK,INTELLIGENCE,EXCEPTION_TYPES,SKIN_HAIR,SKIN_HAIR_NOTE,FACIAL_FEATURES,FACIAL_FEATURES_REMARK,THYROID_GLAND,THYROID_GLAND_REMARK,HEART_RATE,HEART_RHYTHM,HEART_RHYTHM_REMARK,NOISE,NOISE_REMARK,LUNG,LUNG_REMARK,LIVER,LIVER_REMARK,LIMBS,LIMBS_REMARK,OTHERS,THROAT,PUBIC_HAIR,BREAST,BREAST_REMARK,ANUS_VULVA,ANUS_VULVA_REMARK,SECRETIONS,SECRETIONS_REMARK,VULVA_VAGINA,VULVA_VAGINA_REMARK,VULVA,VULVA_REMARK,VAGINA,VAGINA_REMARK,CERVICAL,CERVICAL_REMARK,UTERUS,UTERUS_REMARK,ATTACHMENT,ATTACHMENT_REMARK,ATTACHMENT_OTHER,VAGINAL_EXAMINATION,PENIS,PENIS_REMARK,FORESKIN,BILATERAL_TESTICULAR,LEFT_TESTIS,RIGHT_TESTIS,WITHOUT,NORMAL_EPIDIDYMIS,LEFT_NODULES,RIHGT_NODULES,VARICOCELE,VARICOSE_PARTS,DEGREE,GENITAL_OTHER
+    from PHYSIQUE_EXA_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from PHYSIQUE_EXA_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.premarital.po.PhysiqueExaInfoPO" >
+    insert into PHYSIQUE_EXA_INFO (ID,MARRIAGE_TA_ID,BLOOD_HI,BLOOD_LOW,BLOOD_TYPE,YIN_YANG,SPECIAL_POSTURE,POSTURE_REMARK,SPECIAL_FACE,FACE_REMARK,MENTAL_STATE,STATE_REMARK,INTELLIGENCE,EXCEPTION_TYPES,SKIN_HAIR,SKIN_HAIR_NOTE,FACIAL_FEATURES,FACIAL_FEATURES_REMARK,THYROID_GLAND,THYROID_GLAND_REMARK,HEART_RATE,HEART_RHYTHM,HEART_RHYTHM_REMARK,NOISE,NOISE_REMARK,LUNG,LUNG_REMARK,LIVER,LIVER_REMARK,LIMBS,LIMBS_REMARK,OTHERS,THROAT,PUBIC_HAIR,BREAST,BREAST_REMARK,ANUS_VULVA,ANUS_VULVA_REMARK,SECRETIONS,SECRETIONS_REMARK,VULVA_VAGINA,VULVA_VAGINA_REMARK,VULVA,VULVA_REMARK,VAGINA,VAGINA_REMARK,CERVICAL,CERVICAL_REMARK,UTERUS,UTERUS_REMARK,ATTACHMENT,ATTACHMENT_REMARK,ATTACHMENT_OTHER,VAGINAL_EXAMINATION,PENIS,PENIS_REMARK,FORESKIN,BILATERAL_TESTICULAR,LEFT_TESTIS,RIGHT_TESTIS,WITHOUT,NORMAL_EPIDIDYMIS,LEFT_NODULES,RIHGT_NODULES,VARICOCELE,VARICOSE_PARTS,DEGREE,GENITAL_OTHER)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				#{ bloodHi, javaType=String, jdbcType=VARCHAR},
+				#{ bloodLow, javaType=String, jdbcType=VARCHAR},
+				#{ bloodType, javaType=String, jdbcType=VARCHAR},
+				#{ yinYang, javaType=String, jdbcType=VARCHAR},
+				#{ specialPosture, javaType=String, jdbcType=VARCHAR},
+				#{ postureRemark, javaType=String, jdbcType=VARCHAR},
+				#{ specialFace, javaType=String, jdbcType=VARCHAR},
+				#{ faceRemark, javaType=String, jdbcType=VARCHAR},
+				#{ mentalState, javaType=String, jdbcType=VARCHAR},
+				#{ stateRemark, javaType=String, jdbcType=VARCHAR},
+				#{ intelligence, javaType=String, jdbcType=VARCHAR},
+				#{ exceptionTypes, javaType=String, jdbcType=VARCHAR},
+				#{ skinHair, javaType=String, jdbcType=VARCHAR},
+				#{ skinHairNote, javaType=String, jdbcType=VARCHAR},
+				#{ facialFeatures, javaType=String, jdbcType=VARCHAR},
+				#{ facialFeaturesRemark, javaType=String, jdbcType=VARCHAR},
+				#{ thyroidGland, javaType=String, jdbcType=VARCHAR},
+				#{ thyroidGlandRemark, javaType=String, jdbcType=VARCHAR},
+				#{ heartRate, javaType=String, jdbcType=VARCHAR},
+				#{ heartRhythm, javaType=String, jdbcType=VARCHAR},
+				#{ heartRhythmRemark, javaType=String, jdbcType=VARCHAR},
+				#{ noise, javaType=String, jdbcType=VARCHAR},
+				#{ noiseRemark, javaType=String, jdbcType=VARCHAR},
+				#{ lung, javaType=String, jdbcType=VARCHAR},
+				#{ lungRemark, javaType=String, jdbcType=VARCHAR},
+				#{ liver, javaType=String, jdbcType=VARCHAR},
+				#{ liverRemark, javaType=String, jdbcType=VARCHAR},
+				#{ limbs, javaType=String, jdbcType=VARCHAR},
+				#{ limbsRemark, javaType=String, jdbcType=VARCHAR},
+				#{ others, javaType=String, jdbcType=VARCHAR},
+				#{ throat, javaType=String, jdbcType=VARCHAR},
+				#{ pubicHair, javaType=String, jdbcType=VARCHAR},
+				#{ breast, javaType=String, jdbcType=VARCHAR},
+				#{ breastRemark, javaType=String, jdbcType=VARCHAR},
+				#{ anusVulva, javaType=String, jdbcType=VARCHAR},
+				#{ anusVulvaRemark, javaType=String, jdbcType=VARCHAR},
+				#{ secretions, javaType=String, jdbcType=VARCHAR},
+				#{ secretionsRemark, javaType=String, jdbcType=VARCHAR},
+				#{ vulvaVagina, javaType=String, jdbcType=VARCHAR},
+				#{ vulvaVaginaRemark, javaType=String, jdbcType=VARCHAR},
+				#{ vulva, javaType=String, jdbcType=VARCHAR},
+				#{ vulvaRemark, javaType=String, jdbcType=VARCHAR},
+				#{ vagina, javaType=String, jdbcType=VARCHAR},
+				#{ vaginaRemark, javaType=String, jdbcType=VARCHAR},
+				#{ cervical, javaType=String, jdbcType=VARCHAR},
+				#{ cervicalRemark, javaType=String, jdbcType=VARCHAR},
+				#{ uterus, javaType=String, jdbcType=VARCHAR},
+				#{ uterusRemark, javaType=String, jdbcType=VARCHAR},
+				#{ attachment, javaType=String, jdbcType=VARCHAR},
+				#{ attachmentRemark, javaType=String, jdbcType=VARCHAR},
+				#{ attachmentOther, javaType=String, jdbcType=VARCHAR},
+				#{ vaginalExamination, javaType=String, jdbcType=VARCHAR},
+				#{ penis, javaType=String, jdbcType=VARCHAR},
+				#{ penisRemark, javaType=String, jdbcType=VARCHAR},
+				#{ foreskin, javaType=String, jdbcType=VARCHAR},
+				#{ bilateralTesticular, javaType=String, jdbcType=VARCHAR},
+				#{ leftTestis, javaType=String, jdbcType=VARCHAR},
+				#{ rightTestis, javaType=String, jdbcType=VARCHAR},
+				#{ without, javaType=String, jdbcType=VARCHAR},
+				#{ normalEpididymis, javaType=String, jdbcType=VARCHAR},
+				#{ leftNodules, javaType=String, jdbcType=VARCHAR},
+				#{ rihgtNodules, javaType=String, jdbcType=VARCHAR},
+				#{ varicocele, javaType=String, jdbcType=VARCHAR},
+				#{ varicoseParts, javaType=String, jdbcType=VARCHAR},
+				#{ degree, javaType=String, jdbcType=VARCHAR},
+				#{ genitalOther, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.premarital.po.PhysiqueExaInfoPO" >
+    update PHYSIQUE_EXA_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				BLOOD_HI = #{ bloodHi, javaType=String, jdbcType=VARCHAR},
+				BLOOD_LOW = #{ bloodLow, javaType=String, jdbcType=VARCHAR},
+				BLOOD_TYPE = #{ bloodType, javaType=String, jdbcType=VARCHAR},
+				YIN_YANG = #{ yinYang, javaType=String, jdbcType=VARCHAR},
+				SPECIAL_POSTURE = #{ specialPosture, javaType=String, jdbcType=VARCHAR},
+				POSTURE_REMARK = #{ postureRemark, javaType=String, jdbcType=VARCHAR},
+				SPECIAL_FACE = #{ specialFace, javaType=String, jdbcType=VARCHAR},
+				FACE_REMARK = #{ faceRemark, javaType=String, jdbcType=VARCHAR},
+				MENTAL_STATE = #{ mentalState, javaType=String, jdbcType=VARCHAR},
+				STATE_REMARK = #{ stateRemark, javaType=String, jdbcType=VARCHAR},
+				INTELLIGENCE = #{ intelligence, javaType=String, jdbcType=VARCHAR},
+				EXCEPTION_TYPES = #{ exceptionTypes, javaType=String, jdbcType=VARCHAR},
+				SKIN_HAIR = #{ skinHair, javaType=String, jdbcType=VARCHAR},
+				SKIN_HAIR_NOTE = #{ skinHairNote, javaType=String, jdbcType=VARCHAR},
+				FACIAL_FEATURES = #{ facialFeatures, javaType=String, jdbcType=VARCHAR},
+				FACIAL_FEATURES_REMARK = #{ facialFeaturesRemark, javaType=String, jdbcType=VARCHAR},
+				THYROID_GLAND = #{ thyroidGland, javaType=String, jdbcType=VARCHAR},
+				THYROID_GLAND_REMARK = #{ thyroidGlandRemark, javaType=String, jdbcType=VARCHAR},
+				HEART_RATE = #{ heartRate, javaType=String, jdbcType=VARCHAR},
+				HEART_RHYTHM = #{ heartRhythm, javaType=String, jdbcType=VARCHAR},
+				HEART_RHYTHM_REMARK = #{ heartRhythmRemark, javaType=String, jdbcType=VARCHAR},
+				NOISE = #{ noise, javaType=String, jdbcType=VARCHAR},
+				NOISE_REMARK = #{ noiseRemark, javaType=String, jdbcType=VARCHAR},
+				LUNG = #{ lung, javaType=String, jdbcType=VARCHAR},
+				LUNG_REMARK = #{ lungRemark, javaType=String, jdbcType=VARCHAR},
+				LIVER = #{ liver, javaType=String, jdbcType=VARCHAR},
+				LIVER_REMARK = #{ liverRemark, javaType=String, jdbcType=VARCHAR},
+				LIMBS = #{ limbs, javaType=String, jdbcType=VARCHAR},
+				LIMBS_REMARK = #{ limbsRemark, javaType=String, jdbcType=VARCHAR},
+				OTHERS = #{ others, javaType=String, jdbcType=VARCHAR},
+				THROAT = #{ throat, javaType=String, jdbcType=VARCHAR},
+				PUBIC_HAIR = #{ pubicHair, javaType=String, jdbcType=VARCHAR},
+				BREAST = #{ breast, javaType=String, jdbcType=VARCHAR},
+				BREAST_REMARK = #{ breastRemark, javaType=String, jdbcType=VARCHAR},
+				ANUS_VULVA = #{ anusVulva, javaType=String, jdbcType=VARCHAR},
+				ANUS_VULVA_REMARK = #{ anusVulvaRemark, javaType=String, jdbcType=VARCHAR},
+				SECRETIONS = #{ secretions, javaType=String, jdbcType=VARCHAR},
+				SECRETIONS_REMARK = #{ secretionsRemark, javaType=String, jdbcType=VARCHAR},
+				VULVA_VAGINA = #{ vulvaVagina, javaType=String, jdbcType=VARCHAR},
+				VULVA_VAGINA_REMARK = #{ vulvaVaginaRemark, javaType=String, jdbcType=VARCHAR},
+				VULVA = #{ vulva, javaType=String, jdbcType=VARCHAR},
+				VULVA_REMARK = #{ vulvaRemark, javaType=String, jdbcType=VARCHAR},
+				VAGINA = #{ vagina, javaType=String, jdbcType=VARCHAR},
+				VAGINA_REMARK = #{ vaginaRemark, javaType=String, jdbcType=VARCHAR},
+				CERVICAL = #{ cervical, javaType=String, jdbcType=VARCHAR},
+				CERVICAL_REMARK = #{ cervicalRemark, javaType=String, jdbcType=VARCHAR},
+				UTERUS = #{ uterus, javaType=String, jdbcType=VARCHAR},
+				UTERUS_REMARK = #{ uterusRemark, javaType=String, jdbcType=VARCHAR},
+				ATTACHMENT = #{ attachment, javaType=String, jdbcType=VARCHAR},
+				ATTACHMENT_REMARK = #{ attachmentRemark, javaType=String, jdbcType=VARCHAR},
+				ATTACHMENT_OTHER = #{ attachmentOther, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_EXAMINATION = #{ vaginalExamination, javaType=String, jdbcType=VARCHAR},
+				PENIS = #{ penis, javaType=String, jdbcType=VARCHAR},
+				PENIS_REMARK = #{ penisRemark, javaType=String, jdbcType=VARCHAR},
+				FORESKIN = #{ foreskin, javaType=String, jdbcType=VARCHAR},
+				BILATERAL_TESTICULAR = #{ bilateralTesticular, javaType=String, jdbcType=VARCHAR},
+				LEFT_TESTIS = #{ leftTestis, javaType=String, jdbcType=VARCHAR},
+				RIGHT_TESTIS = #{ rightTestis, javaType=String, jdbcType=VARCHAR},
+				WITHOUT = #{ without, javaType=String, jdbcType=VARCHAR},
+				NORMAL_EPIDIDYMIS = #{ normalEpididymis, javaType=String, jdbcType=VARCHAR},
+				LEFT_NODULES = #{ leftNodules, javaType=String, jdbcType=VARCHAR},
+				RIHGT_NODULES = #{ rihgtNodules, javaType=String, jdbcType=VARCHAR},
+				VARICOCELE = #{ varicocele, javaType=String, jdbcType=VARCHAR},
+				VARICOSE_PARTS = #{ varicoseParts, javaType=String, jdbcType=VARCHAR},
+				DEGREE = #{ degree, javaType=String, jdbcType=VARCHAR},
+				GENITAL_OTHER = #{ genitalOther, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+	  
+<update id="edit" parameterType="com.threefiveninetong.mchh.premarital.po.PhysiqueExaInfoPO" >
+    update PHYSIQUE_EXA_INFO
+    set
+			MARRIAGE_TA_ID = #{ marriageTaId, javaType=String, jdbcType=VARCHAR},
+				BLOOD_HI = #{ bloodHi, javaType=String, jdbcType=VARCHAR},
+				BLOOD_LOW = #{ bloodLow, javaType=String, jdbcType=VARCHAR},
+				BLOOD_TYPE = #{ bloodType, javaType=String, jdbcType=VARCHAR},
+				YIN_YANG = #{ yinYang, javaType=String, jdbcType=VARCHAR},
+				SPECIAL_POSTURE = #{ specialPosture, javaType=String, jdbcType=VARCHAR},
+				POSTURE_REMARK = #{ postureRemark, javaType=String, jdbcType=VARCHAR},
+				SPECIAL_FACE = #{ specialFace, javaType=String, jdbcType=VARCHAR},
+				FACE_REMARK = #{ faceRemark, javaType=String, jdbcType=VARCHAR},
+				MENTAL_STATE = #{ mentalState, javaType=String, jdbcType=VARCHAR},
+				STATE_REMARK = #{ stateRemark, javaType=String, jdbcType=VARCHAR},
+				INTELLIGENCE = #{ intelligence, javaType=String, jdbcType=VARCHAR},
+				EXCEPTION_TYPES = #{ exceptionTypes, javaType=String, jdbcType=VARCHAR},
+				SKIN_HAIR = #{ skinHair, javaType=String, jdbcType=VARCHAR},
+				SKIN_HAIR_NOTE = #{ skinHairNote, javaType=String, jdbcType=VARCHAR},
+				FACIAL_FEATURES = #{ facialFeatures, javaType=String, jdbcType=VARCHAR},
+				FACIAL_FEATURES_REMARK = #{ facialFeaturesRemark, javaType=String, jdbcType=VARCHAR},
+				THYROID_GLAND = #{ thyroidGland, javaType=String, jdbcType=VARCHAR},
+				THYROID_GLAND_REMARK = #{ thyroidGlandRemark, javaType=String, jdbcType=VARCHAR},
+				HEART_RATE = #{ heartRate, javaType=String, jdbcType=VARCHAR},
+				HEART_RHYTHM = #{ heartRhythm, javaType=String, jdbcType=VARCHAR},
+				HEART_RHYTHM_REMARK = #{ heartRhythmRemark, javaType=String, jdbcType=VARCHAR},
+				NOISE = #{ noise, javaType=String, jdbcType=VARCHAR},
+				NOISE_REMARK = #{ noiseRemark, javaType=String, jdbcType=VARCHAR},
+				LUNG = #{ lung, javaType=String, jdbcType=VARCHAR},
+				LUNG_REMARK = #{ lungRemark, javaType=String, jdbcType=VARCHAR},
+				LIVER = #{ liver, javaType=String, jdbcType=VARCHAR},
+				LIVER_REMARK = #{ liverRemark, javaType=String, jdbcType=VARCHAR},
+				LIMBS = #{ limbs, javaType=String, jdbcType=VARCHAR},
+				LIMBS_REMARK = #{ limbsRemark, javaType=String, jdbcType=VARCHAR},
+				OTHERS = #{ others, javaType=String, jdbcType=VARCHAR},
+				THROAT = #{ throat, javaType=String, jdbcType=VARCHAR},
+				PUBIC_HAIR = #{ pubicHair, javaType=String, jdbcType=VARCHAR},
+				BREAST = #{ breast, javaType=String, jdbcType=VARCHAR},
+				BREAST_REMARK = #{ breastRemark, javaType=String, jdbcType=VARCHAR},
+				ANUS_VULVA = #{ anusVulva, javaType=String, jdbcType=VARCHAR},
+				ANUS_VULVA_REMARK = #{ anusVulvaRemark, javaType=String, jdbcType=VARCHAR},
+				SECRETIONS = #{ secretions, javaType=String, jdbcType=VARCHAR},
+				SECRETIONS_REMARK = #{ secretionsRemark, javaType=String, jdbcType=VARCHAR},
+				VULVA_VAGINA = #{ vulvaVagina, javaType=String, jdbcType=VARCHAR},
+				VULVA_VAGINA_REMARK = #{ vulvaVaginaRemark, javaType=String, jdbcType=VARCHAR},
+				VULVA = #{ vulva, javaType=String, jdbcType=VARCHAR},
+				VULVA_REMARK = #{ vulvaRemark, javaType=String, jdbcType=VARCHAR},
+				VAGINA = #{ vagina, javaType=String, jdbcType=VARCHAR},
+				VAGINA_REMARK = #{ vaginaRemark, javaType=String, jdbcType=VARCHAR},
+				CERVICAL = #{ cervical, javaType=String, jdbcType=VARCHAR},
+				CERVICAL_REMARK = #{ cervicalRemark, javaType=String, jdbcType=VARCHAR},
+				UTERUS = #{ uterus, javaType=String, jdbcType=VARCHAR},
+				UTERUS_REMARK = #{ uterusRemark, javaType=String, jdbcType=VARCHAR},
+				ATTACHMENT = #{ attachment, javaType=String, jdbcType=VARCHAR},
+				ATTACHMENT_REMARK = #{ attachmentRemark, javaType=String, jdbcType=VARCHAR},
+				ATTACHMENT_OTHER = #{ attachmentOther, javaType=String, jdbcType=VARCHAR},
+				VAGINAL_EXAMINATION = #{ vaginalExamination, javaType=String, jdbcType=VARCHAR},
+				PENIS = #{ penis, javaType=String, jdbcType=VARCHAR},
+				PENIS_REMARK = #{ penisRemark, javaType=String, jdbcType=VARCHAR},
+				FORESKIN = #{ foreskin, javaType=String, jdbcType=VARCHAR},
+				BILATERAL_TESTICULAR = #{ bilateralTesticular, javaType=String, jdbcType=VARCHAR},
+				LEFT_TESTIS = #{ leftTestis, javaType=String, jdbcType=VARCHAR},
+				RIGHT_TESTIS = #{ rightTestis, javaType=String, jdbcType=VARCHAR},
+				WITHOUT = #{ without, javaType=String, jdbcType=VARCHAR},
+				NORMAL_EPIDIDYMIS = #{ normalEpididymis, javaType=String, jdbcType=VARCHAR},
+				LEFT_NODULES = #{ leftNodules, javaType=String, jdbcType=VARCHAR},
+				RIHGT_NODULES = #{ rihgtNodules, javaType=String, jdbcType=VARCHAR},
+				VARICOCELE = #{ varicocele, javaType=String, jdbcType=VARCHAR},
+				VARICOSE_PARTS = #{ varicoseParts, javaType=String, jdbcType=VARCHAR},
+				DEGREE = #{ degree, javaType=String, jdbcType=VARCHAR},
+				GENITAL_OTHER = #{ genitalOther, javaType=String, jdbcType=VARCHAR}
+	    where 
+			MARRIAGE_TA_ID = #{ marriageTaId}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MARRIAGE_TA_ID,BLOOD_HI,BLOOD_LOW,BLOOD_TYPE,YIN_YANG,SPECIAL_POSTURE,POSTURE_REMARK,SPECIAL_FACE,FACE_REMARK,MENTAL_STATE,STATE_REMARK,INTELLIGENCE,EXCEPTION_TYPES,SKIN_HAIR,SKIN_HAIR_NOTE,FACIAL_FEATURES,FACIAL_FEATURES_REMARK,THYROID_GLAND,THYROID_GLAND_REMARK,HEART_RATE,HEART_RHYTHM,HEART_RHYTHM_REMARK,NOISE,NOISE_REMARK,LUNG,LUNG_REMARK,LIVER,LIVER_REMARK,LIMBS,LIMBS_REMARK,OTHERS,THROAT,PUBIC_HAIR,BREAST,BREAST_REMARK,ANUS_VULVA,ANUS_VULVA_REMARK,SECRETIONS,SECRETIONS_REMARK,VULVA_VAGINA,VULVA_VAGINA_REMARK,VULVA,VULVA_REMARK,VAGINA,VAGINA_REMARK,CERVICAL,CERVICAL_REMARK,UTERUS,UTERUS_REMARK,ATTACHMENT,ATTACHMENT_REMARK,ATTACHMENT_OTHER,VAGINAL_EXAMINATION,PENIS,PENIS_REMARK,FORESKIN,BILATERAL_TESTICULAR,LEFT_TESTIS,RIGHT_TESTIS,WITHOUT,NORMAL_EPIDIDYMIS,LEFT_NODULES,RIHGT_NODULES,VARICOCELE,VARICOSE_PARTS,DEGREE,GENITAL_OTHER
+    from PHYSIQUE_EXA_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from PHYSIQUE_EXA_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

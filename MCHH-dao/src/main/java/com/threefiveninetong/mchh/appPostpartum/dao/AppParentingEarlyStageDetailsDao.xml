@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appPostpartum.dao.AppParentingEarlyStageDetailsDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appPostpartum.po.AppParentingEarlyStageDetailsPO" >
+	<result column="ID" property="id" />
+	<result column="EARLY_ID" property="earlyId" />
+	<result column="BIRTH_DAYS" property="birthDays" />
+	<result column="FEEDING_MODE" property="feedingMode" />
+	<result column="MILK_NUM" property="milkNum" />
+	<result column="URINE_NUM" property="urineNum" />
+	<result column="SHIT_NUM" property="shitNum" />
+	<result column="WEIGHT" property="weight" />
+	<result column="JAUNDICE" property="jaundice" />
+	<result column="CREATE_TIME" property="createTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,EARLY_ID,BIRTH_DAYS,FEEDING_MODE,MILK_NUM,URINE_NUM,SHIT_NUM,WEIGHT,JAUNDICE,CREATE_TIME
+    from APP_PARENTING_EARLY_STAGE_DETAILS
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,EARLY_ID,BIRTH_DAYS,FEEDING_MODE,MILK_NUM,URINE_NUM,SHIT_NUM,WEIGHT,JAUNDICE,CREATE_TIME
+    from APP_PARENTING_EARLY_STAGE_DETAILS
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_PARENTING_EARLY_STAGE_DETAILS
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingEarlyStageDetailsPO" >
+    insert into APP_PARENTING_EARLY_STAGE_DETAILS (ID,EARLY_ID,BIRTH_DAYS,FEEDING_MODE,MILK_NUM,URINE_NUM,SHIT_NUM,WEIGHT,JAUNDICE,CREATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ earlyId, javaType=String, jdbcType=VARCHAR},
+				#{ birthDays, javaType=String, jdbcType=VARCHAR},
+				#{ feedingMode, javaType=String, jdbcType=VARCHAR},
+				#{ milkNum, javaType=String, jdbcType=VARCHAR},
+				#{ urineNum, javaType=String, jdbcType=VARCHAR},
+				#{ shitNum, javaType=String, jdbcType=VARCHAR},
+				#{ weight, javaType=String, jdbcType=VARCHAR},
+				#{ jaundice, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appPostpartum.po.AppParentingEarlyStageDetailsPO" >
+    update APP_PARENTING_EARLY_STAGE_DETAILS
+    set
+			EARLY_ID = #{ earlyId, javaType=String, jdbcType=VARCHAR},
+				BIRTH_DAYS = #{ birthDays, javaType=String, jdbcType=VARCHAR},
+				FEEDING_MODE = #{ feedingMode, javaType=String, jdbcType=VARCHAR},
+				MILK_NUM = #{ milkNum, javaType=String, jdbcType=VARCHAR},
+				URINE_NUM = #{ urineNum, javaType=String, jdbcType=VARCHAR},
+				SHIT_NUM = #{ shitNum, javaType=String, jdbcType=VARCHAR},
+				WEIGHT = #{ weight, javaType=String, jdbcType=VARCHAR},
+				JAUNDICE = #{ jaundice, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,EARLY_ID,BIRTH_DAYS,FEEDING_MODE,MILK_NUM,URINE_NUM,SHIT_NUM,WEIGHT,JAUNDICE,CREATE_TIME
+    from APP_PARENTING_EARLY_STAGE_DETAILS
+  </select>
+
+
+<delete id="deletes">
+		delete from APP_PARENTING_EARLY_STAGE_DETAILS
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	
+	<select id="findAppParentingEarlyStageDetailsListByCondition" resultMap="BaseResultMap"  parameterType="hashmap">
+	    select ID,EARLY_ID,BIRTH_DAYS,FEEDING_MODE,MILK_NUM,URINE_NUM,SHIT_NUM,WEIGHT,JAUNDICE,CREATE_TIME
+	    from APP_PARENTING_EARLY_STAGE_DETAILS
+	    where 1=1
+	    <if test="earlyId != null and earlyId != ''">
+	    	and EARLY_ID= #{earlyId}
+	    </if>
+	    order by CREATE_TIME DESC
+	    <if test="num != null">
+	    	Limit 0,#{num}
+	    </if>
+	</select>
+<!--codegen-->
+
+</mapper>

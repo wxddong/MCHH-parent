@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd  
+   	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd  
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd  
+    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd  
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd  
+    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.2.xsd  
+  	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.2.xsd  
+   	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd  
+  	http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.2.xsd  
+ 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd  
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd  
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd ">
+	
+	<context:annotation-config/>
+	<!-- spring 异步方法 -->
+	<task:annotation-driven executor="asyncThreadPool" scheduler="taskScheduler"/>
+	<!-- ios异步推送池 -->
+	<task:executor id="asyncThreadPool" pool-size="20"/> 
+	<!-- 定时任务连接池 -->
+    <task:scheduler id="taskScheduler" pool-size="10"/>  
+	
+	<!--细粒度的包扫描devloper-->
+	<context:component-scan base-package="com.threefiveninetong.mchh">
+	  <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<context:property-placeholder location="classpath:service.properties,classpath:system.properties" />
+	
+   <!-- 数据源配置 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" lazy-init="false">  
+	    <property name="driverClassName" value="${jdbc.driverClass}" />
+	    <property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+	    <property name="initialSize" value="5"/>  
+	    <property name="maxWaitMillis" value="60000"/>  
+	    <property name="poolPreparedStatements" value="true"/>    
+	    <property name="validationQuery">
+            <value>SELECT 1</value>
+        </property>
+        <property name="testOnBorrow">
+            <value>true</value>
+        </property>
+	</bean>  
+   
+	<!-- myBatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:sqlmapconfig.xml" />
+		<property name="mapperLocations" value="classpath:com/threefiveninetong/mchh/*/dao/**/*.xml" /> 
+	</bean>
+	<!-- 执行sql 语句是会调用这个配置 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>
+
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 注解事物控制 -->
+	<tx:annotation-driven transaction-manager="txManager" />
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.threefiveninetong.mchh.*.dao" />
+	</bean>
+	
+	<bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles">
+			<list>
+				<value>classpath*:dozerBeanMapping.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.highriskmaternalmanage.dao.HighRiskProjectMmanagementDao" >
+  
+  <select id="listForPage" resultType="com.threefiveninetong.mchh.highriskmaternalmanage.po.HighRiskProjectMmanagementPO"  parameterType="hashmap">
+  	
+  		select s1.`NAME` inHospitalName,s2.`NAME` outHospitalName,p.CREAT_TIME checkDate,
+  			   hi.SCORE,hi.RESULT result,p.GUIDANCE guidance,pri.NEXT_FOLLOWING_DATE orderDate,
+			   hi.LAPSE_TO lapseToNo,cbi.BIRTH_DATE birthDate,ci.CHILDBIRTH_PLACE childbirthPlace,
+			   biTemp.DELIVERY_TYPE deliveryType,so.REAL_NAME doctorName,p.ID preExaId,
+			   b.LAST_MENSES lastMenses
+
+		from birth_archives_info b
+		
+		left outer join sys_department s1
+		on b.IN_HOSPITAL_ID = s1.ID
+		
+		
+		left outer join sys_department s2
+		on b.OUT_HOSPITAL_ID = s2.ID
+		
+		left outer join (SELECT * FROM prenatal_exa_info p WHERE p.EDIT_STATUS = 1) p
+		on p.BIRTH_ARCHIVES_ID = b.ID
+		
+		right join HIGH_RISK_INFO hi 
+		on hi.EXAMINATION_ID = p.ID
+		
+		left outer join prenatal_referral_info pri 
+		on pri.PRE_ID = p.ID
+		
+		left outer join (SELECT cai.ID ,cai.BIRTH_ARCHIVES_ID,cai.BIRTH_DATE from childbirth_basic_info cai WHERE cai.EDIT_STATUS=1) cbi
+		ON cbi.BIRTH_ARCHIVES_ID = b.ID
+		
+		left outer join CHILDBIRTH_INFO ci 
+		on ci.BASIC_ID = cbi.ID
+		
+		left outer join (select bi.CHILDBIRTH_ID,bi.DELIVERY_TYPE  from childbirth_baby_info bi GROUP BY CHILDBIRTH_ID) biTemp
+		on biTemp.CHILDBIRTH_ID = ci.ID
+		
+		left outer join sys_operator so 
+		on p.DOCTOR_ID= so.ID
+		
+		where b.ID = #{birthArchiveId}
+		
+		ORDER BY p.CREAT_TIME DESC
+	
+		
+  </select>
+  
+    <select id="getRiskByPreExaId" resultType="hashmap"  parameterType="string">
+  	
+  		select hrt1.HIGH_RISK moveRisk,hrt2.HIGH_RISK staticRisk
+		from prenatal_exa_info p
+		left outer join high_risk_info hri
+		on hri.EXAMINATION_ID = p.ID
+		
+		left outer join (
+							select hr.HIGH_RISK_ID,GROUP_CONCAT(HIGH_RISK ) HIGH_RISK 
+							from high_risk_term hr 
+							where hr.`STATUS`!=1 and hr.CORRECT = 0  
+							GROUP BY hr.HIGH_RISK_ID
+						) hrt1 
+		on hrt1.HIGH_RISK_ID = hri.ID
+		
+		left outer join (
+							select hr.HIGH_RISK_ID,GROUP_CONCAT(HIGH_RISK ) HIGH_RISK 
+							from high_risk_term hr 
+							where hr.`STATUS`=1 and hr.CORRECT = 0 
+							GROUP BY hr.HIGH_RISK_ID
+						) hrt2 
+		on hrt2.HIGH_RISK_ID = hri.ID
+		where p.ID = #{preExaId}
+			
+		
+  </select>
+  
+  <select id="getMessageByPreExaId" resultType="hashmap"  parameterType="string">
+  	
+  	select  a.`NAME` name,a.ARCHIVES_CODE archivesCode,a.CREAT_TIME creatTime,a.BIRTHDAY birthday,
+		  	b.LAST_MENSES lastMenses,b.PREDICT_DATE predictDate,a.TELEPHONE telephone,
+			a.MAN_NAME manName,a.MAN_TELE manTele,cbi.BIRTH_DATE birthDate,b.CLOSING_DATE closeDate,
+			a.MAN_BIRTHDAY manBirthday,b.CLOSING_REASON closeReason
+	from birth_archives_info b
+	
+	left outer join archives_info a
+	on a.ID = b.ARCHIVES_ID
+	
+	left outer join childbirth_basic_info cbi
+	on cbi.BIRTH_ARCHIVES_ID = b.ID
+	
+	where b.id = #{birthArchiveId} 
+	
+  </select>
+	
+  
+</mapper>

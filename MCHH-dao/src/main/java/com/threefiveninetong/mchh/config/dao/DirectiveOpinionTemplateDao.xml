@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.config.dao.DirectiveOpinionTemplateDao" >
+
+  <select id="get3To7Guidance" resultMap="ResultMap" >
+  	select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+    where MODULAR_TYPE = '3' AND TGD='7' AND USE_SIGN='1'
+  </select>
+  <select id="get42Guidance" resultMap="ResultMap" >
+  	select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+    where MODULAR_TYPE = '3' AND TGD='8' AND USE_SIGN='1'
+  </select>
+  
+  <select id="getHighRiskGude" resultMap="ResultMap" parameterType="com.threefiveninetong.mchh.config.po.DirectiveOpinionTemplatePO">
+  	select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+    where MODULAR_TYPE = #{ modularType}
+    and TGD = #{tgd}
+    and USE_SIGN = #{useSign}
+    order by CREAT_TIME desc
+    limit 1
+  
+  </select>
+	
+  <select id="getDirectByWeek" resultMap="ResultMap" parameterType="com.threefiveninetong.mchh.config.po.DirectiveOpinionTemplatePO">
+  	select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+    where MODULAR_TYPE = #{ modularType}
+    and TGD = #{tgd}
+    and USE_SIGN = #{useSign}
+    order by CREAT_TIME desc
+    limit 1
+  
+  </select>
+  <resultMap id="ResultMap" type="com.threefiveninetong.mchh.config.po.DirectiveOpinionTemplatePO" >
+	<result column="ID" property="id" />
+	<result column="MODULAR_TYPE" property="modularType" />
+	<result column="TGD" property="tgd" />
+	<result column="CONTENT" property="content" />
+	<result column="START_WEEK" property="startWeek" />
+	<result column="END_WEEK" property="endWeek" />
+	<result column="USE_SIGN" property="useSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.config.po.DirectiveOpinionTemplatePO" >
+	<result column="ID" property="id" />
+	<result column="MODULAR_TYPE" property="modularType" />
+	<result column="tg" property="tgd" />
+	<result column="CONTENT" property="content" />
+	<result column="START_WEEK" property="startWeek" />
+	<result column="END_WEEK" property="endWeek" />
+	<result column="USE_SIGN" property="useSign" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <select id="getWoman" resultMap="BaseResultMap" >
+
+    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE 
+    where MODULAR_TYPE = '1' and USE_SIGN = '1' order by CREAT_TIME desc limit 1
+  </select>
+  <select id="getMan" resultMap="BaseResultMap" >
+
+    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE 
+    where MODULAR_TYPE = '0' and USE_SIGN = '1' order by CREAT_TIME desc limit 1
+  </select>
+  
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+    where
+			ID = #{ id}
+	</select>
+	
+	<!-- 根据特殊疾病id查询指导意见信息 -->
+	<select id="getDirectByTgd" resultMap="BaseResultMap" parameterType="String" >
+    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+    where
+			TGD = #{ tgd}
+	</select>
+	
+	<select id="findByTgd" resultMap="BaseResultMap" parameterType="hashmap" >
+	    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+	    from DIRECTIVE_OPINION_TEMPLATE
+	    where 1=1
+	    <if test="modularType !=null and modularType !=''">
+    		and MODULAR_TYPE=#{modularType}
+    	</if>
+    	<if test="tgd !=null and tgd !=''">
+    		and TGD=#{tgd}
+    	</if>
+			
+	</select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+
+    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from DIRECTIVE_OPINION_TEMPLATE
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.config.po.DirectiveOpinionTemplatePO" >
+    insert into DIRECTIVE_OPINION_TEMPLATE (ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ modularType, javaType=String, jdbcType=VARCHAR},
+				#{ tgd, javaType=String, jdbcType=VARCHAR},
+				#{ content, javaType=String, jdbcType=VARCHAR},
+				#{ startWeek, javaType=String, jdbcType=VARCHAR},
+				#{ endWeek, javaType=String, jdbcType=VARCHAR},
+				#{ useSign, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.config.po.DirectiveOpinionTemplatePO" >
+    update DIRECTIVE_OPINION_TEMPLATE
+    set
+			MODULAR_TYPE = #{ modularType, javaType=String, jdbcType=VARCHAR},
+				TGD = #{ tgd, javaType=String, jdbcType=VARCHAR},
+				CONTENT = #{ content, javaType=String, jdbcType=VARCHAR},
+				START_WEEK = #{ startWeek, javaType=String, jdbcType=VARCHAR},
+				END_WEEK = #{ endWeek, javaType=String, jdbcType=VARCHAR},
+				USE_SIGN = #{ useSign, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select dir.ID,dir.MODULAR_TYPE,pre.name as tg,dir.CONTENT,dir.START_WEEK,dir.END_WEEK,dir.USE_SIGN,dir.CREAT_TIME,dir.UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE dir
+    left join PREMARITAL_ABNORMAL_OPTION pre
+    on dir.TGD=pre.ID
+    
+    where MODULAR_TYPE='0'
+    or MODULAR_TYPE='1'
+    or MODULAR_TYPE='2'
+    
+    <if test="modularType !=null and modularType !=''">
+    	and dir.MODULAR_TYPE=#{modularType}
+    </if>
+    <if test="tgd !=null and tgd !=''">
+    	and dir.TGD=#{tgd}
+    </if>
+    <if test="useSign !=null and useSign !=''">
+    	and dir.USE_SIGN=#{useSign}
+    </if>
+  </select>
+  
+  
+  
+  
+  <select id="listForPageTGD" resultMap="BaseResultMap"  parameterType="hashmap">
+    select dir.ID,dir.MODULAR_TYPE,pre.name as tg,dir.CONTENT,dir.START_WEEK,dir.END_WEEK,dir.USE_SIGN,dir.CREAT_TIME,dir.UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE dir
+    left join PREMARITAL_ABNORMAL_OPTION pre
+    on dir.TGD=pre.ID
+    
+    where 1=1
+  
+    <if test="modularType !=null and modularType !=''">
+    	and dir.MODULAR_TYPE=#{modularType}
+    </if>
+    <if test="tgd !=null and tgd !=''">
+    	and dir.TGD=#{tgd}
+    </if>
+    <if test="useSign !=null and useSign !=''">
+    	and dir.USE_SIGN=#{useSign}
+    </if>
+  </select>
+
+
+
+<select id="listForPageMaternal" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,MODULAR_TYPE,TGD,CONTENT,START_WEEK,END_WEEK,USE_SIGN,CREAT_TIME,UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE where MODULAR_TYPE='3'
+    <if test="modularType !=null and modularType !=''">
+    	and MODULAR_TYPE=#{modularType}
+    </if>
+    <if test="tgd !=null and tgd !=''">
+    	and TGD=#{tgd}
+    </if>
+    <if test="useSign !=null and useSign !=''">
+    	and USE_SIGN=#{useSign}
+    </if>
+  </select>
+
+
+
+<select id="listForPagePregancy" resultMap="BaseResultMap"  parameterType="hashmap">
+     select dir.ID,dir.MODULAR_TYPE,high.NAME as tg,dir.CONTENT,dir.START_WEEK,dir.END_WEEK,dir.USE_SIGN,dir.CREAT_TIME,dir.UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE  dir
+    left join HIGH_RISK_PREGNANCY_SCORE high
+    on dir.TGD=high.ID
+    
+    where MODULAR_TYPE='4'
+    
+    
+    
+    <if test="modularType !=null and modularType !=''">
+    	and dir.MODULAR_TYPE=#{modularType}
+    </if>
+    <if test="tgd !=null and tgd !=''">
+    	and dir.TGD=#{tgd}
+    </if>
+    <if test="useSign !=null and useSign !=''">
+    	and dir.USE_SIGN=#{useSign}
+    </if>
+  </select>
+  
+  
+  <select id="listForPageBaby" resultMap="ResultMap"  parameterType="hashmap">
+     select dir.ID,dir.MODULAR_TYPE,dir.TGD,dir.CONTENT,dir.START_WEEK,dir.END_WEEK,dir.USE_SIGN,dir.CREAT_TIME,dir.UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE  dir
+    
+    where MODULAR_TYPE='5'
+    
+    
+    
+    <if test="modularType !=null and modularType !=''">
+    	and dir.MODULAR_TYPE=#{modularType}
+    </if>
+    <if test="tgd !=null and tgd !=''">
+    	and dir.TGD=#{tgd}
+    </if>
+    <if test="useSign !=null and useSign !=''">
+    	and dir.USE_SIGN=#{useSign}
+    </if>
+  </select>
+  
+  
+  
+   <select id="listForPageBabyHightRisk" resultMap="BaseResultMap"  parameterType="hashmap">
+     select dir.ID,dir.MODULAR_TYPE,high.NAME as tg,dir.CONTENT,dir.START_WEEK,dir.END_WEEK,dir.USE_SIGN,dir.CREAT_TIME,dir.UPDATE_TIME
+    from DIRECTIVE_OPINION_TEMPLATE  dir
+    left join HIGH_RISK_PREGNANCY_SCORE high
+    on dir.TGD=high.ID
+    
+    where MODULAR_TYPE='6'
+    
+    
+    
+    <if test="modularType !=null and modularType !=''">
+    	and dir.MODULAR_TYPE=#{modularType}
+    </if>
+    <if test="tgd !=null and tgd !=''">
+    	and dir.TGD=#{tgd}
+    </if>
+    <if test="useSign !=null and useSign !=''">
+    	and dir.USE_SIGN=#{useSign}
+    </if>
+  </select>
+  
+
+	 <delete id="deletes">
+		delete from DIRECTIVE_OPINION_TEMPLATE
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

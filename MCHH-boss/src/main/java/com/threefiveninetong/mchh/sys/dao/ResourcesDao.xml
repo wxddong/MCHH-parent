@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.sys.dao.ResourcesDao">
+
+	<resultMap id="Resources" type="com.threefiveninetong.mchh.sys.po.ResourcesPO">
+		<result column="ID" property="id" />
+		<result column="NAME" property="name" />
+		<result column="URI" property="uri" />
+		<result column="TYPE" property="type" />
+		<result column="MENU" property="menu" />
+		<result column="GRANT_FLAG" property="grantFlag" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="FLAG" property="flag" />
+		<result column="ONUM" property="onum" />
+		<result column="LOG_FLAG" property="logFlag" />
+		<result column="REMARK" property="remark" />
+		<result column="LOG_URI" property="logUri" />
+		<result column="LOG_METHOD" property="logMethod" />
+		<!--<result property="checked" />  -->
+	</resultMap>
+	<sql id="BaseColumns">
+		ID,NAME,URI,TYPE,MENU,GRANT_FLAG,PARENT_ID,FLAG,ONUM,REMARK,LOG_FLAG,LOG_URI,LOG_METHOD
+	</sql>
+	<select id="listResources" resultMap="Resources" parameterType="hashmap">
+		select
+		<include refid="BaseColumns" />
+		from sys_resources
+		where 1=1
+		<if test="grangFlag!=null">
+			and grant_flag = #{grantFlag}
+    </if>
+		<if test="parentId!=null">
+			and parent_id = #{parentId}
+    </if>
+		<if test="typeRange!=null">
+			and type in
+			<foreach collection="typeRange" index="index" item="item"
+				open="(" separator="," close=")">#{item}</foreach>
+		</if>
+		<if test="logFlag!=null">
+			and log_flag= #{logFlag}
+    </if>
+		<if test="logUri!=null">
+			and log_uri= #{logUri}
+    </if>
+		<if test="logMethod!=null">
+			and log_method= #{logMethod}
+    </if>
+		order by onum
+	</select>
+
+	<select id="listResourcesGrant" resultMap="Resources"
+		parameterType="hashmap">
+		select
+		t1.ID,t1.NAME,t1.URI,t1.TYPE,t1.MENU,t1.GRANT_FLAG,t1.PARENT_ID,t1.FLAG,t1.ONUM,t1.REMARK,case
+		when t2.role_id is not null then 1 else 0 end checked
+		from sys_resources t1
+		left join (
+		select t.id ,rr.ROLE_ID FROM sys_resources t
+		LEFT JOIN sys_role_res rr ON rr.RES_ID = t.ID
+		WHERE rr.ROLE_ID = #{roleId}
+		) t2 on t1.id = t2.id
+	</select>
+	<select id="listAdminResources" resultMap="Resources"
+		parameterType="hashmap">
+		select
+		<include refid="BaseColumns" />
+		from sys_resources
+		where 1=1 and flag = 1
+		<if test="menu!=null">
+			and menu = #{menu}
+		</if>
+		<if test="typeRange!=null">
+			and type in
+			<foreach collection="typeRange" index="index" item="item"
+				open="(" separator="," close=")">#{item}</foreach>
+		</if>
+		order by onum
+	</select>
+	<select id="listOperatorResources" resultMap="Resources"
+		parameterType="hashmap">
+		select  distinct 
+		sr.ID,sr.NAME,sr.URI,sr.TYPE,sr.MENU,sr.GRANT_FLAG,sr.PARENT_ID,sr.FLAG,ONUM,sr.REMARK,sr.LOG_FLAG,sr.LOG_URI,sr.LOG_METHOD
+		from sys_resources sr
+		left join sys_role_res srr on sr.id = srr.res_id
+		left join sys_role sro on sro.id = srr.role_id
+		left join sys_operator_role sor on sor.role_id = srr.role_id
+		where 1=1
+		<if test="typeRange!=null">
+			and type in
+			<foreach collection="typeRange" index="index" item="item"
+				open="(" separator="," close=")">#{item}</foreach>
+		</if>
+		<if test="grantFlag!=null">and grant_flag = #{grantFlag}</if>
+		<if test="operatorId!=null and operatorId!=''">and sor.operator_id = #{operatorId}</if>
+		and sr.flag = 1 and sro.flag = 1
+		order by onum
+	</select>
+
+	<delete id="delete">
+		delete from sys_resources
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	<delete id="deleteRoleRes">
+		delete from sys_role_res
+		where res_id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	
+	<insert id="add" parameterType="com.threefiveninetong.mchh.sys.po.ResourcesPO">
+		insert into sys_resources (ID,NAME,URI,TYPE,MENU,GRANT_FLAG,PARENT_ID,FLAG,ONUM,REMARK,LOG_FLAG,LOG_URI,LOG_METHOD)
+    values (
+			    #{ id, javaType=String, jdbcType=VARCHAR},
+				#{ name, javaType=String, jdbcType=VARCHAR},
+				#{ uri, javaType=String, jdbcType=VARCHAR},
+				#{ type, javaType=int, jdbcType=CHAR},
+				#{ menu, javaType=int, jdbcType=CHAR},
+				#{ grantFlag, javaType=int, jdbcType=CHAR},
+				#{ parentId, javaType=String, jdbcType=VARCHAR},
+				#{ flag, javaType=int, jdbcType=CHAR},
+				#{ onum, javaType=int, jdbcType=INTEGER},
+				#{ remark, javaType=String, jdbcType=VARCHAR},
+				#{ logFlag, javaType=int, jdbcType=CHAR},
+				#{ logUri, javaType=String, jdbcType=VARCHAR},
+				#{ logMethod, javaType=int, jdbcType=CHAR}
+	    )
+	</insert>
+
+	<update id="update" parameterType="com.threefiveninetong.mchh.sys.po.ResourcesPO">
+		update sys_resources
+    set
+			NAME = #{ name, javaType=String, jdbcType=VARCHAR},
+				URI = #{ uri, javaType=String, jdbcType=VARCHAR},
+				TYPE = #{ type, javaType=int, jdbcType=CHAR},
+				MENU = #{ menu, javaType=int, jdbcType=CHAR},
+				GRANT_FLAG = #{ grantFlag, javaType=int, jdbcType=CHAR},
+				PARENT_ID = #{ parentId, javaType=String, jdbcType=VARCHAR},
+				FLAG = #{ flag, javaType=int, jdbcType=CHAR},
+				ONUM = #{ onum, javaType=int, jdbcType=INTEGER},
+				REMARK = #{ remark, javaType=String, jdbcType=VARCHAR},
+				LOG_FLAG = #{ logFlag, javaType=int, jdbcType=CHAR},
+				LOG_URI = #{ logUri, javaType=String, jdbcType=VARCHAR},
+				LOG_METHOD = #{ logMethod, javaType=int, jdbcType=CHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.appConfig.dao.AppChannelDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.appConfig.po.AppChannelPO" >
+	<result column="ID" property="id" />
+	<result column="CHANNEL_CODE" property="channelCode" />
+	<result column="CHANNEL_NAME" property="channelName" />
+	<result column="EQUIPMENT_TYPE" property="equipmentType" />
+	<result column="CREATE_TIME" property="createTime" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,CHANNEL_CODE,CHANNEL_NAME,EQUIPMENT_TYPE,CREATE_TIME
+    from APP_CHANNEL
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,CHANNEL_CODE,CHANNEL_NAME,EQUIPMENT_TYPE,CREATE_TIME
+    from APP_CHANNEL
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from APP_CHANNEL
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.appConfig.po.AppChannelPO" >
+    insert into APP_CHANNEL (ID,CHANNEL_CODE,CHANNEL_NAME,EQUIPMENT_TYPE,CREATE_TIME)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ channelCode, javaType=String, jdbcType=VARCHAR},
+				#{ channelName, javaType=String, jdbcType=VARCHAR},
+				#{ equipmentType, javaType=String, jdbcType=VARCHAR},
+				#{ createTime, javaType=Date, jdbcType=TIMESTAMP}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.appConfig.po.AppChannelPO" >
+    update APP_CHANNEL
+    set
+			CHANNEL_CODE = #{ channelCode, javaType=String, jdbcType=VARCHAR},
+				CHANNEL_NAME = #{ channelName, javaType=String, jdbcType=VARCHAR},
+				EQUIPMENT_TYPE = #{ equipmentType, javaType=String, jdbcType=VARCHAR},
+				CREATE_TIME = #{ createTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,CHANNEL_CODE,CHANNEL_NAME,EQUIPMENT_TYPE,CREATE_TIME
+    from APP_CHANNEL
+  </select>
+
+
+	<delete id="deletes">
+		delete from APP_CHANNEL
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+	
+	<select id="findBychannelNO" resultMap="BaseResultMap" parameterType="String" >
+    Select ID,CHANNEL_CODE,CHANNEL_NAME,EQUIPMENT_TYPE,CREATE_TIME
+    From APP_CHANNEL
+    Where CHANNEL_CODE = #{channelNO} limit 1
+    </select>
+<!--codegen-->
+
+</mapper>

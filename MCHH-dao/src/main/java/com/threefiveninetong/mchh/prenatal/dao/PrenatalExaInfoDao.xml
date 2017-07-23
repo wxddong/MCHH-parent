@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.prenatal.dao.PrenatalExaInfoDao" >
+	
+	<select id="getAllPrenatalByBirthId" resultMap="BaseResultMap" parameterType="String">
+		select *
+    	from PRENATAL_EXA_INFO
+    	where BIRTH_ARCHIVES_ID = #{ birthArchivesId}
+	</select>
+	<select id="getThisBirthPrenatalByBirthId" resultMap="BaseResultMap" parameterType="String">
+		select *
+    	from PRENATAL_EXA_INFO
+    	where BIRTH_ARCHIVES_ID = #{ birthArchivesId}
+    	ORDER BY creat_time desc
+	</select>
+	
+	<select id="getNumByNomal" resultType="int" parameterType="String">
+		select count(*)
+    	from PRENATAL_EXA_INFO
+    	where BIRTH_ARCHIVES_ID = #{ birthArchivesId}
+    	and NORMAL_SIGN = "1"
+	</select>
+	<select id="countByBirthId" resultType="int" parameterType="String">
+		select count(*)
+    	from PRENATAL_EXA_INFO
+    	where BIRTH_ARCHIVES_ID = #{ birthArchivesId}
+	</select>
+	
+	<select id="getNewestPrenatal" resultMap="BaseResultMap" parameterType="String">
+		select *
+    	from PRENATAL_EXA_INFO
+    	where EDIT_STATUS = "1"
+			  AND BIRTH_ARCHIVES_ID = #{birthArchivesId}
+		 	  ORDER BY CREAT_TIME desc
+		 	  LIMIT 1 
+	</select>
+	
+	<update id="edit" parameterType="com.threefiveninetong.mchh.prenatal.po.PrenatalExaInfoPO" >
+	    update PRENATAL_EXA_INFO
+	    set
+			DOCTOR_ID = #{ doctorId, javaType=String, jdbcType=VARCHAR},
+			EVALUATE = #{ evaluate, javaType=String, jdbcType=VARCHAR},
+			EVALUATE_REMARK = #{ evaluateRemark, javaType=String, jdbcType=VARCHAR},
+			CHIEF_COMPLAINT = #{ chiefComplaint, javaType=String, jdbcType=VARCHAR},
+			GUIDANCE = #{ guidance, javaType=String, jdbcType=VARCHAR},
+			EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+			CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+			UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+	
+	<select id="getSecondOrMoreHistoryChecks" resultMap="historyCheck">
+		SELECT a.id checkId,a.CREAT_TIME checkDate,a.CHIEF_COMPLAINT zhuSu,
+			   b.BLOOD_HI high,b.BLOOD_LOW low,b.WEIGHT weight,b.UTERUS_HIGHT uterusHight,
+			   b.ABDOMEN abdomen,b.FETUS_POSITION fetusPosition,b.HEART_RATE heartRate,
+			   c.HEMOGLOBIN red,c.PROTEINURIA pro,c.BLOOD_GLUCOSE BG,c.TANG_SYNDROME TS,c.NT NT,
+			   c.FOUR_DIMENSIONAL four,c.B_SCAN BS,c.NST NST,c.SGPT SGPT,c.SGOT SGOT,c.ALBUMIN albumin,
+			   c.TOTAL_BILIRUBIN TB,c.DBIL DBIL,c.SCR SCR,c.BUN BUN,e.SCORE score,
+			   a.EVALUATE evaluate,d.REFERRAL referral,d.NEXT_FOLLOWING_DATE nextDate,a.GUIDANCE guidance,
+			   f.real_name doctorName,g.name HospitalName
+		FROM PRENATAL_EXA_INFO a
+		left outer join OBSTETRIC_EXA_INFO b
+		on a.id = b.EXAMINATION_ID
+		left outer join SUPPLEMENTARY_EXAM_INFO c
+		on a.id = c.EXAMINATION_ID
+		left outer join PRENATAL_REFERRAL_INFO d
+		on a.id = d.PRE_ID
+		left outer join HIGH_RISK_INFO e
+		on a.id = e.EXAMINATION_ID
+		left outer join SYS_OPERATOR f
+		on a.DOCTOR_ID = f.id
+		left outer join SYS_DEPARTMENT g
+		on f.DEP_ID = g.id
+		where a.BIRTH_ARCHIVES_ID = #{birthArchivesId}
+			  AND a.EDIT_STATUS = 1
+			  AND a.id != #{firstId}
+		order by checkDate
+	</select>
+
+	<select id="countPrenatalByBirthId" resultType="int" parameterType="String">
+		select count(*)
+    	from PRENATAL_EXA_INFO
+    	where BIRTH_ARCHIVES_ID = #{ birthArchivesId}
+		and EDIT_STATUS = "1"
+	</select>
+
+	
+	<select id="getFirstHistoryCheck" resultMap="historyCheck" parameterType="String">
+		SELECT a.id checkId,a.CREAT_TIME checkDate,b.PREGNANCY_WEEKS weeks,a.CHIEF_COMPLAINT zhuSu,
+			   c.BLOOD_HI high,c.BLOOD_LOW low,c.WEIGHT weight,
+			   e.HEMOGLOBIN red,e.PROTEINURIA pro,e.BLOOD_GLUCOSE BG,e.TANG_SYNDROME TS,e.NT NT,
+			   e.FOUR_DIMENSIONAL four,e.B_SCAN BS,e.NST NST,e.SGPT SGPT,e.SGOT SGOT,e.ALBUMIN albumin,
+			   e.TOTAL_BILIRUBIN TB,e.DBIL DBIL,e.SCR SCR,e.BUN BUN,g.SCORE score,
+			   a.EVALUATE evaluate,f.REFERRAL referral,f.NEXT_FOLLOWING_DATE nextDate,a.GUIDANCE guidance,
+			   h.real_name doctorName,i.name HospitalName
+		FROM PRENATAL_EXA_INFO a
+		left outer join FIRST_MOTHERHOOD_INFO b
+		on a.id = b.EXAMINATION_ID
+		left outer join FIRST_PHYSICAL_BLOOD_STETHOSCOPY_INFO c
+		on a.id = c.EXAMINATION_ID
+		left outer join FIRST_GYNECOLOGICAL_EXA_INFO d
+		on a.id = d.EXAMINATION_ID
+		left outer join SUPPLEMENTARY_EXAM_INFO e
+		on a.id = e.EXAMINATION_ID
+		left outer join PRENATAL_REFERRAL_INFO f
+		on a.id = f.PRE_ID
+		left outer join HIGH_RISK_INFO g
+		on a.id = g.EXAMINATION_ID
+		left outer join SYS_OPERATOR h
+		on a.DOCTOR_ID = h.id
+		left outer join SYS_DEPARTMENT i
+		on h.DEP_ID = i.id
+		where a.id = #{firstId} AND a.EDIT_STATUS = "1"
+	</select>
+	
+	
+	 <resultMap id="historyCheck" type="com.threefiveninetong.mchh.postpartum.dto.HistoryCheckVO" >
+	 	<result column="checkId" property="checkId" />
+		<result column="checkDate" property="checkDate" />
+		<result column="weeks" property="pregnancyWeeks" />
+		<result column="zhuSu" property="chiefComplaint" />
+		<result column="high" property="bloodHi" />
+		<result column="low" property="bloodLow" />
+		<result column="weight" property="weight" />
+		<result column="uterusHight" property="uterusHight" />
+		<result column="abdomen" property="abdomen" />
+		<result column="fetusPosition" property="fetusPosition" />
+		<result column="heartRate" property="heartRate" />
+		<result column="red" property="hemoglobin" />
+		<result column="pro" property="proteinuria" />
+		<result column="BG" property="bloodGlucose" />
+		<result column="TS" property="tangSyndrome" />
+		<result column="NT" property="NT" />
+		<result column="four" property="fourDimensional" />
+		<result column="BS" property="bScan" />
+		<result column="NST" property="NST" />
+		<result column="SGPT" property="sgpt" />
+		<result column="SGOT" property="sgot" />
+		<result column="albumin" property="albumin" />
+		<result column="TB" property="totalBilirubin" />
+		<result column="DBIL" property="dbil" />
+		<result column="SCR" property="scr" />
+		<result column="BUN" property="bun" />
+		<result column="score" property="score" />
+		<result column="evaluate" property="evaluate" />
+		<result column="referral" property="referral" />
+		<result column="nextDate" property="nextFollowingDate" />
+		<result column="guidance" property="guidance" />
+		<result column="doctorName" property="doctorName" />
+		<result column="HospitalName" property="hospital" />
+	  </resultMap>
+	
+	
+	<select id="getFirstId" resultType="String">
+		select ID
+		from PRENATAL_EXA_INFO 
+
+		where EDIT_STATUS = 1
+			  AND BIRTH_ARCHIVES_ID = #{birthArchivesId}
+		 	  ORDER BY CREAT_TIME 
+		 	  LIMIT 1 
+	</select>
+
+	<select id="getNewPrenatalByBirthArchivesId" resultMap="BaseResultMap" parameterType="String">
+		select *
+    	from PRENATAL_EXA_INFO
+    	where BIRTH_ARCHIVES_ID = #{birthArchivesId}
+		ORDER BY CREAT_TIME
+		LIMIT 1 
+		
+	</select>
+
+	<select id="getPrenatalExaByBirthArchivesId" resultMap="BaseResultMap" parameterType="String">
+		select *
+    	from PRENATAL_EXA_INFO
+    	where EDIT_STATUS = "1"
+			  AND BIRTH_ARCHIVES_ID = #{birthArchivesId}
+		 	  ORDER BY CREAT_TIME
+		 	  LIMIT 1 
+		
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.prenatal.po.PrenatalExaInfoPO" >
+	<result column="ID" property="id" />
+	<result column="BIRTH_ARCHIVES_ID" property="birthArchivesId" />
+	<result column="DOCTOR_ID" property="doctorId" />
+	<result column="EVALUATE" property="evaluate" />
+	<result column="EVALUATE_REMARK" property="evaluateRemark" />
+	<result column="CHIEF_COMPLAINT" property="chiefComplaint" />
+	<result column="GUIDANCE" property="guidance" />
+	<result column="EDIT_STATUS" property="editStatus" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="NORMAL_SIGN" property="normalSign" />
+	<result column="ARCHIVES_ID" property="birthArchivesInfoPO.archivesInfoPO.id"/>
+	<result column="archives_code" property="birthArchivesInfoPO.archivesInfoPO.archivesCode"/>
+	<result column="name" property="birthArchivesInfoPO.archivesInfoPO.name"/>
+	<result column="archives_time" property="birthArchivesInfoPO.archivesInfoPO.creatTime"/>
+	<result column="id_no" property="birthArchivesInfoPO.archivesInfoPO.idNo"/>
+	<result column="telephone" property="birthArchivesInfoPO.archivesInfoPO.telephone"/>
+	<result column="pregnant_state" property="birthArchivesInfoPO.pregnantState"/>
+	<result column="BIRTH_DATE" property="birthArchivesInfoPO.childbirthBasicInfoPO.birthDate"/>
+	<result column="LEAVE_DATE" property="birthArchivesInfoPO.childbirthBasicInfoPO.leaveDate"/>
+	<result column="deCreateTime" property="birthArchivesInfoPO.childbirthBasicInfoPO.creatTime"/>
+	<result column="deDoctorId" property="birthArchivesInfoPO.childbirthBasicInfoPO.doctorId"/>
+	<result column="childDoctorName" property="birthArchivesInfoPO.childbirthBasicInfoPO.operatorPO.realName"/>
+	<result column="archives_doctor_id" property="birthArchivesInfoPO.archivesInfoPO.doctorId"/>
+	<result column="archives_doctor" property="birthArchivesInfoPO.archivesInfoPO.operatorPO.realName"/>
+	<result column="CLOSING_REASON" property="birthArchivesInfoPO.closingReason"/>
+	<result column="birthId" property="birthArchivesInfoPO.id"/>
+	<result column="RISK_SIGN" property="birthArchivesInfoPO.riskSign"/>
+	<result column="REFERRAL_SIGN" property="birthArchivesInfoPO.referralSign" />
+	<result column="OUT_HOSPITAL_ID" property="birthArchivesInfoPO.outHospitalId"/>
+	<result column="prenatal_doctor" property="operatorPO.realName"/>
+	<result column="NEXT_FOLLOWING_DATE" property="prenatalReferralInfoPO.nextFollowingDate"/>
+	<result column="dept_name" property="birthArchivesInfoPO.archivesInfoPO.departmentPO.name"/>
+	<result column="postCreatTime" property="birthArchivesInfoPO.postpartumExaInfoPO.creatTime"/>
+	<result column="postDoctorName" property="birthArchivesInfoPO.postpartumExaInfoPO.operatorPO.realName"/>
+	<result column="postDoctorId" property="birthArchivesInfoPO.postpartumExaInfoPO.doctorId"/>
+	<result column="prefNextDate" property="birthArchivesInfoPO.postpartumExaInfoPO.postpartumReferralInfoPO.nextFollowingDate"/>
+	<result column="crefNextDate" property="birthArchivesInfoPO.childbirthBasicInfoPO.childbirthReferralInfoPO.nextFollowingDate"/>
+	<result column="TYPE" property="birthArchivesInfoPO.postpartumExaInfoPO.type"/>
+	<result column="postEdit" property="birthArchivesInfoPO.postpartumExaInfoPO.editStatus"/>
+	<result column="childEdit" property="birthArchivesInfoPO.childbirthBasicInfoPO.editStatus"/>
+	<result column="postId" property="birthArchivesInfoPO.postpartumExaInfoPO.id"/>
+	<result column="checkTime" property="checkTime"/>
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from PRENATAL_EXA_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,EVALUATE,EVALUATE_REMARK,CHIEF_COMPLAINT,GUIDANCE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME
+    from PRENATAL_EXA_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from PRENATAL_EXA_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.prenatal.po.PrenatalExaInfoPO" >
+    insert into PRENATAL_EXA_INFO (ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,EVALUATE,EVALUATE_REMARK,CHIEF_COMPLAINT,GUIDANCE,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ birthArchivesId, javaType=String, jdbcType=VARCHAR},
+				#{ doctorId, javaType=String, jdbcType=VARCHAR},
+				#{ evaluate, javaType=String, jdbcType=VARCHAR},
+				#{ evaluateRemark, javaType=String, jdbcType=VARCHAR},
+				#{ chiefComplaint, javaType=String, jdbcType=VARCHAR},
+				#{ guidance, javaType=String, jdbcType=VARCHAR},
+				#{ editStatus, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ normalSign, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.prenatal.po.PrenatalExaInfoPO" >
+    update PRENATAL_EXA_INFO
+    set
+			BIRTH_ARCHIVES_ID = #{ birthArchivesId, javaType=String, jdbcType=VARCHAR},
+				DOCTOR_ID = #{ doctorId, javaType=String, jdbcType=VARCHAR},
+				EVALUATE = #{ evaluate, javaType=String, jdbcType=VARCHAR},
+				EVALUATE_REMARK = #{ evaluateRemark, javaType=String, jdbcType=VARCHAR},
+				CHIEF_COMPLAINT = #{ chiefComplaint, javaType=String, jdbcType=VARCHAR},
+				GUIDANCE = #{ guidance, javaType=String, jdbcType=VARCHAR},
+				EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP}
+	    where 
+			ID = #{ id}
+	  </update>
+<select id="queryListForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select w.*,GREATEST(IFNULL(w.ARCH_UPDATE,DATE('1970-01-01')),IFNULL(w.BIRTH_UPDATE,DATE('1970-01-01')),IFNULL(w.PRA_UPDATE,DATE('1970-01-01')),IFNULL(w.CHILD_UPDATE,DATE('1970-01-01')),IFNULL(w.POST_UPDATE,DATE('1970-01-01'))) maxDate
+FROM
+(
+    SELECT 
+		p.BIRTH_ARCHIVES_ID,p.EVALUATE,p.EVALUATE_REMARK,p.CHIEF_COMPLAINT,p.GUIDANCE,p.EDIT_STATUS,p.UPDATE_TIME,
+	    p.ID,p.creat_time as "CREAT_TIME",p.doctor_id,b.CLOSING_REASON,b.id as "birthId",b.RISK_SIGN,b.REFERRAL_SIGN,b.OUT_HOSPITAL_ID,
+		a.id as "ARCHIVES_ID",a.archives_code,a.name,a.CREAT_TIME AS "archives_time",dept.NAME AS "dept_name",
+	    a.id_no,a.telephone,b.pregnant_state,a.doctor_id as "archives_doctor_id", o1.real_name AS "archives_doctor",
+	    o2.real_name as "prenatal_doctor",c.BIRTH_DATE,c.LEAVE_DATE,c.CREAT_TIME as "deCreateTime", c.DOCTOR_ID as "deDoctorId",
+		o4.REAL_NAME AS "childDoctorName",o3.REAL_NAME AS "postDoctorName",post.TYPE,post.edit_status AS "postEdit",c.edit_status AS "childEdit",
+	    s.NEXT_FOLLOWING_DATE,post.CREAT_TIME AS "postCreatTime", post.DOCTOR_ID as "postDoctorId",post.id as "postId",
+		pref.NEXT_FOLLOWING_DATE as "prefNextDate",cref.NEXT_FOLLOWING_DATE AS "crefNextDate",IFNULL(post.CREAT_TIME,IFNULL(c.CREAT_TIME,p.creat_time)) checkTime, 
+		a.UPDATE_TIME AS "ARCH_UPDATE",b.UPDATE_TIME as "BIRTH_UPDATE",p.UPDATE_TIME as "PRA_UPDATE",c.UPDATE_TIME as "CHILD_UPDATE",post.UPDATE_TIME as "POST_UPDATE"
+		FROM birth_archives_info b
+		left JOIN (select exa.* 
+			  from PRENATAL_EXA_INFO exa,
+				  (select exa.BIRTH_ARCHIVES_ID, max(exa.CREAT_TIME) CREAT_TIME 
+				  from PRENATAL_EXA_INFO exa 
+				  group by exa.BIRTH_ARCHIVES_ID ) exaTemp
+			  where exa.BIRTH_ARCHIVES_ID=exaTemp.BIRTH_ARCHIVES_ID 
+			  and exa.CREAT_TIME=exaTemp.CREAT_TIME 
+			  ) p
+		ON b.ID = p.birth_archives_id
+		LEFT JOIN (select c.*
+				   FROM childbirth_basic_info c,
+						(SELECT c1.birth_archives_id,MAX(c1.creat_time) creat_time 
+						FROM childbirth_basic_info c1 
+						GROUP BY c1.BIRTH_ARCHIVES_ID) child
+				   WHERE c.BIRTH_ARCHIVES_ID = child.birth_archives_id
+				   AND c.CREAT_TIME = child.creat_time
+				   ) c
+		ON b.ID = c.BIRTH_ARCHIVES_ID
+		LEFT JOIN childbirth_referral_info cref
+		ON c.id = cref.BASIC_ID
+		left JOIN sys_operator o4
+		ON o4.ID = c.DOCTOR_ID
+		LEFT JOIN (select p1.*
+				   FROM postpartum_exa_info p1,
+						(SELECT p2.birth_archives_id,MAX(p2.creat_time) creat_time 
+						FROM postpartum_exa_info p2 
+						GROUP BY p2.BIRTH_ARCHIVES_ID) pos
+				   WHERE p1.BIRTH_ARCHIVES_ID = pos.birth_archives_id
+				   AND p1.CREAT_TIME = pos.creat_time) post
+		ON b.ID = post.BIRTH_ARCHIVES_ID
+		LEFT JOIN postpartum_referral_info pref
+		ON post.id = pref.POS_ID
+		left JOIN sys_operator o3
+		ON o3.ID = post.DOCTOR_ID
+		left JOIN archives_info a
+		on b.ARCHIVES_ID = a.ID
+		left JOIN sys_operator o1
+		ON o1.ID = a.DOCTOR_ID
+		left JOIN prenatal_referral_info s
+		on p.ID = s.PRE_ID
+		left JOIN sys_operator o2
+		ON o2.ID = p.DOCTOR_ID
+		left JOIN sys_department dept
+		ON a.HOSPITAL_ID = dept.ID
+		where a.DELTET_SIGN = "1"
+		and b.DELTET_SIGN = "1"
+		<if test="archivesCode!=null and archivesCode!=''">
+			and a.ARCHIVES_CODE = #{archivesCode}
+		</if>
+	    <if test="name!=null and name!=''">
+			and a.NAME like #{name}
+		</if>
+		<if test="idNo!=null and idNo!=''">
+			and a.ID_NO = #{idNo}
+		</if>
+		<if test="beginTime!=null and beginTime!=''">
+			and b.CREAT_TIME >= STR_TO_DATE(#{beginTime},'%Y-%m-%d')
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and STR_TO_DATE(#{endTime},'%Y-%m-%d') >= b.CREAT_TIME
+		</if>
+		<if test="doctorId!=null and doctorId!=''">
+			<![CDATA[and  (post.DOCTOR_ID = #{doctorId} or c.DOCTOR_ID = #{doctorId} or p.DOCTOR_ID = #{doctorId})]]>
+		</if>
+		<if test="hospotilId!=null and hospotilId!=''">
+			<![CDATA[and  b.HOSPITAL_ID = #{hospotilId}]]>
+		</if>
+		<if test="beginCheckTime!=null and beginCheckTime!=''">
+			and (post.CREAT_TIME >= STR_TO_DATE(#{beginCheckTime},'%Y-%m-%d') or c.CREAT_TIME >= STR_TO_DATE(#{beginCheckTime},'%Y-%m-%d') or p.CREAT_TIME >= STR_TO_DATE(#{beginCheckTime},'%Y-%m-%d'))
+		</if>
+		<if test="endCheckTime!=null and endCheckTime!=''">
+			and (STR_TO_DATE(#{endCheckTime},'%Y-%m-%d') >= post.CREAT_TIME or STR_TO_DATE(#{endCheckTime},'%Y-%m-%d') >= c.CREAT_TIME or STR_TO_DATE(#{endCheckTime},'%Y-%m-%d') >= p.CREAT_TIME)
+		</if>
+		<if test="beginNextTime=null and beginNextTime!=''">
+			and (pref.NEXT_FOLLOWING_DATE >= STR_TO_DATE(#{beginNextTime},'%Y-%m-%d') or cref.NEXT_FOLLOWING_DATE >= STR_TO_DATE(#{beginNextTime},'%Y-%m-%d') or s.NEXT_FOLLOWING_DATE >= STR_TO_DATE(#{beginNextTime},'%Y-%m-%d'))
+		</if>
+		<if test="endNextTime!=null and endNextTime!=''">
+			and (STR_TO_DATE(#{endNextTime},'%Y-%m-%d') >= pref.NEXT_FOLLOWING_DATE or STR_TO_DATE(#{endNextTime},'%Y-%m-%d') >= cref.NEXT_FOLLOWING_DATE or STR_TO_DATE(#{endNextTime},'%Y-%m-%d') >= s.NEXT_FOLLOWING_DATE)
+		</if>
+		<if test="closeReasion !=null and closeReasion !=''">
+			and b.CLOSING_REASON = #{closeReasion}
+		</if>
+		<if test="birthState !=null and birthState !=''">
+			and b.pregnant_state = #{birthState}
+		</if>
+		<if test="closeState1 !=null and closeState1 !=''">
+			and b.pregnant_state != "2"
+		</if>
+		<if test="prenataState !=null and prenataState !=''">
+			and b.pregnant_state = #{prenataState}
+		</if>
+		<if test="leave !=null and leave !=''">
+			and c.LEAVE_DATE is not null
+		</if>
+		<if test="post !=null and post !=''">
+			and post.TYPE = #{post}
+		</if>
+		) w
+ORDER BY maxDate DESC
+ </select>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select w.*,GREATEST(IFNULL(w.ARCH_UPDATE,DATE('1970-01-01')),IFNULL(w.BIRTH_UPDATE,DATE('1970-01-01')),IFNULL(w.PRA_UPDATE,DATE('1970-01-01')),IFNULL(w.CHILD_UPDATE,DATE('1970-01-01')),IFNULL(w.POST_UPDATE,DATE('1970-01-01'))) maxDate
+FROM
+(
+SELECT 
+		p.BIRTH_ARCHIVES_ID,p.EVALUATE,p.EVALUATE_REMARK,p.CHIEF_COMPLAINT,p.GUIDANCE,p.EDIT_STATUS,p.UPDATE_TIME,
+	    p.ID,p.creat_time as "CREAT_TIME",p.doctor_id,b.CLOSING_REASON,b.id as "birthId",b.RISK_SIGN,b.REFERRAL_SIGN,b.OUT_HOSPITAL_ID,
+		a.id as "ARCHIVES_ID",a.archives_code,a.name,a.CREAT_TIME AS "archives_time",dept.NAME AS "dept_name",
+	    a.id_no,a.telephone,b.pregnant_state,a.doctor_id as "archives_doctor_id", o1.real_name AS "archives_doctor",
+	    o2.real_name as "prenatal_doctor",c.BIRTH_DATE,c.LEAVE_DATE,c.CREAT_TIME as "deCreateTime", c.DOCTOR_ID as "deDoctorId",
+		o4.REAL_NAME AS "childDoctorName",o3.REAL_NAME AS "postDoctorName",post.TYPE,post.edit_status AS "postEdit",c.edit_status AS "childEdit",
+	    s.NEXT_FOLLOWING_DATE,post.CREAT_TIME AS "postCreatTime", post.DOCTOR_ID as "postDoctorId",post.id as "postId",
+		pref.NEXT_FOLLOWING_DATE as "prefNextDate",cref.NEXT_FOLLOWING_DATE AS "crefNextDate",IFNULL(post.CREAT_TIME,IFNULL(c.CREAT_TIME,p.creat_time)) checkTime,
+		a.UPDATE_TIME AS "ARCH_UPDATE",b.UPDATE_TIME as "BIRTH_UPDATE",p.UPDATE_TIME as "PRA_UPDATE",c.UPDATE_TIME as "CHILD_UPDATE",post.UPDATE_TIME as "POST_UPDATE"
+		
+		FROM (SELECT birth.*
+				   FROM birth_archives_info birth,
+						(SELECT birt.archives_id,MAX(birt.CREAT_TIME) CREAT_TIME
+						 FROM birth_archives_info birt
+						 WHERE birt.DELTET_SIGN = "1"
+						 GROUP BY birt.ARCHIVES_ID) bir
+				   WHERE birth.ARCHIVES_ID=bir.archives_id
+				   AND birth.CREAT_TIME = bir.CREAT_TIME
+					) b
+		left JOIN (select exa.* 
+			  from PRENATAL_EXA_INFO exa,
+					(select exa.BIRTH_ARCHIVES_ID, max(exa.CREAT_TIME) CREAT_TIME 
+					from PRENATAL_EXA_INFO exa 
+					group by exa.BIRTH_ARCHIVES_ID ) exaTemp
+			  where exa.BIRTH_ARCHIVES_ID=exaTemp.BIRTH_ARCHIVES_ID 
+			  and exa.CREAT_TIME=exaTemp.CREAT_TIME 
+			  ) p
+		ON b.ID = p.birth_archives_id
+		LEFT JOIN (select c.*
+				   FROM childbirth_basic_info c,
+						(SELECT c1.birth_archives_id,MAX(c1.creat_time) creat_time 
+						FROM childbirth_basic_info c1 
+						GROUP BY c1.BIRTH_ARCHIVES_ID) child
+				   WHERE c.BIRTH_ARCHIVES_ID = child.birth_archives_id
+				   AND c.CREAT_TIME = child.creat_time
+				   ) c
+		ON b.ID = c.BIRTH_ARCHIVES_ID
+		LEFT JOIN childbirth_referral_info cref
+		ON c.id = cref.BASIC_ID
+		left JOIN sys_operator o4
+		ON o4.ID = c.DOCTOR_ID
+		LEFT JOIN (select p1.*
+				   FROM postpartum_exa_info p1,
+						(SELECT p2.birth_archives_id,MAX(p2.creat_time) creat_time 
+						FROM postpartum_exa_info p2 
+						GROUP BY p2.BIRTH_ARCHIVES_ID) pos
+				   WHERE p1.BIRTH_ARCHIVES_ID = pos.birth_archives_id
+				   AND p1.CREAT_TIME = pos.creat_time) post
+		ON b.ID = post.BIRTH_ARCHIVES_ID
+		LEFT JOIN postpartum_referral_info pref
+		ON post.id = pref.POS_ID
+		left JOIN sys_operator o3
+		ON o3.ID = post.DOCTOR_ID
+		left JOIN archives_info a
+		on b.ARCHIVES_ID = a.ID
+		left JOIN sys_operator o1
+		ON o1.ID = a.DOCTOR_ID
+		left JOIN prenatal_referral_info s
+		on p.ID = s.PRE_ID
+		left JOIN sys_operator o2
+		ON o2.ID = p.DOCTOR_ID
+		left JOIN sys_department dept
+		ON a.HOSPITAL_ID = dept.ID
+		where a.DELTET_SIGN = "1"
+		and b.DELTET_SIGN = "1"
+) w
+ORDER BY maxDate DESC
+  </select>
+
+
+<delete id="deletes">
+		delete from PRENATAL_EXA_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

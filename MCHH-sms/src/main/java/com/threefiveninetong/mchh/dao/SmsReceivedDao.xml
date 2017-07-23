@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.dao.SmsReceivedDao" >
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.po.SmsReceivedPO" >
+	<result column="ID" property="id" />
+	<result column="SENDER" property="sender" />
+	<result column="CONTENT" property="content" />
+	<result column="SENDTIME" property="sendtime" />
+	<result column="PLATFORM_CODE" property="platformCode" />
+	<result column="ISDEALED" property="isdealed" />
+	<result column="DEALMAN" property="dealman" />
+	<result column="DEALTIME" property="dealtime" />
+	<result column="CLIDMARK" property="clidmark" />
+	<result column="CLID" property="clid" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,SENDER,CONTENT,SENDTIME,PLATFORM_CODE,ISDEALED,DEALMAN,DEALTIME,CLIDMARK,CLID
+    from sys_sms_received
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,SENDER,CONTENT,SENDTIME,PLATFORM_CODE,ISDEALED,DEALMAN,DEALTIME,CLIDMARK,CLID
+    from sys_sms_received
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from sys_sms_received
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.po.SmsReceivedPO" >
+    insert into sys_sms_received (ID,SENDER,CONTENT,SENDTIME,PLATFORM_CODE,ISDEALED,DEALMAN,DEALTIME,CLIDMARK,CLID)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ sender, javaType=String, jdbcType=VARCHAR},
+				#{ content, javaType=String, jdbcType=VARCHAR},
+				#{ sendtime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ platformCode, javaType=String, jdbcType=VARCHAR},
+				#{ isdealed, javaType=String, jdbcType=VARCHAR},
+				#{ dealman, javaType=String, jdbcType=VARCHAR},
+				#{ dealtime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ clidmark, javaType=String, jdbcType=VARCHAR},
+				#{ clid, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.po.SmsReceivedPO" >
+    update sys_sms_received
+    set
+			SENDER = #{ sender, javaType=String, jdbcType=VARCHAR},
+				CONTENT = #{ content, javaType=String, jdbcType=VARCHAR},
+				SENDTIME = #{ sendtime, javaType=Date, jdbcType=TIMESTAMP},
+				PLATFORM_CODE = #{ platformCode, javaType=String, jdbcType=VARCHAR},
+				ISDEALED = #{ isdealed, javaType=String, jdbcType=VARCHAR},
+				DEALMAN = #{ dealman, javaType=String, jdbcType=VARCHAR},
+				DEALTIME = #{ dealtime, javaType=Date, jdbcType=TIMESTAMP},
+				CLIDMARK = #{ clidmark, javaType=String, jdbcType=VARCHAR},
+				CLID = #{ clid, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,SENDER,CONTENT,SENDTIME,PLATFORM_CODE,ISDEALED,DEALMAN,DEALTIME,CLIDMARK,CLID
+    from sys_sms_received
+  </select>
+
+
+<delete id="deletes">
+		delete from sys_sms_received
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

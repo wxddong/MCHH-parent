@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.childbirth.dao.ChildbirthBabyInfoDao" >
+	
+	<resultMap id="selectChildBaby" type="com.threefiveninetong.mchh.childbirth.po.SelectChildBaby" >
+		<result column="ID" property="id" />
+		<result column="BABY_NAME" property="babyName" />
+		<result column="BABY_SEX" property="babySex" />
+		<result column="CHILDBIRTH_ID" property="childBirthId" />
+		<result column="DELIVERY_TYPE" property="deliveryType" />
+		<result column="BASIC_ID" property="basicId" />
+		<result column="BIRTH_ARCHIVES_ID" property="birthArchivesId" />
+		<result column="BIRTH_DATE" property="birthDate" />
+		<result column="ARCHIVES_ID" property="archivesId" />
+		<result column="NAME" property="name" />
+		<result column="ARCHIVES_CODE" property="archivesCode" />
+		<result column="EDUCATION" property="education" />
+		<result column="OCCUPATION" property="occupation" />
+		<result column="WORK_UNIT" property="workUnit" />
+		<result column="ID_NO" property="idNo" />
+		<result column="BIRTHDAY" property="birthday" />
+		<result column="TELEPHONE" property="telephone" />
+		<result column="MAN_NAME" property="manName" />
+		<result column="MAN_EDUCATION" property="manEducation" />
+		<result column="MAN_OCCUPATION" property="manOccupation" />
+		<result column="MAN_WORK_UNIT" property="manWorkUnit" />
+		<result column="MAN_ID_NO" property="manIdNo" />
+		<result column="MAN_BIRTHDAY" property="manBirthday" />
+		<result column="MAN_TELE" property="manTele" />
+	</resultMap>
+	
+	<select id="selectChildBirth" resultMap="selectChildBaby" parameterType="hashmap" >
+	    SELECT baby.ID,baby.BABY_NAME,baby.BABY_SEX,baby.DELIVERY_TYPE,baby.CHILDBIRTH_ID,child.BASIC_ID,basic.BIRTH_ARCHIVES_ID,basic.BIRTH_DATE,
+			 birth.ARCHIVES_ID,arch.`NAME`,arch.ARCHIVES_CODE,arch.EDUCATION,arch.OCCUPATION,arch.WORK_UNIT,
+			 arch.ID_NO,arch.BIRTHDAY,arch.TELEPHONE,arch.MAN_NAME,arch.MAN_EDUCATION,arch.MAN_OCCUPATION,arch.MAN_WORK_UNIT,
+			 arch.MAN_ID_NO,arch.MAN_BIRTHDAY,arch.MAN_TELE
+		FROM childbirth_baby_info baby
+		LEFT JOIN childbirth_info child
+		ON BABY.CHILDBIRTH_ID = child.ID
+		LEFT JOIN childbirth_basic_info basic
+		ON child.BASIC_ID = basic.ID
+		LEFT JOIN birth_archives_info birth
+		ON basic.BIRTH_ARCHIVES_ID = birth.id
+		LEFT JOIN archives_info arch
+		ON birth.ARCHIVES_ID = arch.ID
+		WHERE basic.EDIT_STATUS = "1"
+		AND birth.DELTET_SIGN = "1"
+		AND arch.DELTET_SIGN = "1"
+		<if test="archivesCode!=null and archivesCode!=''">
+			and arch.ARCHIVES_CODE = #{archivesCode}
+		</if>
+	    <if test="name!=null and name!=''">
+			and arch.NAME like #{name}
+		</if>
+	    <if test="childName!=null and childName!=''">
+			and baby.BABY_NAME like #{childName}
+		</if>
+		<if test="idNo!=null and idNo!=''">
+			and arch.ID_NO = #{idNo}
+		</if>
+		<if test="beginTime!=null and beginTime!=''">
+			and basic.BIRTH_DATE >= STR_TO_DATE(#{beginTime},'%Y%m%d')
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and STR_TO_DATE(#{endTime},'%Y%m%d') >= basic.BIRTH_DATE
+		</if>
+	 </select>
+	
+	<select id="getBabyInfoByChildbirthId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,CHILDBIRTH_ID,FETUS_POSITION,DELIVERY_HOUR,DELIVERY_MINUTE,INDUCELABOUR,DELIVERY_TYPE,CESAREAN_IDICATIO,BABY_NAME,BABY_SEX,HEALTH,HEALTH_REMARK,FETAL_ANOMALY,ABNORMAL_POSITION,ABNORMAL_NAME,ONE_MIN_SCORE,FIVE_MIN_SCORE,BORN_WEIGHT,BODY_LENGHT,VACCINE,FETUS_DIE,MIDWIFE
+	    from CHILDBIRTH_BABY_INFO
+	    where CHILDBIRTH_ID = #{ id}
+	 </select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.childbirth.po.ChildbirthBabyInfoPO" >
+	<result column="ID" property="id" />
+	<result column="CHILDBIRTH_ID" property="childbirthId" />
+	<result column="FETUS_POSITION" property="fetusPosition" />
+	<result column="DELIVERY_HOUR" property="deliveryHour" />
+	<result column="DELIVERY_MINUTE" property="deliveryMinute" />
+	<result column="INDUCELABOUR" property="inducelabour" />
+	<result column="DELIVERY_TYPE" property="deliveryType" />
+	<result column="CESAREAN_IDICATIO" property="cesareanIdicatio" />
+	<result column="BABY_NAME" property="babyName" />
+	<result column="BABY_SEX" property="babySex" />
+	<result column="HEALTH" property="health" />
+	<result column="HEALTH_REMARK" property="healthRemark" />
+	<result column="FETAL_ANOMALY" property="fetalAnomaly" />
+	<result column="ABNORMAL_POSITION" property="abnormalPosition" />
+	<result column="ABNORMAL_NAME" property="abnormalName" />
+	<result column="ONE_MIN_SCORE" property="oneMinScore" />
+	<result column="FIVE_MIN_SCORE" property="fiveMinScore" />
+	<result column="BORN_WEIGHT" property="bornWeight" />
+	<result column="BODY_LENGHT" property="bodyLenght" />
+	<result column="VACCINE" property="vaccine" />
+	<result column="FETUS_DIE" property="fetusDie" />
+	<result column="MIDWIFE" property="midwife" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,CHILDBIRTH_ID,FETUS_POSITION,DELIVERY_HOUR,DELIVERY_MINUTE,INDUCELABOUR,DELIVERY_TYPE,CESAREAN_IDICATIO,BABY_NAME,BABY_SEX,HEALTH,HEALTH_REMARK,FETAL_ANOMALY,ABNORMAL_POSITION,ABNORMAL_NAME,ONE_MIN_SCORE,FIVE_MIN_SCORE,BORN_WEIGHT,BODY_LENGHT,VACCINE,FETUS_DIE,MIDWIFE
+    from CHILDBIRTH_BABY_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,CHILDBIRTH_ID,FETUS_POSITION,DELIVERY_HOUR,DELIVERY_MINUTE,INDUCELABOUR,DELIVERY_TYPE,CESAREAN_IDICATIO,BABY_NAME,BABY_SEX,HEALTH,HEALTH_REMARK,FETAL_ANOMALY,ABNORMAL_POSITION,ABNORMAL_NAME,ONE_MIN_SCORE,FIVE_MIN_SCORE,BORN_WEIGHT,BODY_LENGHT,VACCINE,FETUS_DIE,MIDWIFE
+    from CHILDBIRTH_BABY_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CHILDBIRTH_BABY_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.childbirth.po.ChildbirthBabyInfoPO" >
+    insert into CHILDBIRTH_BABY_INFO (ID,CHILDBIRTH_ID,FETUS_POSITION,DELIVERY_HOUR,DELIVERY_MINUTE,INDUCELABOUR,DELIVERY_TYPE,CESAREAN_IDICATIO,BABY_NAME,BABY_SEX,HEALTH,HEALTH_REMARK,FETAL_ANOMALY,ABNORMAL_POSITION,ABNORMAL_NAME,ONE_MIN_SCORE,FIVE_MIN_SCORE,BORN_WEIGHT,BODY_LENGHT,VACCINE,FETUS_DIE,MIDWIFE)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ childbirthId, javaType=String, jdbcType=VARCHAR},
+				#{ fetusPosition, javaType=String, jdbcType=VARCHAR},
+				#{ deliveryHour, javaType=String, jdbcType=VARCHAR},
+				#{ deliveryMinute, javaType=String, jdbcType=VARCHAR},
+				#{ inducelabour, javaType=String, jdbcType=VARCHAR},
+				#{ deliveryType, javaType=String, jdbcType=VARCHAR},
+				#{ cesareanIdicatio, javaType=String, jdbcType=VARCHAR},
+				#{ babyName, javaType=String, jdbcType=VARCHAR},
+				#{ babySex, javaType=String, jdbcType=VARCHAR},
+				#{ health, javaType=String, jdbcType=VARCHAR},
+				#{ healthRemark, javaType=String, jdbcType=VARCHAR},
+				#{ fetalAnomaly, javaType=String, jdbcType=VARCHAR},
+				#{ abnormalPosition, javaType=String, jdbcType=VARCHAR},
+				#{ abnormalName, javaType=String, jdbcType=VARCHAR},
+				#{ oneMinScore, javaType=String, jdbcType=VARCHAR},
+				#{ fiveMinScore, javaType=String, jdbcType=VARCHAR},
+				#{ bornWeight, javaType=String, jdbcType=VARCHAR},
+				#{ bodyLenght, javaType=String, jdbcType=VARCHAR},
+				#{ vaccine, javaType=String, jdbcType=VARCHAR},
+				#{ fetusDie, javaType=String, jdbcType=VARCHAR},
+				#{ midwife, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.childbirth.po.ChildbirthBabyInfoPO" >
+    update CHILDBIRTH_BABY_INFO
+    set
+			CHILDBIRTH_ID = #{ childbirthId, javaType=String, jdbcType=VARCHAR},
+				FETUS_POSITION = #{ fetusPosition, javaType=String, jdbcType=VARCHAR},
+				DELIVERY_HOUR = #{ deliveryHour, javaType=String, jdbcType=VARCHAR},
+				DELIVERY_MINUTE = #{ deliveryMinute, javaType=String, jdbcType=VARCHAR},
+				INDUCELABOUR = #{ inducelabour, javaType=String, jdbcType=VARCHAR},
+				DELIVERY_TYPE = #{ deliveryType, javaType=String, jdbcType=VARCHAR},
+				CESAREAN_IDICATIO = #{ cesareanIdicatio, javaType=String, jdbcType=VARCHAR},
+				BABY_NAME = #{ babyName, javaType=String, jdbcType=VARCHAR},
+				BABY_SEX = #{ babySex, javaType=String, jdbcType=VARCHAR},
+				HEALTH = #{ health, javaType=String, jdbcType=VARCHAR},
+				HEALTH_REMARK = #{ healthRemark, javaType=String, jdbcType=VARCHAR},
+				FETAL_ANOMALY = #{ fetalAnomaly, javaType=String, jdbcType=VARCHAR},
+				ABNORMAL_POSITION = #{ abnormalPosition, javaType=String, jdbcType=VARCHAR},
+				ABNORMAL_NAME = #{ abnormalName, javaType=String, jdbcType=VARCHAR},
+				ONE_MIN_SCORE = #{ oneMinScore, javaType=String, jdbcType=VARCHAR},
+				FIVE_MIN_SCORE = #{ fiveMinScore, javaType=String, jdbcType=VARCHAR},
+				BORN_WEIGHT = #{ bornWeight, javaType=String, jdbcType=VARCHAR},
+				BODY_LENGHT = #{ bodyLenght, javaType=String, jdbcType=VARCHAR},
+				VACCINE = #{ vaccine, javaType=String, jdbcType=VARCHAR},
+				FETUS_DIE = #{ fetusDie, javaType=String, jdbcType=VARCHAR},
+				MIDWIFE = #{ midwife, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,CHILDBIRTH_ID,FETUS_POSITION,DELIVERY_HOUR,DELIVERY_MINUTE,INDUCELABOUR,DELIVERY_TYPE,CESAREAN_IDICATIO,BABY_NAME,BABY_SEX,HEALTH,HEALTH_REMARK,FETAL_ANOMALY,ABNORMAL_POSITION,ABNORMAL_NAME,ONE_MIN_SCORE,FIVE_MIN_SCORE,BORN_WEIGHT,BODY_LENGHT,VACCINE,FETUS_DIE,MIDWIFE
+    from CHILDBIRTH_BABY_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from CHILDBIRTH_BABY_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

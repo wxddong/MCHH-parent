@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.prenatal.dao.PrenatalReferralInfoDao" >
+	
+	<update id="edit" parameterType="com.threefiveninetong.mchh.prenatal.po.PrenatalReferralInfoPO" >
+	    update PRENATAL_REFERRAL_INFO
+	    set
+			REFERRAL = #{ referral, javaType=String, jdbcType=VARCHAR},
+			REASON = #{ reason, javaType=String, jdbcType=VARCHAR},
+			MECHANISM = #{ mechanism, javaType=String, jdbcType=VARCHAR},
+			DEPARTMENT = #{ department, javaType=String, jdbcType=VARCHAR},
+			NEXT_FOLLOWING_DATE = #{ nextFollowingDate, javaType=Date, jdbcType=TIMESTAMP},
+			ORDER_CHECK = #{ orderCheck, javaType=String, jdbcType=VARCHAR},
+			HEALTH_HANDBOOK = #{ healthHandbook, javaType=String, jdbcType=VARCHAR},
+			FOLATE_NUM = #{ folateNum, javaType=String, jdbcType=VARCHAR}
+	    where 
+			PRE_ID = #{ preId}
+	  </update>
+	
+	<select id="getPrenatalReferralByPrenatalId" resultMap="BaseResultMap" parameterType="String" >
+	    select ID,PRE_ID,REFERRAL,REASON,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK,FOLATE_NUM
+	    from PRENATAL_REFERRAL_INFO
+	    where PRE_ID = #{ prenatalId}
+	</select>
+	
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.prenatal.po.PrenatalReferralInfoPO" >
+	<result column="ID" property="id" />
+	<result column="PRE_ID" property="preId" />
+	<result column="REFERRAL" property="referral" />
+	<result column="REASON" property="reason" />
+	<result column="MECHANISM" property="mechanism" />
+	<result column="DEPARTMENT" property="department" />
+	<result column="NEXT_FOLLOWING_DATE" property="nextFollowingDate" />
+	<result column="ORDER_CHECK" property="orderCheck" />
+	<result column="HEALTH_HANDBOOK" property="healthHandbook" />
+	<result column="FOLATE_NUM" property="folateNum" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,PRE_ID,REFERRAL,REASON,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK,FOLATE_NUM
+    from PRENATAL_REFERRAL_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,PRE_ID,REFERRAL,REASON,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK,FOLATE_NUM
+    from PRENATAL_REFERRAL_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from PRENATAL_REFERRAL_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.prenatal.po.PrenatalReferralInfoPO" >
+    insert into PRENATAL_REFERRAL_INFO (ID,PRE_ID,REFERRAL,REASON,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK,FOLATE_NUM)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ preId, javaType=String, jdbcType=VARCHAR},
+				#{ referral, javaType=String, jdbcType=VARCHAR},
+				#{ reason, javaType=String, jdbcType=VARCHAR},
+				#{ mechanism, javaType=String, jdbcType=VARCHAR},
+				#{ department, javaType=String, jdbcType=VARCHAR},
+				#{ nextFollowingDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ orderCheck, javaType=String, jdbcType=VARCHAR},
+				#{ healthHandbook, javaType=String, jdbcType=VARCHAR},
+				#{ folateNum, javaType=String, jdbcType=VARCHAR}
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.prenatal.po.PrenatalReferralInfoPO" >
+    update PRENATAL_REFERRAL_INFO
+    set
+			PRE_ID = #{ preId, javaType=String, jdbcType=VARCHAR},
+				REFERRAL = #{ referral, javaType=String, jdbcType=VARCHAR},
+				REASON = #{ reason, javaType=String, jdbcType=VARCHAR},
+				MECHANISM = #{ mechanism, javaType=String, jdbcType=VARCHAR},
+				DEPARTMENT = #{ department, javaType=String, jdbcType=VARCHAR},
+				NEXT_FOLLOWING_DATE = #{ nextFollowingDate, javaType=Date, jdbcType=TIMESTAMP},
+				ORDER_CHECK = #{ orderCheck, javaType=String, jdbcType=VARCHAR},
+				HEALTH_HANDBOOK = #{ healthHandbook, javaType=String, jdbcType=VARCHAR},
+				FOLATE_NUM = #{ folateNum, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,PRE_ID,REFERRAL,REASON,MECHANISM,DEPARTMENT,NEXT_FOLLOWING_DATE,ORDER_CHECK,HEALTH_HANDBOOK,FOLATE_NUM
+    from PRENATAL_REFERRAL_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from PRENATAL_REFERRAL_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>

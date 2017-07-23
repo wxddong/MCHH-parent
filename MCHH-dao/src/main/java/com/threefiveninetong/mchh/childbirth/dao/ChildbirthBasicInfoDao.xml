@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threefiveninetong.mchh.childbirth.dao.ChildbirthBasicInfoDao" >
+	 
+  <select id="getChildbirthBasicByBirthArchivesId" resultMap="BaseResultMap" parameterType="String">
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,BIRTH_DATE,HOSPITAL_CODE,LEAVE_DATE,LAST_MENSES,GESTATIONAL_WEEK,GESTATIONAL_DAY,PREGNANCY_NUM,BEAR_NUM,HEALTHCARE_NUM,FAM_HISTORY_OTHERS,CHECK_HEPATITIS,ANTIGEN_HEPATITIS,CHECK_SYPHILIS,INFECTED_SYPHILIS,CHECK_AIDS,INFECTED_AIDS,CHECK_HEMOGLOBIN,ANEMIA,FAM_HISTORY,RELATIVES_MATING,GENETIC_ILL,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN
+    from CHILDBIRTH_BASIC_INFO
+    where BIRTH_ARCHIVES_ID = #{ birthArchivesId} AND EDIT_STATUS=1
+    ORDER BY CREAT_TIME DESC
+    LIMIT 1
+  </select>
+  
+  
+  <select id="SaveChildbirthBasicByBirthArchivesId" resultMap="BaseResultMap" parameterType="String">
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,BIRTH_DATE,HOSPITAL_CODE,LEAVE_DATE,LAST_MENSES,GESTATIONAL_WEEK,GESTATIONAL_DAY,PREGNANCY_NUM,BEAR_NUM,HEALTHCARE_NUM,FAM_HISTORY_OTHERS,CHECK_HEPATITIS,ANTIGEN_HEPATITIS,CHECK_SYPHILIS,INFECTED_SYPHILIS,CHECK_AIDS,INFECTED_AIDS,CHECK_HEMOGLOBIN,ANEMIA,FAM_HISTORY,RELATIVES_MATING,GENETIC_ILL,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN
+    from CHILDBIRTH_BASIC_INFO
+    where BIRTH_ARCHIVES_ID = #{ birthArchivesId} AND EDIT_STATUS=0
+    ORDER BY CREAT_TIME DESC
+    LIMIT 1
+  </select>
+	  
+  <resultMap id="BaseResultMap" type="com.threefiveninetong.mchh.childbirth.po.ChildbirthBasicInfoPO" >
+	<result column="ID" property="id" />
+	<result column="BIRTH_ARCHIVES_ID" property="birthArchivesId" />
+	<result column="DOCTOR_ID" property="doctorId" />
+	<result column="BIRTH_DATE" property="birthDate" />
+	<result column="HOSPITAL_CODE" property="hospitalCode" />
+	<result column="LEAVE_DATE" property="leaveDate" />
+	<result column="LAST_MENSES" property="lastMenses" />
+	<result column="GESTATIONAL_WEEK" property="gestationalWeek" />
+	<result column="GESTATIONAL_DAY" property="gestationalDay" />
+	<result column="PREGNANCY_NUM" property="pregnancyNum" />
+	<result column="BEAR_NUM" property="bearNum" />
+	<result column="HEALTHCARE_NUM" property="healthcareNum" />
+	<result column="FAM_HISTORY_OTHERS" property="famHistoryOthers" />
+	<result column="CHECK_HEPATITIS" property="checkHepatitis" />
+	<result column="ANTIGEN_HEPATITIS" property="antigenHepatitis" />
+	<result column="CHECK_SYPHILIS" property="checkSyphilis" />
+	<result column="INFECTED_SYPHILIS" property="infectedSyphilis" />
+	<result column="CHECK_AIDS" property="checkAids" />
+	<result column="INFECTED_AIDS" property="infectedAids" />
+	<result column="CHECK_HEMOGLOBIN" property="checkHemoglobin" />
+	<result column="ANEMIA" property="anemia" />
+	<result column="FAM_HISTORY" property="famHistory" />
+	<result column="RELATIVES_MATING" property="relativesMating" />
+	<result column="GENETIC_ILL" property="geneticIll" />
+	<result column="EDIT_STATUS" property="editStatus" />
+	<result column="CREAT_TIME" property="creatTime" />
+	<result column="UPDATE_TIME" property="updateTime" />
+	<result column="NORMAL_SIGN" property="normalSign" />
+  </resultMap>
+  
+  <select id="find" resultMap="BaseResultMap" parameterType="String" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,BIRTH_DATE,HOSPITAL_CODE,LEAVE_DATE,LAST_MENSES,GESTATIONAL_WEEK,GESTATIONAL_DAY,PREGNANCY_NUM,BEAR_NUM,HEALTHCARE_NUM,FAM_HISTORY_OTHERS,CHECK_HEPATITIS,ANTIGEN_HEPATITIS,CHECK_SYPHILIS,INFECTED_SYPHILIS,CHECK_AIDS,INFECTED_AIDS,CHECK_HEMOGLOBIN,ANEMIA,FAM_HISTORY,RELATIVES_MATING,GENETIC_ILL,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN
+    from CHILDBIRTH_BASIC_INFO
+    where
+			ID = #{ id}
+	  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,BIRTH_DATE,HOSPITAL_CODE,LEAVE_DATE,LAST_MENSES,GESTATIONAL_WEEK,GESTATIONAL_DAY,PREGNANCY_NUM,BEAR_NUM,HEALTHCARE_NUM,FAM_HISTORY_OTHERS,CHECK_HEPATITIS,ANTIGEN_HEPATITIS,CHECK_SYPHILIS,INFECTED_SYPHILIS,CHECK_AIDS,INFECTED_AIDS,CHECK_HEMOGLOBIN,ANEMIA,FAM_HISTORY,RELATIVES_MATING,GENETIC_ILL,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN
+    from CHILDBIRTH_BASIC_INFO
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from CHILDBIRTH_BASIC_INFO
+    where 
+			ID = #{ id}
+	  </delete>
+  
+  <insert id="create" parameterType="com.threefiveninetong.mchh.childbirth.po.ChildbirthBasicInfoPO" >
+    insert into CHILDBIRTH_BASIC_INFO (ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,BIRTH_DATE,HOSPITAL_CODE,LEAVE_DATE,LAST_MENSES,GESTATIONAL_WEEK,GESTATIONAL_DAY,PREGNANCY_NUM,BEAR_NUM,HEALTHCARE_NUM,FAM_HISTORY_OTHERS,CHECK_HEPATITIS,ANTIGEN_HEPATITIS,CHECK_SYPHILIS,INFECTED_SYPHILIS,CHECK_AIDS,INFECTED_AIDS,CHECK_HEMOGLOBIN,ANEMIA,FAM_HISTORY,RELATIVES_MATING,GENETIC_ILL,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN)
+    values (
+			#{ id, javaType=String, jdbcType=VARCHAR},
+				#{ birthArchivesId, javaType=String, jdbcType=VARCHAR},
+				#{ doctorId, javaType=String, jdbcType=VARCHAR},
+				#{ birthDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ hospitalCode, javaType=String, jdbcType=VARCHAR},
+				#{ leaveDate, javaType=Date, jdbcType=TIMESTAMP},
+				#{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				#{ gestationalWeek, javaType=String, jdbcType=VARCHAR},
+				#{ gestationalDay, javaType=String, jdbcType=VARCHAR},
+				#{ pregnancyNum, javaType=String, jdbcType=VARCHAR},
+				#{ bearNum, javaType=String, jdbcType=VARCHAR},
+				#{ healthcareNum, javaType=String, jdbcType=VARCHAR},
+				#{ famHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				#{ checkHepatitis, javaType=String, jdbcType=VARCHAR},
+				#{ antigenHepatitis, javaType=String, jdbcType=VARCHAR},
+				#{ checkSyphilis, javaType=String, jdbcType=VARCHAR},
+				#{ infectedSyphilis, javaType=String, jdbcType=VARCHAR},
+				#{ checkAids, javaType=String, jdbcType=VARCHAR},
+				#{ infectedAids, javaType=String, jdbcType=VARCHAR},
+				#{ checkHemoglobin, javaType=String, jdbcType=VARCHAR},
+				#{ anemia, javaType=String, jdbcType=VARCHAR},
+				#{ famHistory, javaType=String, jdbcType=VARCHAR},
+				#{ relativesMating, javaType=String, jdbcType=VARCHAR},
+				#{ geneticIll, javaType=String, jdbcType=VARCHAR},
+				#{ editStatus, javaType=String, jdbcType=VARCHAR},
+				#{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+				#{ normalSign, javaType=String, jdbcType=VARCHAR}
+				
+	    )
+  </insert>
+
+  <update id="update" parameterType="com.threefiveninetong.mchh.childbirth.po.ChildbirthBasicInfoPO" >
+    update CHILDBIRTH_BASIC_INFO
+    set
+			BIRTH_ARCHIVES_ID = #{ birthArchivesId, javaType=String, jdbcType=VARCHAR},
+				DOCTOR_ID = #{ doctorId, javaType=String, jdbcType=VARCHAR},
+				BIRTH_DATE = #{ birthDate, javaType=Date, jdbcType=TIMESTAMP},
+				HOSPITAL_CODE = #{ hospitalCode, javaType=String, jdbcType=VARCHAR},
+				LEAVE_DATE = #{ leaveDate, javaType=Date, jdbcType=TIMESTAMP},
+				LAST_MENSES = #{ lastMenses, javaType=Date, jdbcType=TIMESTAMP},
+				GESTATIONAL_WEEK = #{ gestationalWeek, javaType=String, jdbcType=VARCHAR},
+				GESTATIONAL_DAY = #{ gestationalDay, javaType=String, jdbcType=VARCHAR},
+				PREGNANCY_NUM = #{ pregnancyNum, javaType=String, jdbcType=VARCHAR},
+				BEAR_NUM = #{ bearNum, javaType=String, jdbcType=VARCHAR},
+				HEALTHCARE_NUM = #{ healthcareNum, javaType=String, jdbcType=VARCHAR},
+				FAM_HISTORY_OTHERS = #{ famHistoryOthers, javaType=String, jdbcType=VARCHAR},
+				CHECK_HEPATITIS = #{ checkHepatitis, javaType=String, jdbcType=VARCHAR},
+				ANTIGEN_HEPATITIS = #{ antigenHepatitis, javaType=String, jdbcType=VARCHAR},
+				CHECK_SYPHILIS = #{ checkSyphilis, javaType=String, jdbcType=VARCHAR},
+				INFECTED_SYPHILIS = #{ infectedSyphilis, javaType=String, jdbcType=VARCHAR},
+				CHECK_AIDS = #{ checkAids, javaType=String, jdbcType=VARCHAR},
+				INFECTED_AIDS = #{ infectedAids, javaType=String, jdbcType=VARCHAR},
+				CHECK_HEMOGLOBIN = #{ checkHemoglobin, javaType=String, jdbcType=VARCHAR},
+				ANEMIA = #{ anemia, javaType=String, jdbcType=VARCHAR},
+				FAM_HISTORY = #{ famHistory, javaType=String, jdbcType=VARCHAR},
+				RELATIVES_MATING = #{ relativesMating, javaType=String, jdbcType=VARCHAR},
+				GENETIC_ILL = #{ geneticIll, javaType=String, jdbcType=VARCHAR},
+				EDIT_STATUS = #{ editStatus, javaType=String, jdbcType=VARCHAR},
+				CREAT_TIME = #{ creatTime, javaType=Date, jdbcType=TIMESTAMP},
+				UPDATE_TIME = #{ updateTime, javaType=Date, jdbcType=TIMESTAMP},
+	    		NORMAL_SIGN	=#{normalSign, javaType=String, jdbcType=VARCHAR}
+	    where 
+			ID = #{ id}
+	  </update>
+
+ <select id="listForPage" resultMap="BaseResultMap"  parameterType="hashmap">
+    select ID,BIRTH_ARCHIVES_ID,DOCTOR_ID,BIRTH_DATE,HOSPITAL_CODE,LEAVE_DATE,LAST_MENSES,GESTATIONAL_WEEK,GESTATIONAL_DAY,PREGNANCY_NUM,BEAR_NUM,HEALTHCARE_NUM,FAM_HISTORY_OTHERS,CHECK_HEPATITIS,ANTIGEN_HEPATITIS,CHECK_SYPHILIS,INFECTED_SYPHILIS,CHECK_AIDS,INFECTED_AIDS,CHECK_HEMOGLOBIN,ANEMIA,FAM_HISTORY,RELATIVES_MATING,GENETIC_ILL,EDIT_STATUS,CREAT_TIME,UPDATE_TIME,NORMAL_SIGN
+    from CHILDBIRTH_BASIC_INFO
+  </select>
+
+
+<delete id="deletes">
+		delete from CHILDBIRTH_BASIC_INFO
+		where id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}   
+	    </foreach>
+	</delete>
+
+
+<!--codegen-->
+
+</mapper>
